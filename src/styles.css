@@ -390,6 +390,25 @@ h1, p, dl, dt, dd { margin: 0; padding: 0; }
   align-self: center;
 }
 
+.show-more {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  padding: 9px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.05s;
+}
+.show-more:hover { border-color: var(--text); background: #fafafa; }
+.show-more:active { transform: translateY(0.5px); }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 860px) {
   .cal-layout { grid-template-columns: 1fr; }

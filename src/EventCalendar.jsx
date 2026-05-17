@@ -46,8 +46,11 @@ function daysBetween(a, b) {
   return Math.round((b - a) / (24 * 60 * 60 * 1000));
 }
 
+const INITIAL_LIMIT = 4;
+
 export default function EventCalendar() {
   const [view, setView] = useState({ year: TODAY.getFullYear(), month: TODAY.getMonth() });
+  const [expanded, setExpanded] = useState(false);
 
   const eventsByDay = useMemo(() => {
     const map = new Map();
@@ -151,7 +154,7 @@ export default function EventCalendar() {
             <span className="upcoming-count">{upcoming.length} events</span>
           </div>
           <ul className="event-list">
-            {upcoming.map((e, idx) => {
+            {(expanded ? upcoming : upcoming.slice(0, INITIAL_LIMIT)).map((e, idx) => {
               const t = TYPES[e.type];
               const diff = daysBetween(TODAY, e.when);
               const relative = diff === 0 ? 'Today' : diff === 1 ? 'Tomorrow' : `in ${diff} days`;
@@ -177,6 +180,18 @@ export default function EventCalendar() {
               );
             })}
           </ul>
+          {upcoming.length > INITIAL_LIMIT && (
+            <button
+              type="button"
+              className="show-more"
+              onClick={() => setExpanded((v) => !v)}
+            >
+              {expanded
+                ? 'Show less'
+                : `Show ${upcoming.length - INITIAL_LIMIT} more`}
+              <Chevron down={!expanded} />
+            </button>
+          )}
         </aside>
       </div>
     </section>
@@ -196,6 +211,15 @@ function ChevronRight() {
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M9 6l6 6-6 6" />
+    </svg>
+  );
+}
+function Chevron({ down }) {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"
+      style={{ transform: down ? 'rotate(0deg)' : 'rotate(180deg)', transition: 'transform 0.15s' }}>
+      <path d="M6 9l6 6 6-6" />
     </svg>
   );
 }
