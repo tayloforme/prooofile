@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import TaskModal from './TaskModal.jsx';
 import { TODAY, TYPES, parseDate, daysBetween } from './data.js';
 
 const VISIBLE = 4;
@@ -50,11 +49,11 @@ function completedAgo(ts) {
   return `${days} days ago`;
 }
 
-export default function Upcoming({ events, onComplete, onRestore, onOpenCalendar }) {
+export default function Upcoming({ events, onComplete, onRestore, onDelete, onOpenCalendar }) {
   const [expanded, setExpanded]           = useState(false);
-  const [activeTask, setActiveTask]       = useState(null);
   const [showCompleted, setShowCompleted] = useState(false);
   const [lastCompleted, setLastCompleted] = useState(null);
+  const [openMenuId, setOpenMenuId]       = useState(null);
   const undoTimerRef = useRef(null);
 
   const upcoming = useMemo(() => {
@@ -91,6 +90,16 @@ export default function Upcoming({ events, onComplete, onRestore, onOpenCalendar
     return () => clearTimeout(undoTimerRef.current);
   }, [lastCompleted]);
 
+  // Close menu on outside click
+  useEffect(() => {
+    if (openMenuId === null) return;
+    const onDocClick = (ev) => {
+      if (!ev.target.closest('.menu-area')) setOpenMenuId(null);
+    };
+    document.addEventListener('mousedown', onDocClick);
+    return () => document.removeEventListener('mousedown', onDocClick);
+  }, [openMenuId]);
+
   const handleComplete = (id) => {
     const task = events.find((e) => e.id === id);
     if (!task) return;
@@ -102,8 +111,10 @@ export default function Upcoming({ events, onComplete, onRestore, onOpenCalendar
     onRestore(lastCompleted.id);
     setLastCompleted(null);
   };
-
-  const stopAnd = (fn) => (ev) => { ev.stopPropagation(); fn(); };
+  const toggleMenu = (e, id) => {
+    e.stopPropagation();
+    setOpenMenuId((curr) => (curr === id ? null : id));
+  };
 
   return (
     <section className="upcoming-card">
@@ -141,21 +152,18 @@ export default function Upcoming({ events, onComplete, onRestore, onOpenCalendar
                 <ul className="up-list">
                   {items.map((e) => {
                     const t = TYPES[e.type];
+                    const isMenuOpen = openMenuId === e.id;
                     return (
                       <li
                         key={e.id}
-                        className={'up-card up-card-' + key}
+                        className={'up-card up-card-' + key + (isMenuOpen ? ' is-menu-open' : '')}
                         style={{ borderLeftColor: t.color }}
-                        onClick={() => setActiveTask(e)}
-                        role="button"
-                        tabIndex={0}
-                        onKeyDown={(ev) => { if (ev.key === 'Enter') setActiveTask(e); }}
                       >
                         <button
                           className="card-check"
                           type="button"
                           aria-label={`Mark "${e.title}" as done`}
-                          onClick={stopAnd(() => handleComplete(e.id))}
+                          onClick={() => handleComplete(e.id)}
                         >
                           <Check />
                         </button>
@@ -170,6 +178,37 @@ export default function Upcoming({ events, onComplete, onRestore, onOpenCalendar
                         <span className="badge badge-neutral">
                           {e.subtype || t.label}
                         </span>
+                        <div className="menu-area">
+                          <button
+                            className="card-menu-trigger"
+                            type="button"
+                            aria-label="More options"
+                            aria-haspopup="menu"
+                            aria-expanded={isMenuOpen}
+                            onClick={(ev) => toggleMenu(ev, e.id)}
+                          >
+                            <Dots />
+                          </button>
+                          {isMenuOpen && (
+                            <div className="card-menu" role="menu">
+                              <button role="menuitem" type="button" onClick={() => setOpenMenuId(null)}>
+                                <EditIcon /> Edit
+                              </button>
+                              <button role="menuitem" type="button" onClick={() => setOpenMenuId(null)}>
+                                <ClockIcon /> Reschedule
+                              </button>
+                              <div className="card-menu-sep" />
+                              <button
+                                role="menuitem"
+                                type="button"
+                                className="is-danger"
+                                onClick={() => { onDelete(e.id); setOpenMenuId(null); }}
+                              >
+                                <TrashIcon /> Delete
+                              </button>
+                            </div>
+                          )}
+                        </div>
                       </li>
                     );
                   })}
@@ -242,17 +281,6 @@ export default function Upcoming({ events, onComplete, onRestore, onOpenCalendar
         </div>
       )}
 
-      {activeTask && (
-        <TaskModal
-          task={activeTask}
-          onClose={() => setActiveTask(null)}
-          onComplete={(id) => {
-            handleComplete(id);
-            setActiveTask(null);
-          }}
-        />
-      )}
-
       {lastCompleted && (
         <div className="undo-toast" role="status">
           <span>Marked “{lastCompleted.title}” as done</span>
@@ -294,6 +322,41 @@ function Chevron({ down }) {
       stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"
       style={{ transform: down ? 'rotate(0deg)' : 'rotate(180deg)', transition: 'transform 0.15s' }}>
       <path d="M6 9l6 6 6-6" />
+    </svg>
+  );
+}
+function Dots() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <circle cx="6" cy="12" r="1.5" />
+      <circle cx="12" cy="12" r="1.5" />
+      <circle cx="18" cy="12" r="1.5" />
+    </svg>
+  );
+}
+function EditIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 20h4l10-10-4-4L4 16v4z" />
+      <path d="M14 6l4 4" />
+    </svg>
+  );
+}
+function ClockIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
+    </svg>
+  );
+}
+function TrashIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13" />
     </svg>
   );
 }

@@ -16,6 +16,8 @@ export default function App() {
     setEvents((cur) =>
       cur.map((e) => (e.id === id ? { ...e, done: false, completedAt: null } : e))
     );
+  const deleteEvent = (id) =>
+    setEvents((cur) => cur.filter((e) => e.id !== id));
 
   if (page === 'calendar') {
     return <CalendarPage events={events} onBack={() => setPage('main')} />;
@@ -28,6 +30,7 @@ export default function App() {
         events={events}
         onComplete={completeEvent}
         onRestore={restoreEvent}
+        onDelete={deleteEvent}
         onOpenCalendar={() => setPage('calendar')}
       />
     </main>
