@@ -3,29 +3,25 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Pet Profile — Luna</title>
+<title>Luna · Pet Profile</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- Sticky header -->
   <header class="site-header" id="siteHeader">
     <div class="container header-inner">
       <a class="brand" href="#profile">
         <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="9.5" r="1.8"/><circle cx="9.5" cy="5.5" r="1.8"/><circle cx="14.5" cy="5.5" r="1.8"/><circle cx="18.5" cy="9.5" r="1.8"/><path d="M7.5 17.5c0-3 2-5 4.5-5s4.5 2 4.5 5c0 1.7-1.3 2.5-3 2.2-1-.2-2-.2-3 0-1.7.3-3-.5-3-2.2z"/></svg>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="9.5" r="1.6"/><circle cx="9.5" cy="5.5" r="1.6"/><circle cx="14.5" cy="5.5" r="1.6"/><circle cx="18.5" cy="9.5" r="1.6"/><path d="M7.5 17.5c0-3 2-5 4.5-5s4.5 2 4.5 5c0 1.7-1.3 2.5-3 2.2-1-.2-2-.2-3 0-1.7.3-3-.5-3-2.2z"/></svg>
         </span>
-        <span class="brand-name">Prooofile</span>
+        <span>Prooofile</span>
       </a>
 
       <div class="header-pet" aria-live="polite">
-        <img class="header-avatar" src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=120&h=120&q=80" alt="" />
-        <div class="header-pet-text">
-          <span class="header-pet-name">Luna</span>
-          <span class="header-pet-meta">Golden Retriever · 3 yrs</span>
-        </div>
+        <img class="header-avatar" src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=80&h=80&q=80" alt="" />
+        <span class="header-pet-name">Luna</span>
       </div>
 
       <nav class="header-nav" aria-label="Sections">
@@ -35,62 +31,25 @@
         <a href="#tasks">Tasks</a>
         <a href="#insights">Insights</a>
       </nav>
-
-      <button class="btn btn-ghost btn-icon header-menu" aria-label="Account menu">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c1.5-3.5 4.5-5 7.5-5s6 1.5 7.5 5"/></svg>
-      </button>
     </div>
   </header>
 
   <main class="container">
-    <!-- 1. PROFILE / HERO -->
-    <section id="profile" class="section hero">
-      <div class="hero-card">
-        <div class="hero-photo-wrap">
-          <img class="hero-photo" src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=900&q=80" alt="Photo of Luna, a golden retriever" />
-          <span class="status-chip status-healthy" title="Overall status">
-            <span class="status-dot"></span> Healthy
-          </span>
-        </div>
-
+    <!-- 1. PROFILE -->
+    <section id="profile" class="section section-hero">
+      <div class="hero">
+        <img class="hero-photo" src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=300&h=300&q=80" alt="Luna" />
         <div class="hero-info">
-          <p class="eyebrow">Pet profile</p>
-          <h1 class="hero-name">Luna</h1>
-          <p class="hero-sub">Golden Retriever · Female</p>
-
-          <dl class="hero-stats">
-            <div>
-              <dt>Age</dt>
-              <dd>3 yrs</dd>
-            </div>
-            <div>
-              <dt>Breed</dt>
-              <dd>Golden Retriever</dd>
-            </div>
-            <div>
-              <dt>Weight</dt>
-              <dd>27.4 kg</dd>
-            </div>
-            <div>
-              <dt>Microchip</dt>
-              <dd>•••• 4821</dd>
-            </div>
-          </dl>
-
-          <div class="hero-actions">
-            <button class="btn btn-primary">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M12 13v6M9 16h6"/></svg>
-              Add record
-            </button>
-            <button class="btn btn-secondary">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v8M8 12h8"/><circle cx="12" cy="12" r="9"/></svg>
-              Add symptom
-            </button>
-            <button class="btn btn-secondary">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg>
-              Upload photo
-            </button>
+          <div class="hero-row">
+            <h1>Luna</h1>
+            <span class="status status-ok"><span class="dot"></span>Healthy</span>
           </div>
+          <p class="hero-meta">Golden Retriever · 3 yrs · 27.4 kg</p>
+        </div>
+        <div class="hero-actions">
+          <button class="btn btn-primary btn-sm">+ Record</button>
+          <button class="btn btn-secondary btn-sm">+ Symptom</button>
+          <button class="btn btn-secondary btn-sm">+ Photo</button>
         </div>
       </div>
     </section>
@@ -98,190 +57,79 @@
     <!-- 2. HEALTH -->
     <section id="health" class="section">
       <header class="section-head">
-        <div class="section-title">
-          <span class="section-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-9-9.5C1.5 7.5 4 4 7.5 4c2 0 3.5 1 4.5 2.5C13 5 14.5 4 16.5 4 20 4 22.5 7.5 21 11.5 19 16.5 12 21 12 21z"/></svg>
-          </span>
-          <h2>Health</h2>
-        </div>
-        <a class="section-link" href="#">View all records →</a>
+        <h2><span class="ico"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-9-9.5C1.5 7.5 4 4 7.5 4c2 0 3.5 1 4.5 2.5C13 5 14.5 4 16.5 4 20 4 22.5 7.5 21 11.5 19 16.5 12 21 12 21z"/></svg></span>Health</h2>
       </header>
 
-      <!-- Next action highlight -->
-      <div class="callout">
-        <div class="callout-icon">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      <div class="next-up">
+        <div>
+          <p class="next-label">Next up</p>
+          <p class="next-title">Rabies booster · in 12 days</p>
         </div>
-        <div class="callout-text">
-          <p class="callout-eyebrow">Next action</p>
-          <p class="callout-title">Rabies booster due in 12 days</p>
-          <p class="callout-sub">Book an appointment with Dr. Patel at Riverside Vet.</p>
-        </div>
-        <button class="btn btn-primary btn-sm">Book visit</button>
+        <button class="btn btn-primary btn-sm">Book</button>
       </div>
 
-      <div class="grid grid-3">
-        <article class="card">
-          <header class="card-head">
-            <h3>Vaccinations</h3>
-            <span class="pill pill-ok">Up to date</span>
-          </header>
-          <ul class="data-list">
-            <li><span>Rabies</span><span class="muted">Next · Jun 1</span></li>
-            <li><span>DHPP</span><span class="muted">Next · Aug 14</span></li>
-            <li><span>Bordetella</span><span class="muted">Next · Oct 22</span></li>
-          </ul>
-        </article>
-
-        <article class="card">
-          <header class="card-head">
-            <h3>Vet visits</h3>
-            <span class="pill">3 this year</span>
-          </header>
-          <ul class="data-list">
-            <li><span>Annual checkup</span><span class="muted">Apr 12</span></li>
-            <li><span>Ear infection</span><span class="muted">Feb 03</span></li>
-            <li><span>Dental cleaning</span><span class="muted">Jan 18</span></li>
-          </ul>
-        </article>
-
-        <article class="card">
-          <header class="card-head">
-            <h3>Active symptoms</h3>
-            <span class="pill pill-warn">1 active</span>
-          </header>
-          <ul class="data-list">
-            <li>
-              <span>Mild paw licking</span>
-              <span class="muted">3 days</span>
-            </li>
-            <li class="muted-row">
-              <span>No other symptoms reported</span>
-            </li>
-          </ul>
-        </article>
-
-        <article class="card">
-          <header class="card-head">
-            <h3>Medications</h3>
-            <span class="pill">2 ongoing</span>
-          </header>
-          <ul class="data-list">
-            <li><span>NexGard (flea/tick)</span><span class="muted">Monthly</span></li>
-            <li><span>Omega-3</span><span class="muted">Daily</span></li>
-          </ul>
-        </article>
-
-        <article class="card">
-          <header class="card-head">
-            <h3>Allergies</h3>
-            <span class="pill pill-warn">2 known</span>
-          </header>
-          <ul class="data-list">
-            <li><span>Chicken</span><span class="muted">Food</span></li>
-            <li><span>Grass pollen</span><span class="muted">Seasonal</span></li>
-          </ul>
-        </article>
-
-        <article class="card card-soft">
-          <header class="card-head">
-            <h3>Weight trend</h3>
-            <span class="pill pill-ok">Stable</span>
-          </header>
-          <div class="sparkline" aria-hidden="true">
-            <svg viewBox="0 0 200 60" preserveAspectRatio="none">
-              <path d="M0,40 C20,38 40,30 60,32 S100,42 120,36 160,22 200,26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <p class="muted small">27.4 kg · +0.2 kg vs. last month</p>
-        </article>
-      </div>
+      <ul class="stat-grid">
+        <li>
+          <span class="stat-label">Vaccinations</span>
+          <span class="stat-value">Up to date</span>
+          <span class="stat-sub">Next Jun 1</span>
+        </li>
+        <li>
+          <span class="stat-label">Medications</span>
+          <span class="stat-value">2 active</span>
+          <span class="stat-sub">NexGard, Omega-3</span>
+        </li>
+        <li>
+          <span class="stat-label">Symptoms</span>
+          <span class="stat-value stat-warn">1 active</span>
+          <span class="stat-sub">Paw licking · 3d</span>
+        </li>
+        <li>
+          <span class="stat-label">Allergies</span>
+          <span class="stat-value">Chicken, pollen</span>
+          <span class="stat-sub">2 known</span>
+        </li>
+      </ul>
     </section>
 
     <!-- 3. TIMELINE -->
     <section id="timeline" class="section">
       <header class="section-head">
-        <div class="section-title">
-          <span class="section-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
-          </span>
-          <h2>Timeline</h2>
-        </div>
-        <div class="filters" role="tablist" aria-label="Timeline filters">
-          <button class="filter is-active" data-filter="all" role="tab" aria-selected="true">All</button>
-          <button class="filter" data-filter="health" role="tab">Health</button>
-          <button class="filter" data-filter="food" role="tab">Food</button>
-          <button class="filter" data-filter="activity" role="tab">Activity</button>
+        <h2><span class="ico"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span>Timeline</h2>
+        <div class="filters">
+          <button class="filter is-active" data-filter="all">All</button>
+          <button class="filter" data-filter="health">Health</button>
+          <button class="filter" data-filter="food">Food</button>
+          <button class="filter" data-filter="activity">Activity</button>
         </div>
       </header>
 
       <ol class="timeline">
-        <li class="timeline-item" data-type="health">
-          <span class="timeline-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-9-9.5C1.5 7.5 4 4 7.5 4c2 0 3.5 1 4.5 2.5C13 5 14.5 4 16.5 4 20 4 22.5 7.5 21 11.5 19 16.5 12 21 12 21z"/></svg>
-          </span>
-          <div class="timeline-body">
-            <div class="timeline-meta">
-              <span class="tag tag-health">Health</span>
-              <time>Today · 9:12</time>
-            </div>
-            <p class="timeline-title">Logged symptom: mild paw licking</p>
-            <p class="muted small">Will monitor for 48 hours before vet outreach.</p>
-          </div>
+        <li class="t-item" data-type="health">
+          <span class="t-dot t-health"></span>
+          <time>Today</time>
+          <p>Logged symptom · paw licking</p>
         </li>
-
-        <li class="timeline-item" data-type="photos activity">
-          <span class="timeline-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg>
-          </span>
-          <div class="timeline-body">
-            <div class="timeline-meta">
-              <span class="tag tag-activity">Activity</span>
-              <time>Yesterday · 18:40</time>
-            </div>
-            <p class="timeline-title">Evening walk · 4.2 km</p>
-            <img class="timeline-image" src="https://images.unsplash.com/photo-1601758124510-52d02ddb7cbd?auto=format&fit=crop&w=900&q=70" alt="Luna walking on a forest trail" />
-          </div>
+        <li class="t-item" data-type="activity">
+          <span class="t-dot t-activity"></span>
+          <time>Yesterday</time>
+          <p>Evening walk · 4.2 km</p>
+          <img src="https://images.unsplash.com/photo-1601758124510-52d02ddb7cbd?auto=format&fit=crop&w=600&q=70" alt="" />
         </li>
-
-        <li class="timeline-item" data-type="food">
-          <span class="timeline-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h12l-1 9H7z"/><path d="M9 11V8a3 3 0 0 1 6 0v3"/></svg>
-          </span>
-          <div class="timeline-body">
-            <div class="timeline-meta">
-              <span class="tag tag-food">Food</span>
-              <time>Yesterday · 7:30</time>
-            </div>
-            <p class="timeline-title">Switched to grain-free salmon kibble</p>
-            <p class="muted small">Trial period: 4 weeks. Watching for allergy response.</p>
-          </div>
+        <li class="t-item" data-type="food">
+          <span class="t-dot t-food"></span>
+          <time>Yesterday</time>
+          <p>Switched to salmon kibble</p>
         </li>
-
-        <li class="timeline-item" data-type="health">
-          <span class="timeline-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/><circle cx="12" cy="12" r="4"/></svg>
-          </span>
-          <div class="timeline-body">
-            <div class="timeline-meta">
-              <span class="tag tag-health">Health</span>
-              <time>May 12</time>
-            </div>
-            <p class="timeline-title">NexGard dose given</p>
-          </div>
+        <li class="t-item" data-type="health">
+          <span class="t-dot t-health"></span>
+          <time>May 12</time>
+          <p>NexGard dose given</p>
         </li>
-
-        <li class="timeline-item" data-type="activity">
-          <span class="timeline-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19l6-6 3 3 7-7"/><path d="M14 9h6v6"/></svg>
-          </span>
-          <div class="timeline-body">
-            <div class="timeline-meta">
-              <span class="tag tag-activity">Activity</span>
-              <time>May 09</time>
-            </div>
-            <p class="timeline-title">Beach trip · 90 min play</p>
-          </div>
+        <li class="t-item" data-type="activity">
+          <span class="t-dot t-activity"></span>
+          <time>May 9</time>
+          <p>Beach trip · 90 min play</p>
         </li>
       </ol>
     </section>
@@ -289,135 +137,53 @@
     <!-- 4. TASKS -->
     <section id="tasks" class="section">
       <header class="section-head">
-        <div class="section-title">
-          <span class="section-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg>
-          </span>
-          <h2>Tasks</h2>
-        </div>
-        <button class="btn btn-ghost btn-sm">+ New task</button>
+        <h2><span class="ico"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg></span>Tasks</h2>
+        <button class="link-btn">+ New</button>
       </header>
 
-      <div class="grid grid-2">
-        <article class="card">
-          <header class="card-head">
-            <h3>Upcoming</h3>
-            <span class="pill">4</span>
-          </header>
-          <ul class="task-list" id="taskListUpcoming">
-            <li class="task">
-              <label>
-                <input type="checkbox" />
-                <span class="task-check" aria-hidden="true"></span>
-                <span class="task-body">
-                  <span class="task-title">Rabies booster</span>
-                  <span class="task-meta">Vaccination · Jun 1</span>
-                </span>
-              </label>
-            </li>
-            <li class="task">
-              <label>
-                <input type="checkbox" />
-                <span class="task-check" aria-hidden="true"></span>
-                <span class="task-body">
-                  <span class="task-title">NexGard monthly dose</span>
-                  <span class="task-meta">Medication · May 28</span>
-                </span>
-              </label>
-            </li>
-            <li class="task">
-              <label>
-                <input type="checkbox" />
-                <span class="task-check" aria-hidden="true"></span>
-                <span class="task-body">
-                  <span class="task-title">Grooming appointment</span>
-                  <span class="task-meta">Grooming · Jun 5</span>
-                </span>
-              </label>
-            </li>
-            <li class="task">
-              <label>
-                <input type="checkbox" />
-                <span class="task-check" aria-hidden="true"></span>
-                <span class="task-body">
-                  <span class="task-title">Weigh-in</span>
-                  <span class="task-meta">Routine · Jun 10</span>
-                </span>
-              </label>
-            </li>
-          </ul>
-        </article>
+      <p class="list-label">Upcoming</p>
+      <ul class="task-list" id="taskListUpcoming">
+        <li class="task"><label><input type="checkbox"><span class="check"></span><span class="task-title">Rabies booster</span><span class="task-meta">Jun 1</span></label></li>
+        <li class="task"><label><input type="checkbox"><span class="check"></span><span class="task-title">NexGard dose</span><span class="task-meta">May 28</span></label></li>
+        <li class="task"><label><input type="checkbox"><span class="check"></span><span class="task-title">Grooming</span><span class="task-meta">Jun 5</span></label></li>
+      </ul>
 
-        <article class="card card-soft">
-          <header class="card-head">
-            <h3>Completed</h3>
-            <span class="pill pill-ok">2 this week</span>
-          </header>
-          <ul class="task-list" id="taskListDone">
-            <li class="task is-done">
-              <label>
-                <input type="checkbox" checked />
-                <span class="task-check" aria-hidden="true"></span>
-                <span class="task-body">
-                  <span class="task-title">Trim nails</span>
-                  <span class="task-meta">Grooming · May 14</span>
-                </span>
-              </label>
-            </li>
-            <li class="task is-done">
-              <label>
-                <input type="checkbox" checked />
-                <span class="task-check" aria-hidden="true"></span>
-                <span class="task-body">
-                  <span class="task-title">Annual checkup</span>
-                  <span class="task-meta">Vet visit · Apr 12</span>
-                </span>
-              </label>
-            </li>
-          </ul>
-        </article>
-      </div>
+      <p class="list-label list-label-muted">Done</p>
+      <ul class="task-list" id="taskListDone">
+        <li class="task is-done"><label><input type="checkbox" checked><span class="check"></span><span class="task-title">Trim nails</span><span class="task-meta">May 14</span></label></li>
+        <li class="task is-done"><label><input type="checkbox" checked><span class="check"></span><span class="task-title">Annual checkup</span><span class="task-meta">Apr 12</span></label></li>
+      </ul>
     </section>
 
     <!-- 5. AI INSIGHTS -->
     <section id="insights" class="section">
       <header class="section-head">
-        <div class="section-title">
-          <span class="section-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.2L18 9l-4.2 1.8L12 15l-1.8-4.2L6 9l4.2-1.8z"/><path d="M5 18l.9 2.1L8 21l-2.1.9L5 24l-.9-2.1L2 21l2.1-.9z"/></svg>
-          </span>
-          <h2>AI Insights</h2>
-        </div>
-        <span class="muted small">Updated today</span>
+        <h2><span class="ico"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.2L18 9l-4.2 1.8L12 15l-1.8-4.2L6 9l4.2-1.8z"/></svg></span>AI Insights</h2>
       </header>
 
-      <div class="grid grid-3">
+      <div class="insight-grid">
         <article class="insight">
-          <span class="insight-badge">Nutrition</span>
-          <h3>Try a salmon-based diet</h3>
-          <p>Luna's chicken allergy and recent paw licking suggest a protein swap could reduce flare-ups within 3–4 weeks.</p>
-          <button class="btn btn-ghost btn-sm">See products →</button>
+          <p class="i-tag">Nutrition</p>
+          <h3>Try salmon-based diet</h3>
+          <p class="i-body">May reduce paw licking within 3–4 weeks.</p>
+          <button class="link-btn">See products →</button>
         </article>
-
         <article class="insight">
-          <span class="insight-badge">Activity</span>
-          <h3>Add a midday play burst</h3>
-          <p>Energy levels peak between 12–2 PM. A short 15-min play session could improve evening sleep quality.</p>
-          <button class="btn btn-ghost btn-sm">View plan →</button>
+          <p class="i-tag">Activity</p>
+          <h3>Add midday play</h3>
+          <p class="i-body">15 min around noon could improve evening sleep.</p>
+          <button class="link-btn">View plan →</button>
         </article>
-
         <article class="insight">
-          <span class="insight-badge">Preventive</span>
-          <h3>Schedule dental check</h3>
-          <p>It's been 4 months since the last cleaning. Early plaque is common for retrievers around this interval.</p>
-          <button class="btn btn-ghost btn-sm">Book now →</button>
+          <p class="i-tag">Preventive</p>
+          <h3>Dental check due</h3>
+          <p class="i-body">4 months since last cleaning.</p>
+          <button class="link-btn">Book →</button>
         </article>
       </div>
     </section>
 
-    <footer class="site-footer">
-      <p>© 2026 Prooofile · Made for the people who love their pets.</p>
-    </footer>
+    <footer class="site-footer">© 2026 Prooofile</footer>
   </main>
 
   <script src="app.js"></script>
