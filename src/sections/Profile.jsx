@@ -1,86 +1,89 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  IconArrowRight, IconPlus, IconSparkle, IconClock,
+  IconHeart, IconShare, IconStar, IconPaw, IconScale,
+  IconSyringe, IconAlert, IconPlus, IconCamera, IconEdit,
 } from '../components/Icons.jsx';
 
 export default function Profile() {
+  const [saved, setSaved] = useState(false);
+
   return (
-    <section id="profile" className="section section-hero">
-      <article className="hero tone-mint">
-        <div className="hero-photo-wrap">
-          <img
-            className="hero-photo"
-            src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=600&q=80"
-            alt="Luna"
-          />
+    <section className="hero">
+      <div className="hero-gallery">
+        <img
+          className="hero-photo"
+          src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=1000&q=80"
+          alt="Luna"
+        />
+        <div className="hero-photo-actions">
+          <button className="circle-btn"><IconShare /> Share</button>
+          <button
+            className={'circle-btn' + (saved ? ' is-saved' : '')}
+            onClick={() => setSaved((v) => !v)}
+          >
+            <IconHeart filled={saved} />
+            {saved ? 'Saved' : 'Save'}
+          </button>
+        </div>
+      </div>
+
+      <div className="hero-body">
+        <header className="hero-head">
+          <div>
+            <h1 className="hero-title">Luna</h1>
+            <p className="hero-sub">
+              Golden Retriever <span className="dot" /> 3 yrs <span className="dot" /> Female
+            </p>
+          </div>
+          <div className="hero-rating">
+            <IconStar filled />
+            <strong>Healthy</strong>
+            <span className="hero-rating-meta">· 12 vet visits</span>
+          </div>
+        </header>
+
+        <hr className="hr" />
+
+        <div className="hero-stats">
+          <div className="stat">
+            <div className="stat-icon"><IconScale /></div>
+            <div>
+              <p className="stat-value">27.4 kg <span className="trend">↑ +0.2 last month</span></p>
+              <p className="stat-label">Current weight</p>
+            </div>
+          </div>
+          <div className="stat">
+            <div className="stat-icon"><IconSyringe /></div>
+            <div>
+              <p className="stat-value">Vaccination in 5 days</p>
+              <p className="stat-label">Rabies booster · Dr. Patel</p>
+            </div>
+          </div>
+          <div className="stat">
+            <div className="stat-icon"><IconPaw /></div>
+            <div>
+              <p className="stat-value">5 / 7 active days</p>
+              <p className="stat-label">Walks logged this week</p>
+            </div>
+          </div>
+          <div className="stat">
+            <div className="stat-icon"><IconAlert /></div>
+            <div>
+              <p className="stat-value">1 active symptom</p>
+              <p className="stat-label">Paw licking · 3 days</p>
+            </div>
+          </div>
         </div>
 
-        <div className="hero-text">
-          <div className="hero-top">
-            <span className="hero-tag">PET PROFILE</span>
-            <span className="hero-status">
-              <span className="status-dot" /> Healthy
-            </span>
-          </div>
+        <hr className="hr" />
 
-          <h1 className="hero-title">Luna</h1>
-          <p className="hero-meta">Golden Retriever · 3 yrs · ♀</p>
-
-          <div className="hero-stats">
-            <div className="hero-stat">
-              <span className="hs-label">Weight</span>
-              <span className="hs-row">
-                <span className="hs-value">27.4<span className="hs-unit">kg</span></span>
-                <span className="hs-trend trend-up">
-                  <TrendArrow /> +0.2
-                </span>
-              </span>
-              <Sparkline />
-            </div>
-
-            <div className="hero-note">
-              <span className="note-icon"><IconClock /></span>
-              <div>
-                <p className="note-label">UPCOMING</p>
-                <p className="note-title">Vaccination in 5 days</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="hero-actions">
-            <button className="btn btn-primary">
-              <IconPlus /> Add record
-            </button>
-            <button className="btn btn-ghost">
-              <IconSparkle /> Add symptom
-            </button>
-            <button className="btn btn-ghost">Upload photo</button>
-            <button className="btn btn-ghost">Edit profile <IconArrowRight /></button>
-          </div>
+        <div className="hero-actions">
+          <button className="btn btn-primary"><IconPlus /> Add record</button>
+          <button className="btn btn-secondary"><IconAlert /> Add symptom</button>
+          <button className="btn btn-secondary"><IconCamera /> Upload photo</button>
+          <button className="btn btn-link"><IconEdit /> Edit profile</button>
         </div>
-      </article>
+      </div>
     </section>
-  );
-}
-
-function TrendArrow() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M6 14l6-6 6 6" />
-    </svg>
-  );
-}
-
-function Sparkline() {
-  return (
-    <svg className="hs-spark" viewBox="0 0 80 24" preserveAspectRatio="none" aria-hidden="true">
-      <path
-        d="M0,18 C10,17 16,14 24,15 S44,20 56,12 72,8 80,6"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-      />
-    </svg>
   );
 }
