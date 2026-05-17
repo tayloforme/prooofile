@@ -5,7 +5,9 @@ const MONTHS = [
   'January','February','March','April','May','June',
   'July','August','September','October','November','December',
 ];
-const WEEKDAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const WEEKDAY_HEADER = ['M','T','W','T','F','S','S'];
+const WEEKDAY_NAMES  = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
 function key(d) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -61,14 +63,16 @@ export default function CalendarModal({ events, onClose }) {
     setSelected(new Date(TODAY));
   };
 
+  const selectedIsToday = sameDay(selected, TODAY);
+  const dayLabel = selectedIsToday
+    ? 'Today'
+    : WEEKDAY_NAMES[selected.getDay()];
+
   return (
     <div className="cal-modal-backdrop" onClick={onClose}>
       <div className="cal-modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-label="Event calendar">
         <header className="cal-modal-head">
-          <div className="cal-modal-title">
-            <p className="cal-eyebrow">Event calendar</p>
-            <h3>{MONTHS[view.month]} {view.year}</h3>
-          </div>
+          <h3 className="cal-modal-title">{MONTHS[view.month]} {view.year}</h3>
           <div className="cal-modal-controls">
             <button className="cal-today" type="button" onClick={goToday}>Today</button>
             <div className="cal-nav-group">
@@ -82,7 +86,7 @@ export default function CalendarModal({ events, onClose }) {
         </header>
 
         <div className="cal-weekdays">
-          {WEEKDAYS.map((w) => <span key={w}>{w}</span>)}
+          {WEEKDAY_HEADER.map((w, i) => <span key={i}>{w}</span>)}
         </div>
         <div className="cal-grid cal-grid-modal">
           {days.map((d) => {
@@ -107,9 +111,9 @@ export default function CalendarModal({ events, onClose }) {
                 }}
               >
                 <span className="cal-num">{d.getDate()}</span>
-                {types.length > 0 && (
-                  <span className="cal-dots">
-                    {types.slice(0, 4).map((t) => (
+                {types.length > 0 && !isSelected && (
+                  <span className="cal-bars" aria-hidden="true">
+                    {types.slice(0, 3).map((t) => (
                       <i key={t} style={{ background: TYPES[t].color }} />
                     ))}
                   </span>
@@ -120,11 +124,19 @@ export default function CalendarModal({ events, onClose }) {
         </div>
 
         <div className="cal-modal-day">
-          <p className="day-eyebrow">{sameDay(selected, TODAY) ? 'Today' : 'Selected'}</p>
-          <h4 className="cal-day-title">{formatLongDate(selected)}</h4>
+          <header className="cal-day-head">
+            <p className="cal-day-line">
+              <strong>{dayLabel}</strong>
+              <span className="dot-sep" />
+              <span>{MONTHS_SHORT[selected.getMonth()]} {selected.getDate()}</span>
+            </p>
+            <button className="day-add" type="button">
+              <Plus /> Add event
+            </button>
+          </header>
 
           {dayEvents.length === 0 ? (
-            <div className="up-empty cal-empty">No events on this day.</div>
+            <p className="cal-empty">No events on this day.</p>
           ) : (
             <ul className="cal-day-list">
               {dayEvents.map((e) => {
@@ -169,6 +181,14 @@ function Cross() {
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M6 6l12 12M18 6l-12 12" />
+    </svg>
+  );
+}
+function Plus() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 5v14M5 12h14" />
     </svg>
   );
 }
