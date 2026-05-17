@@ -3,6 +3,7 @@ import TaskModal from './TaskModal.jsx';
 import { TODAY, TYPES, parseDate, daysBetween } from './data.js';
 
 const VISIBLE = 4;
+const HORIZON_DAYS = 14;
 const WEEKDAY = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const MONTH   = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
@@ -42,7 +43,10 @@ export default function Upcoming({ events, onComplete, onOpenCalendar }) {
     return events
       .filter((e) => !e.done)
       .map((e) => ({ ...e, when: parseDate(e.date) }))
-      .filter((e) => e.when >= TODAY)
+      .filter((e) => {
+        const diff = daysBetween(TODAY, e.when);
+        return diff >= 0 && diff <= HORIZON_DAYS;
+      })
       .sort((a, b) => a.when - b.when || a.time.localeCompare(b.time));
   }, [events]);
 
@@ -54,19 +58,21 @@ export default function Upcoming({ events, onComplete, onOpenCalendar }) {
     return g;
   }, [visible]);
 
+  const stopAnd = (fn) => (ev) => { ev.stopPropagation(); fn(); };
+
   return (
     <section className="upcoming-card">
       <header className="up-header">
         <h2 className="up-title">Upcoming</h2>
         <div className="up-actions">
-          <button className="btn-primary" type="button">
+          <button className="btn-secondary" type="button">
             <Plus /> Add event
           </button>
           <button
             className="icon-btn"
             type="button"
             aria-label="Open calendar"
-            title="Open calendar"
+            title="Open full calendar"
             onClick={onOpenCalendar}
           >
             <CalendarIcon />
@@ -75,7 +81,7 @@ export default function Upcoming({ events, onComplete, onOpenCalendar }) {
       </header>
 
       {upcoming.length === 0 ? (
-        <div className="up-empty">All caught up. Nothing planned right now.</div>
+        <div className="up-empty">All caught up. Nothing planned in the next {HORIZON_DAYS} days.</div>
       ) : (
         <div className="up-buckets">
           {BUCKET_ORDER.map((key) => {
@@ -85,7 +91,7 @@ export default function Upcoming({ events, onComplete, onOpenCalendar }) {
               <div key={key} className={`bucket bucket-${key}`}>
                 <h3 className="bucket-head">
                   {BUCKET_LABEL[key]}
-                  <span className="bucket-count">{items.length}</span>
+                  {items.length > 1 && <span className="bucket-count">{items.length}</span>}
                 </h3>
                 <ul className="up-list">
                   {items.map((e) => {
@@ -100,6 +106,14 @@ export default function Upcoming({ events, onComplete, onOpenCalendar }) {
                         tabIndex={0}
                         onKeyDown={(ev) => { if (ev.key === 'Enter') setActiveTask(e); }}
                       >
+                        <button
+                          className="card-check"
+                          type="button"
+                          aria-label={`Mark "${e.title}" as done`}
+                          onClick={stopAnd(() => onComplete(e.id))}
+                        >
+                          <Check />
+                        </button>
                         <div className="up-card-body">
                           <p className="up-card-title">{e.title}</p>
                           <p className="up-meta">
@@ -108,10 +122,7 @@ export default function Upcoming({ events, onComplete, onOpenCalendar }) {
                             {e.note && <span className="up-note">{e.note}</span>}
                           </p>
                         </div>
-                        <span
-                          className="badge"
-                          style={{ color: t.color, background: t.color + '14' }}
-                        >
+                        <span className="badge badge-neutral">
                           {e.subtype || t.label}
                         </span>
                       </li>
@@ -163,6 +174,14 @@ function CalendarIcon() {
       stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       <rect x="3" y="5" width="18" height="16" rx="2" />
       <path d="M3 10h18M8 3v4M16 3v4" />
+    </svg>
+  );
+}
+function Check() {
+  return (
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 12l5 5L20 7" />
     </svg>
   );
 }
