@@ -19,7 +19,7 @@
         <span>Prooofile</span>
       </a>
 
-      <div class="header-pet" aria-live="polite">
+      <div class="header-pet">
         <img class="header-avatar" src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=80&h=80&q=80" alt="" />
         <span class="header-pet-name">Luna</span>
       </div>
@@ -39,13 +39,32 @@
     <section id="profile" class="section section-hero">
       <div class="hero">
         <img class="hero-photo" src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=300&h=300&q=80" alt="Luna" />
+
         <div class="hero-info">
           <div class="hero-row">
             <h1>Luna</h1>
             <span class="status status-ok"><span class="dot"></span>Healthy</span>
           </div>
-          <p class="hero-meta">Golden Retriever · 3 yrs · 27.4 kg</p>
+          <p class="hero-meta">Golden Retriever · ♀ · 3 yrs · 27.4 kg</p>
         </div>
+
+        <div class="hero-mini">
+          <div class="mini">
+            <span class="mini-label">Activity</span>
+            <span class="mini-value">5<span class="mini-of">/7d</span></span>
+            <span class="bars" aria-hidden="true">
+              <i style="height:60%"></i><i style="height:80%"></i><i style="height:40%"></i><i style="height:90%"></i><i style="height:70%"></i><i style="height:30%"></i><i style="height:0%"></i>
+            </span>
+          </div>
+          <div class="mini">
+            <span class="mini-label">Weight</span>
+            <span class="mini-value">27.4<span class="mini-of">kg</span></span>
+            <svg class="spark" viewBox="0 0 80 24" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M0,16 C12,15 20,12 32,13 S56,18 80,10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+
         <div class="hero-actions">
           <button class="btn btn-primary btn-sm">+ Record</button>
           <button class="btn btn-secondary btn-sm">+ Symptom</button>
@@ -58,38 +77,52 @@
     <section id="health" class="section">
       <header class="section-head">
         <h2><span class="ico"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-9-9.5C1.5 7.5 4 4 7.5 4c2 0 3.5 1 4.5 2.5C13 5 14.5 4 16.5 4 20 4 22.5 7.5 21 11.5 19 16.5 12 21 12 21z"/></svg></span>Health</h2>
+        <a class="link-btn" href="#">Full history →</a>
       </header>
 
       <div class="next-up">
-        <div>
-          <p class="next-label">Next up</p>
+        <div class="next-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v5l3 2"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <div class="next-text">
+          <p class="next-label">Next action</p>
           <p class="next-title">Rabies booster · in 12 days</p>
         </div>
         <button class="btn btn-primary btn-sm">Book</button>
       </div>
 
-      <ul class="stat-grid">
-        <li>
-          <span class="stat-label">Vaccinations</span>
-          <span class="stat-value">Up to date</span>
-          <span class="stat-sub">Next Jun 1</span>
-        </li>
-        <li>
-          <span class="stat-label">Medications</span>
-          <span class="stat-value">2 active</span>
-          <span class="stat-sub">NexGard, Omega-3</span>
-        </li>
-        <li>
-          <span class="stat-label">Symptoms</span>
-          <span class="stat-value stat-warn">1 active</span>
-          <span class="stat-sub">Paw licking · 3d</span>
-        </li>
-        <li>
-          <span class="stat-label">Allergies</span>
-          <span class="stat-value">Chicken, pollen</span>
-          <span class="stat-sub">2 known</span>
-        </li>
-      </ul>
+      <div class="health-grid">
+        <div class="h-card">
+          <div class="h-head"><span class="h-label">Vaccinations</span><span class="badge badge-ok">Up to date</span></div>
+          <ul class="h-list">
+            <li><span>Rabies</span><span class="h-progress"><i style="width:88%"></i></span><span class="h-meta">Jun 1</span></li>
+            <li><span>DHPP</span><span class="h-progress"><i style="width:55%"></i></span><span class="h-meta">Aug 14</span></li>
+            <li><span>Bordetella</span><span class="h-progress"><i style="width:30%"></i></span><span class="h-meta">Oct 22</span></li>
+          </ul>
+        </div>
+
+        <div class="h-card">
+          <div class="h-head"><span class="h-label">Medications</span><span class="badge">2</span></div>
+          <ul class="h-list h-list-simple">
+            <li><span class="h-pill" style="background:#eef3ea;color:#5a7a4d">Mo</span>NexGard<span class="h-meta">Monthly</span></li>
+            <li><span class="h-pill" style="background:#f3eadf;color:#6f513a">Da</span>Omega-3<span class="h-meta">Daily</span></li>
+          </ul>
+        </div>
+
+        <div class="h-card">
+          <div class="h-head"><span class="h-label">Symptoms</span><span class="badge badge-warn">1</span></div>
+          <ul class="h-list h-list-simple">
+            <li><span class="h-dot" style="background:var(--warn)"></span>Paw licking<span class="h-meta">3d</span></li>
+          </ul>
+          <p class="h-empty">Otherwise feeling great</p>
+        </div>
+
+        <div class="h-card">
+          <div class="h-head"><span class="h-label">Allergies</span><span class="badge">2</span></div>
+          <div class="h-tags">
+            <span class="h-tag">Chicken</span>
+            <span class="h-tag">Grass pollen</span>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- 3. TIMELINE -->
@@ -137,45 +170,85 @@
     <!-- 4. TASKS -->
     <section id="tasks" class="section">
       <header class="section-head">
-        <h2><span class="ico"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg></span>Tasks</h2>
+        <h2><span class="ico"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg></span>Tasks</h2>
         <button class="link-btn">+ New</button>
       </header>
 
-      <p class="list-label">Upcoming</p>
-      <ul class="task-list" id="taskListUpcoming">
-        <li class="task"><label><input type="checkbox"><span class="check"></span><span class="task-title">Rabies booster</span><span class="task-meta">Jun 1</span></label></li>
-        <li class="task"><label><input type="checkbox"><span class="check"></span><span class="task-title">NexGard dose</span><span class="task-meta">May 28</span></label></li>
-        <li class="task"><label><input type="checkbox"><span class="check"></span><span class="task-title">Grooming</span><span class="task-meta">Jun 5</span></label></li>
-      </ul>
+      <div class="tasks-layout">
+        <!-- Calendar -->
+        <div class="calendar" id="calendar">
+          <div class="cal-head">
+            <button class="cal-nav" id="calPrev" aria-label="Previous month">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+            </button>
+            <p class="cal-title" id="calTitle">May 2026</p>
+            <button class="cal-nav" id="calNext" aria-label="Next month">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+          <div class="cal-weekdays">
+            <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+          </div>
+          <div class="cal-grid" id="calGrid"></div>
+          <div class="cal-legend">
+            <span><i class="lg-dot" style="background:var(--accent)"></i>Vaccine</span>
+            <span><i class="lg-dot" style="background:#7da06a"></i>Medication</span>
+            <span><i class="lg-dot" style="background:#6a8ab0"></i>Grooming</span>
+          </div>
+        </div>
 
-      <p class="list-label list-label-muted">Done</p>
-      <ul class="task-list" id="taskListDone">
-        <li class="task is-done"><label><input type="checkbox" checked><span class="check"></span><span class="task-title">Trim nails</span><span class="task-meta">May 14</span></label></li>
-        <li class="task is-done"><label><input type="checkbox" checked><span class="check"></span><span class="task-title">Annual checkup</span><span class="task-meta">Apr 12</span></label></li>
-      </ul>
+        <!-- Day detail -->
+        <div class="day-panel">
+          <p class="day-eyebrow" id="dayLabel">Selected day</p>
+          <h3 class="day-title" id="dayTitle">—</h3>
+          <ul class="day-list" id="dayList"></ul>
+
+          <p class="day-eyebrow day-eyebrow-mt">Recently done</p>
+          <ul class="day-list day-list-done">
+            <li class="d-task is-done">
+              <span class="d-check"></span>
+              <span class="d-body"><span class="d-title">Trim nails</span><span class="d-meta">May 14</span></span>
+            </li>
+            <li class="d-task is-done">
+              <span class="d-check"></span>
+              <span class="d-body"><span class="d-title">Annual checkup</span><span class="d-meta">Apr 12</span></span>
+            </li>
+          </ul>
+        </div>
+      </div>
     </section>
 
     <!-- 5. AI INSIGHTS -->
     <section id="insights" class="section">
       <header class="section-head">
         <h2><span class="ico"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.2L18 9l-4.2 1.8L12 15l-1.8-4.2L6 9l4.2-1.8z"/></svg></span>AI Insights</h2>
+        <span class="muted-mini">Updated today</span>
       </header>
 
       <div class="insight-grid">
         <article class="insight">
-          <p class="i-tag">Nutrition</p>
+          <header class="i-head">
+            <span class="i-tag">Nutrition</span>
+            <span class="i-prio prio-high" title="High priority">High</span>
+          </header>
           <h3>Try salmon-based diet</h3>
-          <p class="i-body">May reduce paw licking within 3–4 weeks.</p>
+          <p class="i-body">Linked to recent paw licking. Likely reduces flare-ups in 3–4 weeks.</p>
           <button class="link-btn">See products →</button>
         </article>
         <article class="insight">
-          <p class="i-tag">Activity</p>
+          <header class="i-head">
+            <span class="i-tag">Activity</span>
+            <span class="i-prio prio-med" title="Medium priority">Med</span>
+          </header>
           <h3>Add midday play</h3>
-          <p class="i-body">15 min around noon could improve evening sleep.</p>
+          <p class="i-body">15-min burst around noon could improve evening sleep.</p>
           <button class="link-btn">View plan →</button>
         </article>
         <article class="insight">
-          <p class="i-tag">Preventive</p>
+          <header class="i-head">
+            <span class="i-tag">Preventive</span>
+            <span class="i-prio prio-low" title="Low priority">Low</span>
+          </header>
           <h3>Dental check due</h3>
           <p class="i-body">4 months since last cleaning.</p>
           <button class="link-btn">Book →</button>
