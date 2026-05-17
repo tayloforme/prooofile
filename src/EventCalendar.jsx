@@ -10,15 +10,18 @@ const TYPES = {
 };
 
 const EVENTS = [
-  { date: '2026-05-12', time: '14:00', title: 'NexGard dose',       type: 'medication', note: 'Monthly · with food' },
   { date: '2026-05-17', time: '09:00', title: 'Morning walk check', type: 'checkup',    note: 'Log mood & energy' },
   { date: '2026-05-17', time: '20:00', title: 'Brush teeth',        type: 'grooming',   note: 'Use enzymatic paste' },
   { date: '2026-05-20', time: '11:00', title: 'Bath & brush',       type: 'grooming',   note: 'Home grooming' },
   { date: '2026-05-22', time: '15:30', title: 'Vet follow-up',      type: 'checkup',    note: 'Dr. Patel · Riverside' },
-  { date: '2026-05-28', time: '14:00', title: 'NexGard dose',       type: 'medication', note: 'Monthly' },
+  { date: '2026-05-28', time: '14:00', title: 'NexGard dose',       type: 'medication', note: 'Monthly · with food' },
   { date: '2026-06-01', time: '10:00', title: 'Rabies booster',     type: 'vaccine',    note: 'Dr. Patel · Riverside' },
   { date: '2026-06-05', time: '11:00', title: 'Grooming session',   type: 'grooming',   note: 'Salon visit' },
   { date: '2026-06-10', time: '09:30', title: 'Weigh-in',           type: 'checkup',    note: 'Track monthly trend' },
+  { date: '2026-06-22', time: '14:00', title: 'NexGard dose',       type: 'medication', note: 'Monthly · with food' },
+  { date: '2026-07-04', time: '11:00', title: 'Nail trim',          type: 'grooming',   note: 'Salon visit' },
+  { date: '2026-07-22', time: '14:00', title: 'NexGard dose',       type: 'medication', note: 'Monthly · with food' },
+  { date: '2026-08-10', time: '10:00', title: 'DHPP booster',       type: 'vaccine',    note: 'Dr. Patel · Riverside' },
 ];
 
 const MONTHS = [
@@ -30,18 +33,21 @@ const WEEKDAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 function key(d) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
+function parseDate(s) {
+  const [y, m, d] = s.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
 function sameDay(a, b) {
   return a.getFullYear() === b.getFullYear()
     && a.getMonth() === b.getMonth()
     && a.getDate() === b.getDate();
 }
-function formatLongDate(d) {
-  return `${MONTHS[d.getMonth()].slice(0, 3)} ${d.getDate()}, ${d.getFullYear()}`;
+function daysBetween(a, b) {
+  return Math.round((b - a) / (24 * 60 * 60 * 1000));
 }
 
 export default function EventCalendar() {
-  const [view, setView]         = useState({ year: TODAY.getFullYear(), month: TODAY.getMonth() });
-  const [selected, setSelected] = useState(new Date(TODAY));
+  const [view, setView] = useState({ year: TODAY.getFullYear(), month: TODAY.getMonth() });
 
   const eventsByDay = useMemo(() => {
     const map = new Map();
@@ -63,7 +69,14 @@ export default function EventCalendar() {
     });
   }, [view]);
 
-  const dayEvents = (eventsByDay.get(key(selected)) || []).slice().sort((a, b) => a.time.localeCompare(b.time));
+  const upcoming = useMemo(() => {
+    const end = new Date(TODAY);
+    end.setDate(end.getDate() + 90);
+    return EVENTS
+      .map((e) => ({ ...e, when: parseDate(e.date) }))
+      .filter((e) => e.when >= TODAY && e.when <= end)
+      .sort((a, b) => a.when - b.when || a.time.localeCompare(b.time));
+  }, []);
 
   const goTo = (dir) => {
     const m = view.month + dir;
@@ -71,10 +84,7 @@ export default function EventCalendar() {
     else if (m > 11)  setView({ year: view.year + 1, month: 0 });
     else              setView({ year: view.year, month: m });
   };
-  const goToday = () => {
-    setView({ year: TODAY.getFullYear(), month: TODAY.getMonth() });
-    setSelected(new Date(TODAY));
-  };
+  const goToday = () => setView({ year: TODAY.getFullYear(), month: TODAY.getMonth() });
 
   return (
     <section className="calendar-card">
@@ -102,23 +112,16 @@ export default function EventCalendar() {
             {days.map((d) => {
               const out = d.getMonth() !== view.month;
               const isToday = sameDay(d, TODAY);
-              const isSelected = sameDay(d, selected);
               const evts = eventsByDay.get(key(d)) || [];
               const types = [...new Set(evts.map((e) => e.type))];
               return (
-                <button
+                <div
                   key={d.toISOString()}
-                  type="button"
                   className={
                     'cal-day'
                     + (out ? ' is-out' : '')
                     + (isToday ? ' is-today' : '')
-                    + (isSelected ? ' is-selected' : '')
                   }
-                  onClick={() => {
-                    if (out) setView({ year: d.getFullYear(), month: d.getMonth() });
-                    setSelected(d);
-                  }}
                 >
                   <span className="cal-num">{d.getDate()}</span>
                   {types.length > 0 && (
@@ -128,7 +131,7 @@ export default function EventCalendar() {
                       ))}
                     </span>
                   )}
-                </button>
+                </div>
               );
             })}
           </div>
@@ -142,40 +145,38 @@ export default function EventCalendar() {
           </div>
         </div>
 
-        <aside className="cal-day-panel">
-          <div className="day-head">
-            <p className="day-eyebrow">{sameDay(selected, TODAY) ? 'Today' : 'Selected'}</p>
-            <h3 className="day-title">{formatLongDate(selected)}</h3>
+        <aside className="upcoming">
+          <div className="upcoming-head">
+            <p className="day-eyebrow">Upcoming · 90 days</p>
+            <span className="upcoming-count">{upcoming.length} events</span>
           </div>
-
-          {dayEvents.length === 0 ? (
-            <div className="day-empty">
-              <p>No events on this day.</p>
-              <button className="link-btn" type="button">+ Add event</button>
-            </div>
-          ) : (
-            <ul className="event-list">
-              {dayEvents.map((e, idx) => (
-                <li key={idx} className="event">
-                  <span className="event-time">{e.time}</span>
-                  <span className="event-bar" style={{ background: TYPES[e.type].color }} />
+          <ul className="event-list">
+            {upcoming.map((e, idx) => {
+              const t = TYPES[e.type];
+              const diff = daysBetween(TODAY, e.when);
+              const relative = diff === 0 ? 'Today' : diff === 1 ? 'Tomorrow' : `in ${diff} days`;
+              return (
+                <li key={idx} className="event-card">
+                  <div className="event-date">
+                    <span className="ed-month">{MONTHS[e.when.getMonth()].slice(0, 3).toUpperCase()}</span>
+                    <span className="ed-day">{e.when.getDate()}</span>
+                    <span className="ed-rel">{relative}</span>
+                  </div>
+                  <span className="event-bar" style={{ background: t.color }} />
                   <div className="event-body">
                     <p className="event-title">{e.title}</p>
-                    <p className="event-note">{e.note}</p>
+                    <p className="event-note">{e.time} · {e.note}</p>
                   </div>
                   <span
                     className="event-tag"
-                    style={{
-                      color: TYPES[e.type].color,
-                      background: TYPES[e.type].color + '14',
-                    }}
+                    style={{ color: t.color, background: t.color + '14' }}
                   >
-                    {TYPES[e.type].label}
+                    {t.label}
                   </span>
                 </li>
-              ))}
-            </ul>
-          )}
+              );
+            })}
+          </ul>
         </aside>
       </div>
     </section>
