@@ -57,12 +57,6 @@ export const IconBolt = (p) => (
   </svg>
 );
 
-export const IconTimeline = (p) => (
-  <svg width="16" height="16" {...base} {...p}>
-    <path d="M4 6h16M4 12h16M4 18h10" />
-  </svg>
-);
-
 export const IconCalendar = (p) => (
   <svg width="16" height="16" {...base} {...p}>
     <rect x="3" y="5" width="18" height="16" rx="2" />

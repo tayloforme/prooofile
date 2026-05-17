@@ -4,7 +4,6 @@ import { IconPaw, IconBell } from './Icons.jsx';
 const SECTIONS = [
   { id: 'profile',  label: 'Profile' },
   { id: 'health',   label: 'Health' },
-  { id: 'timeline', label: 'Timeline' },
   { id: 'tasks',    label: 'Tasks' },
   { id: 'insights', label: 'Insights' },
 ];
