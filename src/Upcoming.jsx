@@ -12,7 +12,7 @@ const BUCKET_LABEL = {
   today:    'Today',
   tomorrow: 'Tomorrow',
   week:     'This week',
-  later:    'Later',
+  later:    'Upcoming',
 };
 
 function bucketOf(date) {
