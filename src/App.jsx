@@ -1,31 +1,23 @@
-import React, { useState } from 'react';
-import ProfileScreen from './screens/ProfileScreen.jsx';
-import HomeScreen from './screens/HomeScreen.jsx';
+import React from 'react';
+import Header from './components/Header.jsx';
+import Profile from './sections/Profile.jsx';
+import Health from './sections/Health.jsx';
+import Timeline from './sections/Timeline.jsx';
+import Tasks from './sections/Tasks.jsx';
+import Insights from './sections/Insights.jsx';
 
 export default function App() {
-  const [active, setActive] = useState('home');
-
   return (
-    <div className="stage">
-      <div className="stage-inner">
-        <Phone label="Profile">
-          <ProfileScreen />
-        </Phone>
-        <Phone label="Home">
-          <HomeScreen active={active} onTab={setActive} />
-        </Phone>
-      </div>
-      <p className="stage-hint">
-        Pet Profile · React template — designed for mobile, shown side-by-side.
-      </p>
-    </div>
-  );
-}
-
-function Phone({ children }) {
-  return (
-    <div className="phone">
-      <div className="phone-screen">{children}</div>
+    <div className="app">
+      <Header />
+      <main className="container">
+        <Profile />
+        <Health />
+        <Timeline />
+        <Tasks />
+        <Insights />
+        <footer className="site-footer">© 2026 Prooofile</footer>
+      </main>
     </div>
   );
 }
