@@ -5,6 +5,7 @@ import { TODAY, TYPES, parseDate, relativeStatus } from './data.js';
 const VISIBLE = 4;
 
 export default function Upcoming({ events, onComplete, onOpenCalendar }) {
+  const [filter, setFilter]         = useState('all');
   const [expanded, setExpanded]     = useState(false);
   const [activeTask, setActiveTask] = useState(null);
 
@@ -16,7 +17,24 @@ export default function Upcoming({ events, onComplete, onOpenCalendar }) {
       .sort((a, b) => a.when - b.when || a.time.localeCompare(b.time));
   }, [events]);
 
-  const visible = expanded ? upcoming : upcoming.slice(0, VISIBLE);
+  const counts = useMemo(() => {
+    const c = { all: upcoming.length };
+    Object.keys(TYPES).forEach((k) => { c[k] = 0; });
+    upcoming.forEach((e) => { c[e.type] = (c[e.type] || 0) + 1; });
+    return c;
+  }, [upcoming]);
+
+  const availableFilters = useMemo(() => {
+    return ['all', ...Object.keys(TYPES).filter((k) => counts[k] > 0)];
+  }, [counts]);
+
+  const filtered = filter === 'all' ? upcoming : upcoming.filter((e) => e.type === filter);
+  const visible  = expanded ? filtered : filtered.slice(0, VISIBLE);
+
+  const switchFilter = (k) => {
+    setFilter(k);
+    setExpanded(false);
+  };
 
   return (
     <section className="upcoming-card">
@@ -41,6 +59,37 @@ export default function Upcoming({ events, onComplete, onOpenCalendar }) {
       {upcoming.length === 0 ? (
         <div className="up-empty">All caught up. Nothing planned right now.</div>
       ) : (
+        <>
+          {availableFilters.length > 1 && (
+            <div className="up-filters" role="tablist" aria-label="Filter by category">
+              {availableFilters.map((k) => {
+                const isActive = filter === k;
+                const t        = k === 'all' ? null : TYPES[k];
+                return (
+                  <button
+                    key={k}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    className={'filter-chip' + (isActive ? ' is-active' : '')}
+                    style={
+                      isActive && t
+                        ? { background: t.color + '14', color: t.color, borderColor: t.color + '30' }
+                        : undefined
+                    }
+                    onClick={() => switchFilter(k)}
+                  >
+                    {t ? t.label : 'All'}
+                    <span className="chip-count">{counts[k]}</span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
+          {filtered.length === 0 ? (
+            <div className="up-empty">No {filter} tasks coming up.</div>
+          ) : (
         <ul className="up-list">
           {visible.map((e) => {
             const t      = TYPES[e.type];
@@ -49,6 +98,7 @@ export default function Upcoming({ events, onComplete, onOpenCalendar }) {
               <li
                 key={e.id}
                 className="up-card"
+                style={{ borderLeftColor: t.color }}
                 onClick={() => setActiveTask(e)}
                 role="button"
                 tabIndex={0}
@@ -76,15 +126,17 @@ export default function Upcoming({ events, onComplete, onOpenCalendar }) {
             );
           })}
         </ul>
+          )}
+        </>
       )}
 
-      {upcoming.length > VISIBLE && (
+      {filtered.length > VISIBLE && (
         <button
           type="button"
           className="show-more"
           onClick={() => setExpanded((v) => !v)}
         >
-          {expanded ? 'Show less' : `Show ${upcoming.length - VISIBLE} more`}
+          {expanded ? 'Show less' : `Show ${filtered.length - VISIBLE} more`}
           <Chevron down={!expanded} />
         </button>
       )}
