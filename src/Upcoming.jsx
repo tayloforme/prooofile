@@ -63,7 +63,7 @@ export default function Upcoming({ events, onComplete, onOpenCalendar }) {
   return (
     <section className="upcoming-card">
       <header className="up-header">
-        <h2 className="up-title">Upcoming</h2>
+        <h2 className="up-title">Care plan</h2>
         <div className="up-actions">
           <button className="btn-secondary" type="button">
             <Plus /> Add event
