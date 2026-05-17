@@ -1,11 +1,40 @@
 import React, { useMemo, useState } from 'react';
 import TaskModal from './TaskModal.jsx';
-import { TODAY, TYPES, parseDate, relativeStatus } from './data.js';
+import { TODAY, TYPES, parseDate, daysBetween } from './data.js';
 
 const VISIBLE = 4;
+const WEEKDAY = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const MONTH   = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+const BUCKET_ORDER = ['today', 'tomorrow', 'week', 'later'];
+const BUCKET_LABEL = {
+  today:    'Today',
+  tomorrow: 'Tomorrow',
+  week:     'This week',
+  later:    'Later',
+};
+
+function bucketOf(date) {
+  const diff = daysBetween(TODAY, date);
+  if (diff <= 0)  return 'today';
+  if (diff === 1) return 'tomorrow';
+  if (diff <= 7)  return 'week';
+  return 'later';
+}
+
+function whenLine(bucket, e) {
+  switch (bucket) {
+    case 'today':
+    case 'tomorrow':
+      return e.time;
+    case 'week':
+      return `${WEEKDAY[e.when.getDay()]} · ${e.time}`;
+    default:
+      return `${MONTH[e.when.getMonth()]} ${e.when.getDate()} · ${e.time}`;
+  }
+}
 
 export default function Upcoming({ events, onComplete, onOpenCalendar }) {
-  const [filter, setFilter]         = useState('all');
   const [expanded, setExpanded]     = useState(false);
   const [activeTask, setActiveTask] = useState(null);
 
@@ -17,24 +46,13 @@ export default function Upcoming({ events, onComplete, onOpenCalendar }) {
       .sort((a, b) => a.when - b.when || a.time.localeCompare(b.time));
   }, [events]);
 
-  const counts = useMemo(() => {
-    const c = { all: upcoming.length };
-    Object.keys(TYPES).forEach((k) => { c[k] = 0; });
-    upcoming.forEach((e) => { c[e.type] = (c[e.type] || 0) + 1; });
-    return c;
-  }, [upcoming]);
+  const visible = expanded ? upcoming : upcoming.slice(0, VISIBLE);
 
-  const availableFilters = useMemo(() => {
-    return ['all', ...Object.keys(TYPES).filter((k) => counts[k] > 0)];
-  }, [counts]);
-
-  const filtered = filter === 'all' ? upcoming : upcoming.filter((e) => e.type === filter);
-  const visible  = expanded ? filtered : filtered.slice(0, VISIBLE);
-
-  const switchFilter = (k) => {
-    setFilter(k);
-    setExpanded(false);
-  };
+  const grouped = useMemo(() => {
+    const g = { today: [], tomorrow: [], week: [], later: [] };
+    visible.forEach((e) => { g[bucketOf(e.when)].push(e); });
+    return g;
+  }, [visible]);
 
   return (
     <section className="upcoming-card">
@@ -59,84 +77,60 @@ export default function Upcoming({ events, onComplete, onOpenCalendar }) {
       {upcoming.length === 0 ? (
         <div className="up-empty">All caught up. Nothing planned right now.</div>
       ) : (
-        <>
-          {availableFilters.length > 1 && (
-            <div className="up-filters" role="tablist" aria-label="Filter by category">
-              {availableFilters.map((k) => {
-                const isActive = filter === k;
-                const t        = k === 'all' ? null : TYPES[k];
-                return (
-                  <button
-                    key={k}
-                    type="button"
-                    role="tab"
-                    aria-selected={isActive}
-                    className={'filter-chip' + (isActive ? ' is-active' : '')}
-                    style={
-                      isActive && t
-                        ? { background: t.color + '14', color: t.color, borderColor: t.color + '30' }
-                        : undefined
-                    }
-                    onClick={() => switchFilter(k)}
-                  >
-                    {t ? t.label : 'All'}
-                    <span className="chip-count">{counts[k]}</span>
-                  </button>
-                );
-              })}
-            </div>
-          )}
-
-          {filtered.length === 0 ? (
-            <div className="up-empty">No {filter} tasks coming up.</div>
-          ) : (
-        <ul className="up-list">
-          {visible.map((e) => {
-            const t      = TYPES[e.type];
-            const status = relativeStatus(e.when);
+        <div className="up-buckets">
+          {BUCKET_ORDER.map((key) => {
+            const items = grouped[key];
+            if (items.length === 0) return null;
             return (
-              <li
-                key={e.id}
-                className="up-card"
-                style={{ borderLeftColor: t.color }}
-                onClick={() => setActiveTask(e)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(ev) => {
-                  if (ev.key === 'Enter') setActiveTask(e);
-                }}
-              >
-                <div className="up-card-body">
-                  <p className="up-card-title">{e.title}</p>
-                  <p className="up-meta">
-                    <span className={`status status-${status.tone}`}>{status.label}</span>
-                    {e.time && <span className="dot-sep" />}
-                    {e.time && <span>{e.time}</span>}
-                    {e.note && <span className="dot-sep" />}
-                    {e.note && <span className="up-note">{e.note}</span>}
-                  </p>
-                </div>
-                <span
-                  className="badge"
-                  style={{ color: t.color, background: t.color + '14' }}
-                >
-                  {e.subtype || t.label}
-                </span>
-              </li>
+              <div key={key} className={`bucket bucket-${key}`}>
+                <h3 className="bucket-head">
+                  {BUCKET_LABEL[key]}
+                  <span className="bucket-count">{items.length}</span>
+                </h3>
+                <ul className="up-list">
+                  {items.map((e) => {
+                    const t = TYPES[e.type];
+                    return (
+                      <li
+                        key={e.id}
+                        className={'up-card up-card-' + key}
+                        style={{ borderLeftColor: t.color }}
+                        onClick={() => setActiveTask(e)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(ev) => { if (ev.key === 'Enter') setActiveTask(e); }}
+                      >
+                        <div className="up-card-body">
+                          <p className="up-card-title">{e.title}</p>
+                          <p className="up-meta">
+                            <span className="when">{whenLine(key, e)}</span>
+                            {e.note && <span className="dot-sep" />}
+                            {e.note && <span className="up-note">{e.note}</span>}
+                          </p>
+                        </div>
+                        <span
+                          className="badge"
+                          style={{ color: t.color, background: t.color + '14' }}
+                        >
+                          {e.subtype || t.label}
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
             );
           })}
-        </ul>
-          )}
-        </>
+        </div>
       )}
 
-      {filtered.length > VISIBLE && (
+      {upcoming.length > VISIBLE && (
         <button
           type="button"
           className="show-more"
           onClick={() => setExpanded((v) => !v)}
         >
-          {expanded ? 'Show less' : `Show ${filtered.length - VISIBLE} more`}
+          {expanded ? 'Show less' : `Show ${upcoming.length - VISIBLE} more`}
           <Chevron down={!expanded} />
         </button>
       )}

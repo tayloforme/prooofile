@@ -192,45 +192,47 @@ ul { list-style: none; }
   gap: 8px;
 }
 
-.up-filters {
+.up-buckets {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 2px;
+  flex-direction: column;
+  gap: 18px;
 }
-.filter-chip {
-  display: inline-flex;
+
+.bucket-head {
+  display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 11px;
-  background: var(--surface-soft);
-  border: 1px solid transparent;
-  border-radius: 999px;
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-}
-.filter-chip:hover { color: var(--text); background: #f0f1f4; }
-.filter-chip.is-active {
-  background: var(--text);
-  color: #fff;
-  border-color: var(--text);
-}
-.chip-count {
+  gap: 8px;
+  margin: 0 0 8px;
   font-size: 11px;
-  font-weight: 500;
-  padding: 1px 6px;
-  background: rgba(255, 255, 255, 0.18);
-  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-soft);
 }
-.filter-chip:not(.is-active) .chip-count {
-  background: rgba(0, 0, 0, 0.06);
+.bucket-count {
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 1px 7px;
+  background: rgba(0, 0, 0, 0.05);
   color: var(--text-muted);
+  border-radius: 999px;
+  letter-spacing: 0;
 }
-.filter-chip.is-active .chip-count {
-  background: rgba(255, 255, 255, 0.22);
+
+.bucket-today .bucket-head {
+  color: #c2410c;
+  font-size: 12px;
+}
+.bucket-today .bucket-count {
+  background: #fff1e6;
+  color: #c2410c;
+}
+.bucket-tomorrow .bucket-head {
+  color: #b45309;
+}
+.bucket-tomorrow .bucket-count {
+  background: #fef6e6;
+  color: #b45309;
 }
 
 .up-list {
@@ -253,6 +255,27 @@ ul { list-style: none; }
   transition: border-color 0.15s, background 0.15s, transform 0.05s;
 }
 .up-card:hover { border-color: var(--border-strong); background: var(--surface-soft); }
+
+.up-card-today {
+  background: #fffaf3;
+  border-color: #fde6cc;
+  border-left-width: 4px;
+  padding: 16px 18px;
+}
+.up-card-today:hover { background: #fff4e3; }
+.up-card-today .up-card-title { font-size: 15.5px; }
+
+.up-card-later {
+  background: var(--surface);
+  opacity: 0.92;
+}
+.up-card-later .up-card-title { font-weight: 500; }
+.up-card-later .up-note { color: var(--text-soft); }
+.when {
+  font-weight: 600;
+  color: var(--text);
+}
+.up-card-later .when { color: var(--text-muted); }
 .up-card:active { transform: translateY(0.5px); }
 .up-card:focus-visible {
   outline: 2px solid var(--text);
@@ -296,15 +319,15 @@ ul { list-style: none; }
   flex-shrink: 0;
 }
 
-/* Status pill in meta */
+/* Status pill (still used inside modal) */
 .status {
   font-weight: 700;
   letter-spacing: -0.005em;
 }
-.status-today    { color: #c2410c; }
-.status-soon     { color: #b45309; }
-.status-later    { color: var(--text); }
-.status-overdue  { color: #b91c1c; }
+.status-today   { color: #c2410c; }
+.status-soon    { color: #b45309; }
+.status-later   { color: var(--text); }
+.status-overdue { color: #b91c1c; }
 
 .up-empty {
   padding: 22px;
