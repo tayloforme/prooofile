@@ -39,16 +39,3 @@ export function daysBetween(from, to) {
   return Math.round((b - a) / (24 * 60 * 60 * 1000));
 }
 
-export function relativeStatus(d, today = TODAY) {
-  const diff = daysBetween(today, d);
-  if (diff < 0)  return { label: `${-diff}d overdue`, tone: 'overdue' };
-  if (diff === 0) return { label: 'Today',           tone: 'today' };
-  if (diff === 1) return { label: 'Tomorrow',        tone: 'soon' };
-  if (diff <= 7)  return { label: `In ${diff} days`, tone: 'soon' };
-  return            { label: `In ${diff} days`, tone: 'later' };
-}
-
-export function formatLongDate(d) {
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
-}

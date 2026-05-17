@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { TODAY, TYPES, parseDate, formatLongDate } from './data.js';
+import { TODAY, TYPES } from './data.js';
+import { Plus, ChevronLeft, ChevronRight, Cross } from './icons.jsx';
 
 const MONTHS = [
   'January','February','March','April','May','June',
@@ -76,11 +77,11 @@ export default function CalendarModal({ events, onClose }) {
           <div className="cal-modal-controls">
             <button className="cal-today" type="button" onClick={goToday}>Today</button>
             <div className="cal-nav-group">
-              <button className="cal-nav" type="button" onClick={() => goTo(-1)} aria-label="Previous month"><ChevronLeft /></button>
-              <button className="cal-nav" type="button" onClick={() => goTo(1)}  aria-label="Next month"><ChevronRight /></button>
+              <button className="cal-nav" type="button" onClick={() => goTo(-1)} aria-label="Previous month"><ChevronLeft size={14} /></button>
+              <button className="cal-nav" type="button" onClick={() => goTo(1)}  aria-label="Next month"><ChevronRight size={14} /></button>
             </div>
             <button className="icon-btn icon-btn-sm" type="button" onClick={onClose} aria-label="Close">
-              <Cross />
+              <Cross size={14} />
             </button>
           </div>
         </header>
@@ -131,7 +132,7 @@ export default function CalendarModal({ events, onClose }) {
               <span>{MONTHS_SHORT[selected.getMonth()]} {selected.getDate()}</span>
             </p>
             <button className="day-add" type="button">
-              <Plus /> Add event
+              <Plus size={12} /> Add event
             </button>
           </header>
 
@@ -160,35 +161,3 @@ export default function CalendarModal({ events, onClose }) {
   );
 }
 
-function ChevronLeft() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M15 6l-6 6 6 6" />
-    </svg>
-  );
-}
-function ChevronRight() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M9 6l6 6-6 6" />
-    </svg>
-  );
-}
-function Cross() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M6 6l12 12M18 6l-12 12" />
-    </svg>
-  );
-}
-function Plus() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 5v14M5 12h14" />
-    </svg>
-  );
-}

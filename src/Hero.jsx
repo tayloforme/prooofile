@@ -1,4 +1,5 @@
 import React from 'react';
+import { EditIcon } from './icons.jsx';
 
 const PET = {
   name: 'Bella',
@@ -38,15 +39,5 @@ export default function Hero() {
         Edit profile
       </button>
     </section>
-  );
-}
-
-function EditIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 20h4l10-10-4-4L4 16v4z" />
-      <path d="M14 6l4 4" />
-    </svg>
   );
 }

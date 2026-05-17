@@ -1,6 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import CalendarModal from './CalendarModal.jsx';
 import { TODAY, TYPES, parseDate, daysBetween } from './data.js';
+import {
+  Plus, Check, ChevronDown, CalendarIcon, Dots, EditIcon, ClockIcon, TrashIcon,
+} from './icons.jsx';
 
 const VISIBLE = 4;
 const HORIZON_DAYS = 14;
@@ -124,7 +127,7 @@ export default function Upcoming({ events, onComplete, onRestore, onDelete }) {
         <h2 className="up-title">Care plan</h2>
         <div className="up-actions">
           <button className="btn-secondary" type="button">
-            <Plus /> Add event
+            <Plus size={13} /> Add event
           </button>
           <button
             className="icon-btn"
@@ -133,7 +136,7 @@ export default function Upcoming({ events, onComplete, onRestore, onDelete }) {
             title="Open calendar"
             onClick={() => setShowCalendar(true)}
           >
-            <CalendarIcon />
+            <CalendarIcon size={16} />
           </button>
         </div>
       </header>
@@ -167,7 +170,7 @@ export default function Upcoming({ events, onComplete, onRestore, onDelete }) {
                           aria-label={`Mark "${e.title}" as done`}
                           onClick={() => handleComplete(e.id)}
                         >
-                          <Check />
+                          <Check size={11} />
                         </button>
                         <div className="up-card-body">
                           <p className="up-card-title">{e.title}</p>
@@ -228,7 +231,7 @@ export default function Upcoming({ events, onComplete, onRestore, onDelete }) {
           onClick={() => setExpanded((v) => !v)}
         >
           {expanded ? 'Show less' : `Show ${upcoming.length - VISIBLE} more`}
-          <Chevron down={!expanded} />
+          <ChevronDown size={12} style={{ transform: expanded ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }} />
         </button>
       )}
 
@@ -239,7 +242,7 @@ export default function Upcoming({ events, onComplete, onRestore, onDelete }) {
             type="button"
             onClick={() => setShowCompleted((v) => !v)}
           >
-            <Chevron down={!showCompleted} />
+            <ChevronDown size={12} style={{ transform: showCompleted ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }} />
             Recently completed
             <span className="bucket-count">{completed.length}</span>
           </button>
@@ -260,7 +263,7 @@ export default function Upcoming({ events, onComplete, onRestore, onDelete }) {
                       aria-label="Restore task"
                       onClick={() => onRestore(e.id)}
                     >
-                      <Check />
+                      <Check size={11} />
                     </button>
                     <div className="up-card-body">
                       <p className="up-card-title">{e.title}</p>
@@ -297,72 +300,3 @@ export default function Upcoming({ events, onComplete, onRestore, onDelete }) {
   );
 }
 
-function Plus() {
-  return (
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 5v14M5 12h14" />
-    </svg>
-  );
-}
-function CalendarIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="5" width="18" height="16" rx="2" />
-      <path d="M3 10h18M8 3v4M16 3v4" />
-    </svg>
-  );
-}
-function Check() {
-  return (
-    <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M5 12l5 5L20 7" />
-    </svg>
-  );
-}
-function Chevron({ down }) {
-  return (
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"
-      style={{ transform: down ? 'rotate(0deg)' : 'rotate(180deg)', transition: 'transform 0.15s' }}>
-      <path d="M6 9l6 6 6-6" />
-    </svg>
-  );
-}
-function Dots() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-      <circle cx="6" cy="12" r="1.5" />
-      <circle cx="12" cy="12" r="1.5" />
-      <circle cx="18" cy="12" r="1.5" />
-    </svg>
-  );
-}
-function EditIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 20h4l10-10-4-4L4 16v4z" />
-      <path d="M14 6l4 4" />
-    </svg>
-  );
-}
-function ClockIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="9" />
-      <path d="M12 7v5l3 2" />
-    </svg>
-  );
-}
-function TrashIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13" />
-    </svg>
-  );
-}

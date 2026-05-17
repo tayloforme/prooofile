@@ -115,37 +115,6 @@ ul { list-style: none; }
 .edit-btn:active { transform: translateY(0.5px); }
 
 /* ---------- Buttons (shared) ---------- */
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 9px 16px;
-  background: var(--text);
-  color: #fff;
-  border: 1px solid var(--text);
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 600;
-  transition: background 0.15s, transform 0.05s;
-}
-.btn-primary:hover { background: #000; }
-.btn-primary:active { transform: translateY(0.5px); }
-
-.btn-ghost {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 9px 16px;
-  background: transparent;
-  color: var(--text);
-  border: 0;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 600;
-  transition: background 0.15s;
-}
-.btn-ghost:hover { background: var(--surface-soft); }
-
 .btn-secondary {
   display: inline-flex;
   align-items: center;
