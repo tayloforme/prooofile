@@ -9,7 +9,13 @@ export default function App() {
   const [events, setEvents] = useState(INITIAL_EVENTS);
 
   const completeEvent = (id) =>
-    setEvents((cur) => cur.map((e) => (e.id === id ? { ...e, done: true } : e)));
+    setEvents((cur) =>
+      cur.map((e) => (e.id === id ? { ...e, done: true, completedAt: Date.now() } : e))
+    );
+  const restoreEvent = (id) =>
+    setEvents((cur) =>
+      cur.map((e) => (e.id === id ? { ...e, done: false, completedAt: null } : e))
+    );
 
   if (page === 'calendar') {
     return <CalendarPage events={events} onBack={() => setPage('main')} />;
@@ -21,6 +27,7 @@ export default function App() {
       <Upcoming
         events={events}
         onComplete={completeEvent}
+        onRestore={restoreEvent}
         onOpenCalendar={() => setPage('calendar')}
       />
     </main>
