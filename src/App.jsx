@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import Hero from './Hero.jsx';
 import Upcoming from './Upcoming.jsx';
-import CalendarPage from './CalendarPage.jsx';
 import { INITIAL_EVENTS } from './data.js';
 
 export default function App() {
-  const [page, setPage]     = useState('main');
   const [events, setEvents] = useState(INITIAL_EVENTS);
 
   const completeEvent = (id) =>
@@ -19,10 +17,6 @@ export default function App() {
   const deleteEvent = (id) =>
     setEvents((cur) => cur.filter((e) => e.id !== id));
 
-  if (page === 'calendar') {
-    return <CalendarPage events={events} onBack={() => setPage('main')} />;
-  }
-
   return (
     <main className="page">
       <Hero />
@@ -31,7 +25,6 @@ export default function App() {
         onComplete={completeEvent}
         onRestore={restoreEvent}
         onDelete={deleteEvent}
-        onOpenCalendar={() => setPage('calendar')}
       />
     </main>
   );

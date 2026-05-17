@@ -549,65 +549,75 @@ ul { list-style: none; }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ---------- Calendar page ---------- */
-.calendar-page {
-  width: 100%;
-  max-width: 1040px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 22px 28px 28px;
+/* ---------- Calendar modal ---------- */
+.cal-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 20, 24, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 60;
+  padding: 24px;
+  backdrop-filter: blur(2px);
+  animation: fade-in 0.15s ease-out;
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-.cp-header {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 22px;
+.cal-modal {
+  width: 100%;
+  max-width: 520px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: 0 28px 60px -18px rgba(0, 0, 0, 0.4);
+  padding: 20px 22px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: pop 0.18s ease-out;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
 }
-.back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
-  background: transparent;
-  color: var(--text-muted);
-  border: 0;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 600;
+
+.cal-modal-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
 }
-.back-btn:hover { color: var(--text); background: var(--surface-soft); }
-.cp-title-wrap { min-width: 0; }
-.cal-eyebrow {
-  font-size: 11px;
-  font-weight: 600;
+.cal-modal-title { min-width: 0; }
+.cal-modal-title .cal-eyebrow {
+  font-size: 10.5px;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-soft);
 }
-.cal-title {
+.cal-modal-title h3 {
   margin: 4px 0 0;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   letter-spacing: -0.01em;
 }
-.cal-controls {
+.cal-modal-controls {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  flex-wrap: nowrap;
 }
+
 .cal-today {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 14px;
+  padding: 7px 12px;
   background: var(--surface);
   border: 1px solid var(--border-strong);
   border-radius: 10px;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 600;
   color: var(--text);
   transition: background 0.15s, border-color 0.15s;
@@ -620,8 +630,8 @@ ul { list-style: none; }
   overflow: hidden;
 }
 .cal-nav {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   display: grid;
   place-items: center;
   background: var(--surface);
@@ -632,17 +642,10 @@ ul { list-style: none; }
 .cal-nav + .cal-nav { border-left: 1px solid var(--border-strong); }
 .cal-nav:hover { background: #fafafa; color: var(--text); }
 
-.cp-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
-  gap: 28px;
-  align-items: start;
-}
-
 .cal-weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 .cal-weekdays span {
   text-align: center;
@@ -651,7 +654,7 @@ ul { list-style: none; }
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-soft);
-  padding: 6px 0;
+  padding: 4px 0;
 }
 
 .cal-grid {
@@ -673,7 +676,7 @@ ul { list-style: none; }
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
 }
-.cal-day-large { height: 56px; }
+.cal-day-modal { height: 48px; }
 .cal-day:hover { background: var(--surface-soft); }
 .cal-day.is-out { color: var(--text-soft); opacity: 0.45; font-weight: 500; }
 .cal-day.is-today {
@@ -700,32 +703,75 @@ ul { list-style: none; }
 }
 .cal-day.is-selected .cal-dots i { background: #fff !important; opacity: 0.95; }
 
-.cp-day {
-  background: var(--surface-soft);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 18px;
+.cal-modal-day {
+  margin-top: 4px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
-.cp-day-title {
-  font-size: 16px;
+.day-eyebrow {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+.cal-day-title {
+  margin: 2px 0 6px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: -0.005em;
-  margin-bottom: 4px;
 }
-.cp-day .up-card { background: var(--surface); }
+.cal-empty {
+  padding: 14px;
+  font-size: 13px;
+}
+.cal-day-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cal-day-event {
+  display: grid;
+  grid-template-columns: 46px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border-strong);
+  border-radius: 10px;
+}
+.cal-day-time {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.005em;
+}
+.cal-day-text { min-width: 0; }
+.cal-day-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+.cal-day-note {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.icon-btn-sm {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+}
 
 /* ---------- Responsive ---------- */
-@media (max-width: 860px) {
-  .cp-header { grid-template-columns: 1fr auto; }
-  .cp-title-wrap { grid-column: 1; grid-row: 2; }
-  .cal-controls { grid-column: 2; grid-row: 1 / 3; align-self: start; }
-  .back-btn { grid-column: 1; grid-row: 1; justify-self: start; }
-  .cp-layout { grid-template-columns: 1fr; }
-}
-
 @media (max-width: 720px) {
   .hero {
     grid-template-columns: auto 1fr;
@@ -738,7 +784,8 @@ ul { list-style: none; }
   }
   .hero-stats { gap: 22px; }
   .upcoming-card { padding: 20px; }
-  .calendar-page { padding: 18px; }
+  .cal-modal { padding: 18px; }
+  .cal-day-modal { height: 42px; }
 }
 
 @media (max-width: 460px) {

@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import CalendarModal from './CalendarModal.jsx';
 import { TODAY, TYPES, parseDate, daysBetween } from './data.js';
 
 const VISIBLE = 4;
@@ -49,11 +50,12 @@ function completedAgo(ts) {
   return `${days} days ago`;
 }
 
-export default function Upcoming({ events, onComplete, onRestore, onDelete, onOpenCalendar }) {
+export default function Upcoming({ events, onComplete, onRestore, onDelete }) {
   const [expanded, setExpanded]           = useState(false);
   const [showCompleted, setShowCompleted] = useState(false);
   const [lastCompleted, setLastCompleted] = useState(null);
   const [openMenuId, setOpenMenuId]       = useState(null);
+  const [showCalendar, setShowCalendar]   = useState(false);
   const undoTimerRef = useRef(null);
 
   const upcoming = useMemo(() => {
@@ -128,8 +130,8 @@ export default function Upcoming({ events, onComplete, onRestore, onDelete, onOp
             className="icon-btn"
             type="button"
             aria-label="Open calendar"
-            title="Open full calendar"
-            onClick={onOpenCalendar}
+            title="Open calendar"
+            onClick={() => setShowCalendar(true)}
           >
             <CalendarIcon />
           </button>
@@ -286,6 +288,10 @@ export default function Upcoming({ events, onComplete, onRestore, onDelete, onOp
           <span>Marked “{lastCompleted.title}” as done</span>
           <button type="button" onClick={handleUndo}>Undo</button>
         </div>
+      )}
+
+      {showCalendar && (
+        <CalendarModal events={events} onClose={() => setShowCalendar(false)} />
       )}
     </section>
   );
