@@ -375,10 +375,10 @@ ul { list-style: none; }
   grid-template-columns: 38px minmax(0, 1.4fr) minmax(0, 1.6fr) auto auto;
 }
 
-/* Med row: icon | main | schedule | next-dose | action */
+/* Med row: icon | main | next-dose | action */
 .med-row {
-  grid-template-columns: 36px minmax(0, 1.2fr) auto minmax(0, 1.2fr) auto;
-  gap: 10px;
+  grid-template-columns: 36px minmax(0, 1fr) auto auto;
+  gap: 12px;
 }
 
 /* Vax row: icon | main | status-info | action | chev */

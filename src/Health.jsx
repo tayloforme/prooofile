@@ -224,14 +224,7 @@ function MedicationsBlock({ meds }) {
               <span className="item-icon item-icon-amber"><Pill size={14} /></span>
               <div className="item-main">
                 <p className="item-name">{m.name}</p>
-                <p className="item-sub">{m.type}</p>
-              </div>
-              <div className="med-schedule">
-                <span className="med-schedule-icon"><CalendarIcon size={14} /></span>
-                <div>
-                  <p className="med-schedule-dose">{m.dose}</p>
-                  <p className="med-schedule-freq">{m.frequency}</p>
-                </div>
+                <p className="item-sub">{m.type} · {m.dose}, {m.frequency.toLowerCase()}</p>
               </div>
               <div className="item-info">
                 <p className="item-info-label">Next dose</p>
