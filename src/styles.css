@@ -1449,6 +1449,8 @@ ul { list-style: none; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 720px) {
+  .page { padding: 32px 18px; gap: 18px; }
+
   .hero {
     grid-template-columns: auto 1fr;
     padding: 20px 22px;
@@ -1459,15 +1461,90 @@ ul { list-style: none; }
     justify-self: start;
   }
   .hero-stats { gap: 22px; }
+
+  .health-card { padding: 20px 18px 16px; }
+  .health-main-title { font-size: 20px; }
+  .status-summary { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .health-row { grid-template-columns: 1fr; gap: 12px; }
+  .insights-grid { grid-template-columns: 1fr; gap: 14px; }
+
   .upcoming-card { padding: 20px; }
   .cal-modal { padding: 18px; }
   .cal-day-modal { height: 36px; }
 }
 
-@media (max-width: 460px) {
-  .page { padding: 24px 16px; }
-  .hero-stats { gap: 18px 28px; }
+@media (max-width: 480px) {
+  .page { padding: 22px 14px; }
+
+  .hero { padding: 18px 16px; gap: 14px; }
+  .hero-stats { gap: 14px 24px; }
   .hero-avatar { width: 72px; height: 72px; }
+  .hero-name { font-size: 18px; }
+
+  .health-card { padding: 18px 14px 14px; border-radius: 16px; }
+  .health-main-head { gap: 10px; }
+  .health-main-title { font-size: 18px; }
+  .health-block { padding: 14px 12px; border-radius: 12px; }
+  .block-head { gap: 8px; margin-bottom: 10px; }
+  .card-action { padding: 7px 10px; font-size: 12px; }
+
+  /* Compact rows: stack info under main, drop trailing chevrons */
+  .block-row { gap: 8px 10px; padding: 10px 2px; }
+  .item-icon { width: 32px; height: 32px; }
+  .item-action { padding: 5px 10px; font-size: 11.5px; }
+  .item-chev { display: none; }
+
+  .needs-row {
+    grid-template-columns: 32px minmax(0, 1fr) auto;
+    grid-template-areas:
+      "icon main action"
+      "icon info action";
+    row-gap: 2px;
+  }
+  .needs-row .item-icon   { grid-area: icon; align-self: start; margin-top: 2px; }
+  .needs-row .item-main   { grid-area: main; }
+  .needs-row .item-info   { grid-area: info; flex-direction: row; align-items: baseline; gap: 6px; text-align: left; }
+  .needs-row .item-action { grid-area: action; align-self: center; }
+
+  .med-row {
+    grid-template-columns: 32px minmax(0, 1fr) auto;
+    grid-template-areas:
+      "icon main action"
+      "icon info action";
+    row-gap: 2px;
+    gap: 10px;
+  }
+  .med-row .item-icon   { grid-area: icon; align-self: start; margin-top: 2px; }
+  .med-row .item-main   { grid-area: main; }
+  .med-row .item-info   { grid-area: info; flex-direction: row; align-items: baseline; gap: 6px; text-align: left; }
+  .med-row .item-action { grid-area: action; align-self: center; }
+
+  .vax-row {
+    grid-template-columns: 32px minmax(0, 1fr) auto;
+    grid-template-areas:
+      "icon main action"
+      "icon info action";
+    row-gap: 2px;
+    gap: 10px;
+  }
+  .vax-row .item-icon        { grid-area: icon; align-self: start; margin-top: 2px; }
+  .vax-row .item-main        { grid-area: main; }
+  .vax-row .vax-status-info  { grid-area: info; flex-direction: row; align-items: baseline; gap: 6px; min-width: 0; text-align: left; }
+  .vax-row .item-action      { grid-area: action; align-self: center; }
+
+  .nutrition-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .weight-content { grid-template-columns: 1fr; gap: 14px; }
+  .weight-stats {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 20px;
+  }
+  .weight-chart { height: 120px; }
+
+  .upcoming-card { padding: 18px 14px; }
+  .up-title { font-size: 16px; }
   .up-card { padding: 12px 14px; }
   .badge { align-self: flex-start; }
 }
