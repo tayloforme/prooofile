@@ -388,11 +388,13 @@ function WeightBlock() {
               <span className="weight-delta-meta">vs {deltaWeeks} {deltaWeeks === 1 ? 'week' : 'weeks'} ago</span>
             </div>
           )}
-          <div className="weight-range-info">
-            <span className="status-dot tone-green" />
-            <strong>Healthy range</strong>
+          <div className="weight-range-block">
+            <span className="weight-range-info">
+              <span className="status-dot tone-green" />
+              <strong>Healthy range</strong>
+            </span>
+            <span className="weight-range-meta">{PET_PROFILE.weightRange.min}–{PET_PROFILE.weightRange.max} kg</span>
           </div>
-          <p className="weight-range-meta">{PET_PROFILE.weightRange.min}–{PET_PROFILE.weightRange.max} kg</p>
         </div>
         <div className="weight-chart-col">
           <WeightChart entries={filtered} range={PET_PROFILE.weightRange} />
