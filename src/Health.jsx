@@ -521,8 +521,8 @@ function WeightChart({ entries, range }) {
         )}
 
         {yTicks.map((v) => (
-          <text key={v} x={padL - 6} y={y(v) + 3.5}
-                fontSize="9" fill="#9aa0a8" textAnchor="end">{v}</text>
+          <text key={v} x={padL - 6} y={y(v) + 4}
+                fontSize="11" fill="#9aa0a8" textAnchor="end">{v}</text>
         ))}
 
         {n > 1 && <path d={areaPath} fill="url(#wgrad)" />}
@@ -537,13 +537,13 @@ function WeightChart({ entries, range }) {
                   strokeWidth={i === last ? 2 : 0} />
         ))}
 
-        <text x={xs[last] + 7} y={ys[last] + 4} fontSize="11" fontWeight="700"
+        <text x={xs[last] + 7} y={ys[last] + 4} fontSize="12" fontWeight="700"
               fill="#111418" textAnchor="start">
           {points[last].kg.toFixed(1)}
         </text>
 
         {monthTicks.map((tick, i) => (
-          <text key={i} x={x(tick.t)} y={H - 6} fontSize="9" fill="#9aa0a8"
+          <text key={i} x={x(tick.t)} y={H - 5} fontSize="11" fill="#9aa0a8"
                 textAnchor={i === 0 ? 'start' : i === monthTicks.length - 1 ? 'end' : 'middle'}>
             {tick.label}
           </text>
