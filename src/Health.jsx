@@ -68,18 +68,29 @@ function getRecommendation(verdict) {
 
 export default function Health() {
   return (
-    <>
-      <div className="page-section-label">Health</div>
-      <WeightCard />
-      <VaccinesCard />
-      <MedicationsCard />
-    </>
+    <section className="health-card health-unified">
+      <header className="health-main-head">
+        <span className="card-icon card-icon-green card-icon-lg">
+          <Heart size={20} />
+        </span>
+        <div className="card-head-text">
+          <h2 className="health-main-title">Health</h2>
+          <p className="card-sub">{PET_PROFILE.name}'s weight, vaccinations, and medications in one place.</p>
+        </div>
+      </header>
+
+      <WeightSection />
+      <div className="health-divider" />
+      <VaccinesSection />
+      <div className="health-divider" />
+      <MedicationsSection />
+    </section>
   );
 }
 
 /* ---------- Weight ---------- */
 
-function WeightCard() {
+function WeightSection() {
   const [tab, setTab] = useState('6M');
 
   const weights = useMemo(
@@ -111,17 +122,17 @@ function WeightCard() {
   const recommendation = getRecommendation(verdict);
 
   return (
-    <section className="health-card weight-card">
-      <header className="card-head">
-        <span className="card-icon card-icon-green"><Heart size={16} /></span>
+    <div className="health-section">
+      <div className="health-sub-head">
+        <span className="card-icon card-icon-green"><Heart size={14} /></span>
         <div className="card-head-text">
-          <h2 className="card-title">Weight</h2>
-          <p className="card-sub">Track your dog's weight and see how it compares to the breed range.</p>
+          <h3 className="card-title card-title-sm">Weight</h3>
+          <p className="card-sub">Track {PET_PROFILE.name}'s weight and compare to the breed range.</p>
         </div>
         <button className="btn-secondary card-action" type="button">
           <Plus size={13} /> Add weight
         </button>
-      </header>
+      </div>
 
       <div className="weight-panel">
         <div className="weight-stats">
@@ -190,7 +201,7 @@ function WeightCard() {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -403,7 +414,7 @@ function vaxIcon(status, size = 14) {
   return <QuestionMark size={size} />;
 }
 
-function VaccinesCard() {
+function VaccinesSection() {
   const enriched = useMemo(() => {
     const list = INITIAL_VACCINES.map((v) => {
       if (!v.lastDate) return { ...v, status: 'unknown', diff: null };
@@ -425,17 +436,17 @@ function VaccinesCard() {
   }, {});
 
   return (
-    <section className="health-card">
-      <header className="card-head">
-        <span className="card-icon card-icon-blue"><Shield size={16} /></span>
+    <div className="health-section">
+      <div className="health-sub-head">
+        <span className="card-icon card-icon-blue"><Shield size={14} /></span>
         <div className="card-head-text">
-          <h2 className="card-title">Vaccines</h2>
-          <p className="card-sub">Keep your pet protected and up to date.</p>
+          <h3 className="card-title card-title-sm">Vaccines</h3>
+          <p className="card-sub">Keep {PET_PROFILE.name} protected and up to date.</p>
         </div>
         <button className="btn-secondary card-action" type="button">
           <Plus size={13} /> Add vaccine
         </button>
-      </header>
+      </div>
 
       <div className="vax-summary">
         {VAX_SUMMARY.map(({ key, label }) => (
@@ -496,31 +507,40 @@ function VaccinesCard() {
           </li>
         ))}
       </ul>
-    </section>
+    </div>
   );
 }
 
 /* ---------- Medications ---------- */
 
-function MedicationsCard() {
+function MedicationsSection() {
   const [showPast, setShowPast] = useState(false);
   const active = INITIAL_MEDICATIONS.filter((m) => !m.endDate);
   const past   = INITIAL_MEDICATIONS.filter((m) =>  m.endDate);
 
   return (
-    <section className="health-card">
-      <header className="card-head">
-        <span className="card-icon card-icon-amber"><Pill size={16} /></span>
+    <div className="health-section">
+      <div className="health-sub-head">
+        <span className="card-icon card-icon-amber"><Pill size={14} /></span>
         <div className="card-head-text">
-          <h2 className="card-title">Medications</h2>
-          <p className="card-sub">Active treatments and past prescriptions.</p>
+          <h3 className="card-title card-title-sm">Medications</h3>
+          <p className="card-sub">Current treatments and past prescriptions.</p>
         </div>
         <button className="btn-secondary card-action" type="button">
           <Plus size={13} /> Add medication
         </button>
-      </header>
+      </div>
 
-      <ul className="med-rows">
+      <div className="med-table-head">
+        <span></span>
+        <span>Medication</span>
+        <span>Dose</span>
+        <span>Started</span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <ul className="med-list">
         {active.map((m) => <MedRow key={m.id} m={m} />)}
       </ul>
 
@@ -535,28 +555,37 @@ function MedicationsCard() {
             <span className="bucket-count">{past.length}</span>
           </button>
           {showPast && (
-            <ul className="med-rows">
+            <ul className="med-list">
               {past.map((m) => <MedRow key={m.id} m={m} past />)}
             </ul>
           )}
         </div>
       )}
-    </section>
+    </div>
   );
 }
 
 function MedRow({ m, past }) {
   return (
     <li className={'med-row' + (past ? ' is-past' : '')}>
-      <span className="med-name">{m.name}</span>
-      <span className="med-meta">{m.type} · {m.dose}</span>
+      <span className={'med-icon ' + (past ? 'med-icon-past' : 'med-icon-active')}>
+        <Pill size={14} />
+      </span>
+      <div className="med-main">
+        <p className="med-name">{m.name}</p>
+        <p className="med-meta">{m.type}</p>
+      </div>
+      <span className="med-dose">{m.dose}</span>
       <span className="med-since">
         {past
           ? `${fmtMonthYear(parseDate(m.startDate))} – ${fmtMonthYear(parseDate(m.endDate))}`
-          : `Since ${fmtMonthYear(parseDate(m.startDate))}`}
+          : fmtMonthYear(parseDate(m.startDate))}
       </span>
-      <button className="card-menu-trigger" type="button" aria-label="More options">
-        <Dots size={14} />
+      <button className={'med-action ' + (past ? 'med-action-past' : 'med-action-active')} type="button">
+        {past ? 'Restart' : 'Log dose'}
+      </button>
+      <button className="vax-row-chev" type="button" aria-label="Details">
+        <ChevronRight size={14} />
       </button>
     </li>
   );

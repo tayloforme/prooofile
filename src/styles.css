@@ -146,20 +146,7 @@ ul { list-style: none; }
 .icon-btn:active { transform: translateY(0.5px); }
 .icon-btn-sm { width: 30px; height: 30px; border-radius: 8px; }
 
-/* ---------- Health: section label ---------- */
-.page-section-label {
-  width: 100%;
-  max-width: 960px;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text-soft);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding: 0 4px;
-  margin-bottom: -10px;
-}
-
-/* ---------- Health card (generic, used by Weight/Vaccines/Medications) ---------- */
+/* ---------- Health unified card ---------- */
 .health-card {
   width: 100%;
   max-width: 960px;
@@ -167,24 +154,46 @@ ul { list-style: none; }
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  padding: 18px 22px 20px;
+  padding: 24px 28px 26px;
+}
+.health-unified .health-main-head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.health-main-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
 }
 
-.card-head {
+.health-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 28px -28px;
+}
+
+.health-sub-head {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
+
 .card-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  flex-shrink: 0;
 }
+.card-icon-lg { width: 38px; height: 38px; border-radius: 10px; }
 .card-icon-green { background: #d1fae5; color: #059669; }
 .card-icon-blue  { background: #dbeafe; color: #2563eb; }
 .card-icon-amber { background: #fef3c7; color: #b45309; }
@@ -200,6 +209,7 @@ ul { list-style: none; }
   letter-spacing: -0.01em;
   line-height: 1.2;
 }
+.card-title-sm { font-size: 16px; }
 .card-sub {
   font-size: 12.5px;
   color: var(--text-muted);
@@ -681,28 +691,100 @@ ul { list-style: none; }
   color: var(--text-soft);
 }
 
-/* ---------- Medications ---------- */
+/* ---------- Medications: table ---------- */
+.med-table-head,
 .med-row {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.6fr) auto auto;
-  align-items: center;
+  grid-template-columns: 40px minmax(160px, 1.5fr) minmax(140px, 1fr) minmax(80px, auto) auto auto;
   gap: 14px;
-  padding: 10px 14px;
-  background: var(--surface-soft);
-  border: 1px solid var(--border);
+  align-items: center;
+}
+.med-table-head {
+  padding: 0 16px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 6px;
+}
+
+.med-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+}
+.med-row {
+  padding: 12px 16px;
+  background: #fff;
+  border: 1px solid transparent;
   border-radius: 10px;
   font-size: 13px;
+  transition: background 0.15s, border-color 0.15s;
 }
-.med-row .card-menu-trigger { opacity: 0.5; position: static; }
-.med-row:hover .card-menu-trigger { opacity: 1; }
-.med-name { font-weight: 600; color: var(--text); }
-.med-meta { color: var(--text-muted); font-size: 12.5px; }
-.med-since { color: var(--text-soft); font-size: 12px; white-space: nowrap; }
-.med-row.is-past .med-name { color: var(--text-muted); }
+.med-row:hover { background: var(--surface-soft); }
+.med-row.is-past { background: var(--surface-soft); }
+.med-row.is-past:hover { border-color: var(--border); }
+
+.med-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.med-icon-active { background: #fef3c7; color: #b45309; }
+.med-icon-past   { background: #e5e7eb; color: #6b7280; }
+
+.med-main { min-width: 0; }
+.med-name {
+  font-weight: 700;
+  color: var(--text);
+  font-size: 14px;
+}
+.med-meta {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.med-dose {
+  font-size: 12.5px;
+  color: var(--text);
+  font-weight: 500;
+}
+.med-since {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.med-row.is-past .med-name  { color: var(--text-muted); }
 .med-row.is-past .med-meta,
+.med-row.is-past .med-dose,
 .med-row.is-past .med-since { color: var(--text-soft); }
 
-.med-past { margin-top: 10px; }
+.med-action {
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  background: #fff;
+  border: 1px solid;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.med-action-active { color: #b45309; border-color: #fde68a; }
+.med-action-active:hover { background: #fef3c7; }
+.med-action-past { color: var(--text); border-color: var(--border-strong); }
+.med-action-past:hover { background: var(--surface-soft); }
+
+.med-past { margin-top: 12px; }
 .med-past .completed-toggle { margin-bottom: 8px; }
 
 /* ---------- Upcoming card ---------- */
