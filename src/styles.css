@@ -1469,24 +1469,33 @@ ul { list-style: none; }
   .insights-grid { grid-template-columns: 1fr; gap: 14px; }
 
   .upcoming-card { padding: 20px; }
-  .cal-modal { padding: 18px; }
+  .cal-modal { padding: 18px; max-height: calc(100vh - 32px); }
+  .cal-modal-title { font-size: 18px; }
   .cal-day-modal { height: 36px; }
 }
 
 @media (max-width: 480px) {
-  .page { padding: 22px 14px; }
+  .page { padding: 22px 14px; gap: 16px; }
 
   .hero { padding: 18px 16px; gap: 14px; }
-  .hero-stats { gap: 14px 24px; }
+  .hero-stats { gap: 14px 22px; row-gap: 14px; }
   .hero-avatar { width: 72px; height: 72px; }
   .hero-name { font-size: 18px; }
+  .hero-meta { font-size: 12.5px; }
+  .stat dt { font-size: 10px; }
+  .stat dd { font-size: 14px; }
 
   .health-card { padding: 18px 14px 14px; border-radius: 16px; }
-  .health-main-head { gap: 10px; }
+  .health-main-head { gap: 10px; margin-bottom: 12px; }
   .health-main-title { font-size: 18px; }
   .health-block { padding: 14px 12px; border-radius: 12px; }
   .block-head { gap: 8px; margin-bottom: 10px; }
   .card-action { padding: 7px 10px; font-size: 12px; }
+
+  /* Status summary stays 2x2 but tighter */
+  .status-card { padding: 12px; gap: 10px; }
+  .status-card-text strong { font-size: 20px; }
+  .status-card-chev { display: none; }
 
   /* Compact rows: stack info under main, drop trailing chevrons */
   .block-row { gap: 8px 10px; padding: 10px 2px; }
@@ -1532,19 +1541,60 @@ ul { list-style: none; }
   .vax-row .vax-status-info  { grid-area: info; flex-direction: row; align-items: baseline; gap: 6px; min-width: 0; text-align: left; }
   .vax-row .item-action      { grid-area: action; align-self: center; }
 
-  .nutrition-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .nutrition-grid { grid-template-columns: 1fr 1fr; gap: 12px; padding: 4px 0 8px; }
 
   .weight-content { grid-template-columns: 1fr; gap: 14px; }
   .weight-stats {
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
-    gap: 14px 20px;
+    gap: 12px 18px;
   }
   .weight-chart { height: 120px; }
+  .range-tabs { flex-wrap: wrap; justify-content: center; }
 
-  .upcoming-card { padding: 18px 14px; }
+  .insights-summary { padding: 10px; }
+  .insights-summary p { font-size: 12.5px; }
+
+  /* Health disclaimer: hide emoji to free space */
+  .health-disclaimer-block { padding: 12px 14px; gap: 10px; grid-template-columns: auto 1fr; }
+  .disclaimer-info { width: 28px; height: 28px; }
+  .disclaimer-main { font-size: 12.5px; }
+  .disclaimer-emoji { display: none; }
+
+  /* Upcoming card */
+  .upcoming-card { padding: 18px 14px; gap: 12px; }
   .up-title { font-size: 16px; }
-  .up-card { padding: 12px 14px; }
-  .badge { align-self: flex-start; }
+  .up-actions .btn-secondary { padding: 7px 12px; font-size: 12.5px; }
+
+  /* Event cards: drop the dedicated badge column, keep menu visible */
+  .up-card {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 10px;
+    padding: 12px 12px;
+  }
+  .up-card-today { padding: 14px 14px; }
+  .up-card .badge { display: none; }
+  .card-menu-trigger { opacity: 1; }
+  .up-card-title { font-size: 14px; }
+  .up-card-today .up-card-title { font-size: 14.5px; }
+
+  /* Recently completed list keeps 3 columns: check | body | restore */
+  .up-card-done { padding: 10px 12px; }
+  .restore-btn { padding: 4px 9px; font-size: 11.5px; }
+
+  /* Calendar modal */
+  .cal-overlay { padding: 14px; }
+  .cal-modal { padding: 16px 14px; gap: 12px; }
+  .cal-modal-title { font-size: 17px; }
+  .cal-today { padding: 6px 10px; font-size: 12px; }
+  .cal-nav { width: 28px; height: 28px; }
+  .cal-day-modal { height: 32px; font-size: 12px; }
+  .cal-weekdays span { font-size: 10px; }
+  .cal-day-event { grid-template-columns: 42px 1fr auto; gap: 10px; padding: 9px 10px; }
+  .cal-day-time { font-size: 12px; }
+  .cal-day-name { font-size: 13px; }
+
+  /* Toast */
+  .undo-toast { padding: 9px 6px 9px 14px; font-size: 12.5px; gap: 10px; bottom: 16px; }
 }
