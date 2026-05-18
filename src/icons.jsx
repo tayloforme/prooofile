@@ -141,6 +141,29 @@ export const InfoIcon = (p) => (
   </Svg>
 );
 
+export const Sparkle = (p) => (
+  <Svg {...p}>
+    <path d="M12 3l1.6 7L20 12l-6.4 1.5L12 20l-1.6-6.5L4 12l6.4-2z" />
+  </Svg>
+);
+
+export const Scale = (p) => (
+  <Svg {...p}>
+    <path d="M6 7l-3 7c0 1.5 1.5 2.5 3 2.5s3-1 3-2.5L6 7z" />
+    <path d="M18 7l-3 7c0 1.5 1.5 2.5 3 2.5s3-1 3-2.5L18 7z" />
+    <line x1="6" y1="7" x2="18" y2="7" />
+    <line x1="12" y1="4" x2="12" y2="21" />
+    <line x1="8" y1="21" x2="16" y2="21" />
+  </Svg>
+);
+
+export const Shoe = (p) => (
+  <Svg {...p}>
+    <path d="M3 17l1-6 4-2 4 4 5 1 5 2v3a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-2z" />
+    <path d="M8 11V8" />
+  </Svg>
+);
+
 export const Sun = (p) => (
   <Svg {...p}>
     <circle cx="12" cy="12" r="4" />

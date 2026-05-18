@@ -9,6 +9,18 @@ export const PET_PROFILE = {
   photo: 'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=400&h=400&q=80',
 };
 
+export const PET_NUTRITION = {
+  foodType: 'Dry kibble',
+  amount: '2 cups / day',
+  treats: '~ 2 per day',
+};
+
+export const PET_INSIGHTS = {
+  summary: "Great job! Your dog's weight is within the healthy range and activity looks good.",
+  weight:   { status: 'Slight increase', sub: 'Keep monitoring' },
+  activity: { status: 'On track',        sub: 'Great consistency!' },
+};
+
 export const INITIAL_WEIGHTS = [
   { id: 1, date: '2025-11-20', kg: 26.8, note: '' },
   { id: 2, date: '2025-12-18', kg: 27.1, note: 'Post-holiday weigh-in' },

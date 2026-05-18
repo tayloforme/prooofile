@@ -1,20 +1,19 @@
 import React, { useMemo, useState } from 'react';
 import {
-  TODAY, PET_PROFILE,
+  TODAY, PET_PROFILE, PET_NUTRITION, PET_INSIGHTS,
   INITIAL_WEIGHTS, INITIAL_VACCINES, INITIAL_MEDICATIONS,
   parseDate, daysBetween,
 } from './data.js';
 import {
-  Plus, ChevronDown, ChevronRight, Dots, ClockIcon, CalendarIcon,
-  HeartPulse, DocIcon, Shield, Pill, WeightIcon, InfoIcon, Sun,
+  Plus, ChevronRight, ClockIcon, CalendarIcon,
+  HeartPulse, DocIcon, Shield, Pill, Bowl, InfoIcon, Sun,
+  Sparkle, Scale, Shoe,
   CheckCircle, AlertCircle, QuestionMark,
 } from './icons.jsx';
-import { assessWeight, assessTrend, combineStatus } from './health.js';
 
 const MONTH = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const fmtFullDate  = (d) => `${MONTH[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
 const fmtMonthDay  = (d) => `${MONTH[d.getMonth()]} ${d.getDate()}`;
-const fmtTooltip   = (d) => fmtFullDate(d);
 
 function fmtRelativeDate(d) {
   const diff = daysBetween(TODAY, d);
@@ -26,9 +25,9 @@ function fmtRelativeDate(d) {
 
 const STATUS_LABEL = {
   ok:       'Up to date',
-  soon:     'Due soon',
+  soon:     null, // shown as "In N days" instead
   overdue:  'Overdue',
-  unknown:  'Missing',
+  unknown:  'No record',
 };
 
 const VAX_ACTION = {
@@ -121,7 +120,7 @@ export default function Health() {
         <span className="card-icon card-icon-green card-icon-lg"><HeartPulse size={20} /></span>
         <div className="card-head-text">
           <h2 className="health-main-title">Health</h2>
-          <p className="card-sub">Overview of {PET_PROFILE.name}'s health and care.</p>
+          <p className="card-sub">Everything you need to keep your dog healthy and happy.</p>
         </div>
         <button className="btn-secondary card-action" type="button">
           <DocIcon size={14} /> Health report
@@ -129,24 +128,27 @@ export default function Health() {
       </header>
 
       <div className="status-summary">
-        <StatusCard status="overdue" count={counts.overdue} label="Overdue"    sub="Needs attention" icon={<AlertCircle size={16} />} />
+        <StatusCard status="overdue" count={counts.overdue} label="Overdue"    sub="Needs attention"     icon={<AlertCircle size={16} />} />
         <StatusCard status="soon"    count={counts.soon}    label="Due soon"   sub="In the next 30 days" icon={<ClockIcon size={16} />} />
-        <StatusCard status="ok"      count={counts.ok}      label="Up to date" sub="All good" icon={<CheckCircle size={16} />} />
-        <StatusCard status="unknown" count={counts.unknown} label="Missing"    sub="No record" icon={<QuestionMark size={16} />} />
+        <StatusCard status="ok"      count={counts.ok}      label="Up to date" sub="All good"            icon={<CheckCircle size={16} />} />
+        <StatusCard status="unknown" count={counts.unknown} label="Missing"    sub="No record"           icon={<QuestionMark size={16} />} />
       </div>
 
-      {needsAttention.length > 0 && (
-        <NeedsAttentionBlock items={needsAttention} />
-      )}
+      {needsAttention.length > 0 && <NeedsAttentionBlock items={needsAttention} />}
 
-      <MedicationsBlock meds={activeMeds} />
-      <VaccinesBlock vaccines={vaccines} />
-      <WeightBlock />
+      <div className="health-row">
+        <MedicationsBlock meds={activeMeds} />
+        <VaccinesBlock vaccines={vaccines} />
+      </div>
 
-      <p className="health-disclaimer">
-        <InfoIcon size={13} />
-        This information is for reference only. Always consult your veterinarian.
-      </p>
+      <div className="health-row">
+        <NutritionBlock nutrition={PET_NUTRITION} />
+        <WeightBlock />
+      </div>
+
+      <InsightsBlock />
+
+      <Disclaimer />
     </section>
   );
 }
@@ -167,20 +169,19 @@ function StatusCard({ status, count, label, sub, icon }) {
   );
 }
 
-/* ---------- Needs attention block ---------- */
+/* ---------- Needs attention ---------- */
 
 function NeedsAttentionBlock({ items }) {
   return (
     <div className="health-block health-block-needs">
-      <header className="block-head">
-        <span className="block-icon block-icon-red"><AlertCircle size={14} /></span>
-        <h3 className="block-title">Needs attention</h3>
-        <span className="needs-count">{items.length} items</span>
+      <header className="block-head needs-head">
+        <h3 className="block-title">Today / Needs attention</h3>
+        <span className="needs-count">{items.length}</span>
         <button className="block-link-inline" type="button">View all</button>
       </header>
       <ul className="block-list">
         {items.map((item) => (
-          <li key={item.key} className="block-row">
+          <li key={item.key} className="block-row needs-row">
             <span className={'item-icon item-icon-' + item.tone}>
               {item.kind === 'vaccine' ? <Shield size={14} /> : <Pill size={14} />}
             </span>
@@ -223,7 +224,7 @@ function MedicationsBlock({ meds }) {
           const diff = daysBetween(TODAY, nextDoseDate);
           const valueTone = diff <= 0 ? 'red' : '';
           return (
-            <li key={m.id} className="block-row med-block-row">
+            <li key={m.id} className="block-row med-row">
               <span className="item-icon item-icon-amber"><Pill size={14} /></span>
               <div className="item-main">
                 <p className="item-name">{m.name}</p>
@@ -241,9 +242,6 @@ function MedicationsBlock({ meds }) {
                 <p className={'item-info-value tone-' + valueTone}>{fmtRelativeDate(nextDoseDate)}</p>
               </div>
               <button className="item-action item-action-amber" type="button">Give dose</button>
-              <button className="item-dots" type="button" aria-label="More options">
-                <Dots size={14} />
-              </button>
             </li>
           );
         })}
@@ -258,6 +256,27 @@ function MedicationsBlock({ meds }) {
 
 /* ---------- Vaccines ---------- */
 
+function vaxStatusInfo(v) {
+  if (!v.lastDate) {
+    return { topText: 'No record', topTone: 'gray', dateText: null };
+  }
+  if (v.status === 'overdue') {
+    return { topText: 'Overdue', topTone: 'red', dateText: fmtFullDate(parseDate(v.nextDate)) };
+  }
+  if (v.status === 'soon') {
+    return {
+      topText: v.diff === 1 ? 'In 1 day' : `In ${v.diff} days`,
+      topTone: 'amber',
+      dateText: fmtFullDate(parseDate(v.nextDate)),
+    };
+  }
+  return {
+    topText: 'Up to date',
+    topTone: 'green',
+    dateText: fmtFullDate(parseDate(v.nextDate)),
+  };
+}
+
 function VaccinesBlock({ vaccines }) {
   return (
     <div className="health-block health-block-vax">
@@ -271,29 +290,17 @@ function VaccinesBlock({ vaccines }) {
       <ul className="block-list">
         {vaccines.map((v) => {
           const tone = TONE[v.status];
-          const valueTone = v.status === 'overdue' ? 'red' : '';
+          const info = vaxStatusInfo(v);
           return (
-            <li key={v.id} className="block-row vax-block-row">
+            <li key={v.id} className="block-row vax-row">
               <span className={'item-icon item-icon-' + tone}>{vaxIcon(v.status)}</span>
               <div className="item-main">
                 <p className="item-name">{v.name}</p>
                 <p className="item-sub">{v.description}</p>
               </div>
-              <div className="item-info">
-                {v.lastDate ? (
-                  <>
-                    <p className="item-info-label">{v.status === 'overdue' ? 'Was due' : 'Due'}</p>
-                    <p className={'item-info-value tone-' + valueTone}>
-                      {fmtFullDate(parseDate(v.nextDate))}
-                    </p>
-                  </>
-                ) : (
-                  <p className="item-info-value item-empty">No record</p>
-                )}
-              </div>
-              <div className={'item-status item-status-' + tone}>
-                <span className="status-dot" />
-                {STATUS_LABEL[v.status]}
+              <div className="vax-status-info">
+                <p className={'vax-status-top tone-' + info.topTone}>{info.topText}</p>
+                {info.dateText && <p className="vax-status-date">{info.dateText}</p>}
               </div>
               <button className={'item-action item-action-' + tone} type="button">
                 {VAX_ACTION[v.status]}
@@ -307,6 +314,38 @@ function VaccinesBlock({ vaccines }) {
       </ul>
       <button className="block-link block-link-green" type="button">
         <span><CalendarIcon size={14} /> View vaccine calendar</span>
+        <ChevronRight size={14} />
+      </button>
+    </div>
+  );
+}
+
+/* ---------- Nutrition ---------- */
+
+function NutritionBlock({ nutrition }) {
+  return (
+    <div className="health-block health-block-nutrition">
+      <header className="block-head">
+        <span className="block-icon block-icon-green"><Bowl size={14} /></span>
+        <h3 className="block-title">Nutrition</h3>
+        <button className="btn-secondary card-action" type="button">Edit</button>
+      </header>
+      <div className="nutrition-grid">
+        <div>
+          <p className="nutrition-label">Food type</p>
+          <p className="nutrition-value">{nutrition.foodType}</p>
+        </div>
+        <div>
+          <p className="nutrition-label">Amount</p>
+          <p className="nutrition-value">{nutrition.amount}</p>
+        </div>
+        <div>
+          <p className="nutrition-label">Treats</p>
+          <p className="nutrition-value">{nutrition.treats}</p>
+        </div>
+      </div>
+      <button className="block-link block-link-amber nutrition-link" type="button">
+        <span>View feeding history</span>
         <ChevronRight size={14} />
       </button>
     </div>
@@ -337,20 +376,10 @@ function WeightBlock() {
     ? Math.max(1, Math.round(daysBetween(parseDate(prev.date), parseDate(latest.date)) / 7))
     : 0;
 
-  const verdict = combineStatus(
-    assessWeight(latest.kg, PET_PROFILE.weightRange),
-    assessTrend(weights),
-  );
-  const verdictDot = verdict.status === 'ok' ? 'green' : verdict.status === 'warn' ? 'amber' : 'red';
-  const verdictLabel =
-    verdict.status === 'ok' ? 'Healthy range' :
-    verdict.status === 'warn' ? 'Watch trend' :
-    'Outside range';
-
   return (
     <div className="health-block health-block-weight">
       <header className="block-head">
-        <span className="block-icon block-icon-green"><WeightIcon size={14} /></span>
+        <span className="block-icon block-icon-green"><CalendarIcon size={14} /></span>
         <h3 className="block-title">Weight</h3>
         <button className="btn-secondary card-action" type="button">
           <Plus size={13} /> Add weight
@@ -358,7 +387,10 @@ function WeightBlock() {
       </header>
       <div className="weight-content">
         <div className="weight-stats">
-          <span className="weight-big">{latest.kg.toFixed(1)}<small>kg</small></span>
+          <div>
+            <span className="weight-big">{latest.kg.toFixed(1)}</span>
+            <span className="weight-big-unit">kg</span>
+          </div>
           {prev && (
             <div className="weight-delta-block">
               <span className={'weight-delta ' + (delta > 0 ? 'up' : delta < 0 ? 'down' : 'flat')}>
@@ -368,10 +400,10 @@ function WeightBlock() {
             </div>
           )}
           <div className="weight-range-info">
-            <span className={'status-dot tone-' + verdictDot} />
-            <strong>{verdictLabel}</strong>
-            <span className="weight-range-meta">{PET_PROFILE.weightRange.min}–{PET_PROFILE.weightRange.max} kg</span>
+            <span className="status-dot tone-green" />
+            <strong>Healthy range</strong>
           </div>
+          <p className="weight-range-meta">{PET_PROFILE.weightRange.min}–{PET_PROFILE.weightRange.max} kg</p>
         </div>
         <div className="weight-chart-col">
           <WeightChart entries={filtered} range={PET_PROFILE.weightRange} />
@@ -414,12 +446,12 @@ function computeYAxis(dataMin, dataMax, range) {
 function WeightChart({ entries, range }) {
   const [hoverIdx, setHoverIdx] = useState(null);
 
-  const W = 600, H = 200;
-  const padL = 32, padR = 32, padT = 18, padB = 28;
+  const W = 500, H = 140;
+  const padL = 26, padR = 30, padT = 12, padB = 22;
 
   const n = entries.length;
   if (n === 0) {
-    return <div className="weight-chart-wrap weight-chart-empty"><p>No weight entries in this period.</p></div>;
+    return <div className="weight-chart-wrap weight-chart-empty"><p>No entries.</p></div>;
   }
 
   const points = entries.map((e) => ({
@@ -491,15 +523,15 @@ function WeightChart({ entries, range }) {
         {showBand && (
           <>
             <line x1={padL} x2={W - padR} y1={bandTop}    y2={bandTop}
-                  stroke="#10b981" strokeDasharray="3 3" strokeOpacity="0.6" />
+                  stroke="#10b981" strokeDasharray="3 3" strokeOpacity="0.55" />
             <line x1={padL} x2={W - padR} y1={bandBottom} y2={bandBottom}
-                  stroke="#10b981" strokeDasharray="3 3" strokeOpacity="0.6" />
+                  stroke="#10b981" strokeDasharray="3 3" strokeOpacity="0.55" />
           </>
         )}
 
         {yTicks.map((v) => (
-          <text key={v} x={padL - 8} y={y(v) + 3.5}
-                fontSize="10" fill="#9aa0a8" textAnchor="end">{v}</text>
+          <text key={v} x={padL - 6} y={y(v) + 3.5}
+                fontSize="9" fill="#9aa0a8" textAnchor="end">{v}</text>
         ))}
 
         {n > 1 && <path d={areaPath} fill="url(#wgrad)" />}
@@ -509,18 +541,18 @@ function WeightChart({ entries, range }) {
         )}
 
         {points.map((p, i) => (
-          <circle key={i} cx={xs[i]} cy={ys[i]} r={i === last ? 4.5 : 2.5}
+          <circle key={i} cx={xs[i]} cy={ys[i]} r={i === last ? 4 : 2.2}
                   fill="#111418" stroke={i === last ? '#fff' : 'none'}
                   strokeWidth={i === last ? 2 : 0} />
         ))}
 
-        <text x={xs[last] + 8} y={ys[last] + 4} fontSize="12" fontWeight="700"
+        <text x={xs[last] + 7} y={ys[last] + 4} fontSize="11" fontWeight="700"
               fill="#111418" textAnchor="start">
           {points[last].kg.toFixed(1)}
         </text>
 
         {monthTicks.map((tick, i) => (
-          <text key={i} x={x(tick.t)} y={H - 8} fontSize="10" fill="#9aa0a8"
+          <text key={i} x={x(tick.t)} y={H - 6} fontSize="9" fill="#9aa0a8"
                 textAnchor={i === 0 ? 'start' : i === monthTicks.length - 1 ? 'end' : 'middle'}>
             {tick.label}
           </text>
@@ -540,7 +572,7 @@ function WeightChart({ entries, range }) {
           <g pointerEvents="none">
             <line x1={xs[hoverIdx]} y1={padT} x2={xs[hoverIdx]} y2={H - padB}
                   stroke="#111418" strokeOpacity="0.18" />
-            <circle cx={xs[hoverIdx]} cy={ys[hoverIdx]} r="5.5"
+            <circle cx={xs[hoverIdx]} cy={ys[hoverIdx]} r="5"
                     fill="#111418" stroke="#fff" strokeWidth="2.5" />
           </g>
         )}
@@ -549,9 +581,63 @@ function WeightChart({ entries, range }) {
       {hoverIdx !== null && (
         <div className="weight-tooltip" style={{ left: `${(xs[hoverIdx] / W) * 100}%` }}>
           <strong>{points[hoverIdx].kg.toFixed(1)} kg</strong>
-          <span>{fmtTooltip(points[hoverIdx].date)}</span>
+          <span>{fmtFullDate(points[hoverIdx].date)}</span>
         </div>
       )}
     </div>
+  );
+}
+
+/* ---------- Insights ---------- */
+
+function InsightsBlock() {
+  return (
+    <div className="health-block health-block-insights">
+      <header className="block-head">
+        <span className="block-icon block-icon-indigo"><Sparkle size={14} /></span>
+        <h3 className="block-title">Insights</h3>
+      </header>
+      <div className="insights-summary">
+        <span className="insights-summary-icon"><Sparkle size={14} /></span>
+        <p>{PET_INSIGHTS.summary}</p>
+      </div>
+      <div className="insights-grid">
+        <div className="insights-item">
+          <span className="insights-icon insights-icon-slate"><Scale size={16} /></span>
+          <div>
+            <p className="insights-item-title">Weight trend</p>
+            <p className="insights-item-status">{PET_INSIGHTS.weight.status}</p>
+            <p className="insights-item-sub">{PET_INSIGHTS.weight.sub}</p>
+          </div>
+        </div>
+        <div className="insights-item">
+          <span className="insights-icon insights-icon-mint"><Shoe size={16} /></span>
+          <div>
+            <p className="insights-item-title">Activity</p>
+            <p className="insights-item-status">{PET_INSIGHTS.activity.status}</p>
+            <p className="insights-item-sub">{PET_INSIGHTS.activity.sub}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- Disclaimer ---------- */
+
+function Disclaimer() {
+  return (
+    <>
+      <div className="health-disclaimer-block">
+        <span className="disclaimer-info"><InfoIcon size={14} /></span>
+        <p className="disclaimer-main">
+          Regular check-ups, vaccinations, proper nutrition, and exercise are key to a long, healthy life.
+        </p>
+        <span className="disclaimer-emoji" aria-hidden="true">🐶 🐱</span>
+      </div>
+      <p className="health-disclaimer-fine">
+        This information is for reference only. Always consult your veterinarian.
+      </p>
+    </>
   );
 }
