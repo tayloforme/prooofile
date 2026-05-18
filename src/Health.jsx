@@ -48,7 +48,7 @@ export default function Health() {
         <div className="health-section-head">
           <h3>Weight</h3>
           <button className="btn-secondary" type="button">
-            <Plus size={13} /> Log weight
+            <Plus size={13} /> Add weight
           </button>
         </div>
 
@@ -103,8 +103,8 @@ export default function Health() {
 function WeightChart({ entries, range }) {
   const [hoverIdx, setHoverIdx] = useState(null);
 
-  const W = 900, H = 130;
-  const padL = 12, padR = 56, padT = 22, padB = 22;
+  const W = 900, H = 170;
+  const padL = 12, padR = 12, padT = 24, padB = 22;
 
   const points = entries.map((e) => ({
     t: parseDate(e.date).getTime(),
@@ -118,7 +118,7 @@ function WeightChart({ entries, range }) {
 
   const dataMin = Math.min(...points.map((p) => p.kg));
   const dataMax = Math.max(...points.map((p) => p.kg));
-  const yPad   = Math.max(0.5, (dataMax - dataMin) * 0.5);
+  const yPad   = Math.max(0.25, (dataMax - dataMin) * 0.18);
   const minY   = dataMin - yPad;
   const maxY   = dataMax + yPad;
 
@@ -147,8 +147,6 @@ function WeightChart({ entries, range }) {
 
   const showMax = range.max >= minY && range.max <= maxY;
   const showMin = range.min >= minY && range.min <= maxY;
-  const maxAbove = range.max > maxY;
-  const minBelow = range.min < minY;
 
   const monthTicks = [];
   let prevM = -1;
@@ -178,7 +176,7 @@ function WeightChart({ entries, range }) {
           <g>
             <line x1={padL} y1={y(range.max)} x2={W - padR} y2={y(range.max)}
                   stroke="#cbd2da" strokeDasharray="2 4" strokeWidth="1" />
-            <text x={W - padR + 6} y={y(range.max) + 3.5} fontSize="10" fill="#9aa0a8">
+            <text x={W - padR - 2} y={y(range.max) - 4} textAnchor="end" fontSize="10" fill="#9aa0a8">
               max {range.max}
             </text>
           </g>
@@ -187,16 +185,10 @@ function WeightChart({ entries, range }) {
           <g>
             <line x1={padL} y1={y(range.min)} x2={W - padR} y2={y(range.min)}
                   stroke="#cbd2da" strokeDasharray="2 4" strokeWidth="1" />
-            <text x={W - padR + 6} y={y(range.min) + 3.5} fontSize="10" fill="#9aa0a8">
+            <text x={W - padR - 2} y={y(range.min) + 12} textAnchor="end" fontSize="10" fill="#9aa0a8">
               min {range.min}
             </text>
           </g>
-        )}
-        {maxAbove && (
-          <text x={W - padR + 6} y={padT - 6} fontSize="10" fill="#9aa0a8">↑ max {range.max}</text>
-        )}
-        {minBelow && (
-          <text x={W - padR + 6} y={H - padB + 4} fontSize="10" fill="#9aa0a8">↓ min {range.min}</text>
         )}
 
         <path d={areaPath} fill="url(#wgrad)" />
@@ -218,7 +210,7 @@ function WeightChart({ entries, range }) {
 
         {monthTicks.map((tick, i) => (
           <text key={i} x={x(tick.t)} y={H - 5} fontSize="10" fill="#9aa0a8"
-                textAnchor="middle">
+                textAnchor={i === 0 ? 'start' : i === monthTicks.length - 1 ? 'end' : 'middle'}>
             {tick.label}
           </text>
         ))}
