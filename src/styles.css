@@ -527,8 +527,9 @@ ul { list-style: none; }
   display: flex;
   flex-direction: column;
   gap: 1px;
-  min-width: 0;
+  min-width: 96px;
   white-space: nowrap;
+  text-align: right;
 }
 .vax-status-top {
   font-size: 13px;
