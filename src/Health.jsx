@@ -294,6 +294,9 @@ function VaccinesBlock({ vaccines }) {
               <button className={'item-action item-action-' + tone} type="button">
                 {VAX_ACTION[v.status]}
               </button>
+              <button className="item-chev" type="button" aria-label="Details">
+                <ChevronRight size={14} />
+              </button>
             </li>
           );
         })}
