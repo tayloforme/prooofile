@@ -8,10 +8,8 @@ import { Plus, ChevronDown, Dots } from './icons.jsx';
 import { assessWeight, assessTrend, combineStatus } from './health.js';
 
 const MONTH = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const fmtShort = (d) => `${MONTH[d.getMonth()]} ${d.getDate()}`;
 const fmtMonthYear = (d) => `${MONTH[d.getMonth()]} ${String(d.getFullYear()).slice(2)}`;
-
-const RECENT_CHIPS = 4;
+const fmtTooltip   = (d) => `${MONTH[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
 
 const STATUS_LABEL = {
   ok:       'Up to date',
@@ -37,12 +35,7 @@ export default function Health() {
     assessTrend(weights),
   );
 
-  const [showAllWeights, setShowAllWeights] = useState(false);
-  const [showPastMeds,   setShowPastMeds]   = useState(false);
-
-  const chipEntries = showAllWeights
-    ? weights.slice().reverse()
-    : weights.slice(-RECENT_CHIPS).reverse();
+  const [showPastMeds, setShowPastMeds] = useState(false);
 
   return (
     <section className="health-card">
@@ -60,39 +53,22 @@ export default function Health() {
         </div>
 
         <div className="weight-row">
-          <div className="weight-now">
-            <span className="weight-big">
-              {latest.kg.toFixed(1)} <small>kg</small>
+          <span className="weight-big">
+            {latest.kg.toFixed(1)}<small>kg</small>
+          </span>
+          {prev && (
+            <span className={'weight-delta ' + (delta > 0 ? 'up' : delta < 0 ? 'down' : 'flat')}>
+              {delta > 0 ? '↑' : delta < 0 ? '↓' : '→'} {Math.abs(delta).toFixed(1)} kg
+              <span className="weight-delta-meta"> · {deltaWeeks} {deltaWeeks === 1 ? 'week' : 'weeks'}</span>
             </span>
-            {prev && (
-              <span className={'weight-delta ' + (delta > 0 ? 'up' : delta < 0 ? 'down' : 'flat')}>
-                {delta > 0 ? '↑' : delta < 0 ? '↓' : '→'} {Math.abs(delta).toFixed(1)} kg
-                <span className="weight-delta-meta">
-                  · in {deltaWeeks} {deltaWeeks === 1 ? 'week' : 'weeks'}
-                </span>
-              </span>
-            )}
-          </div>
-          <div className={'weight-verdict status-' + verdict.status}>
+          )}
+          <span className={'weight-verdict status-' + verdict.status}>
             <span className="status-dot" />
             <span>{verdict.message}</span>
-          </div>
+          </span>
         </div>
 
         <WeightChart entries={weights} range={PET_PROFILE.weightRange} />
-
-        <div className="weight-chips">
-          {chipEntries.map((w) => (
-            <span key={w.id} className="weight-chip">
-              {fmtShort(parseDate(w.date))} · <b>{w.kg.toFixed(1)}</b>
-            </span>
-          ))}
-          {weights.length > RECENT_CHIPS && (
-            <button className="link-btn" type="button" onClick={() => setShowAllWeights((v) => !v)}>
-              {showAllWeights ? 'Show less' : `View all (${weights.length})`}
-            </button>
-          )}
-        </div>
       </div>
 
       {/* Vaccines */}
@@ -125,68 +101,158 @@ export default function Health() {
 }
 
 function WeightChart({ entries, range }) {
-  const W = 600, H = 140;
-  const padX = 8, padTop = 14, padBottom = 22;
+  const [hoverIdx, setHoverIdx] = useState(null);
 
-  const points = entries.map((e) => ({ t: parseDate(e.date).getTime(), kg: e.kg }));
+  const W = 900, H = 130;
+  const padL = 12, padR = 56, padT = 22, padB = 22;
+
+  const points = entries.map((e) => ({
+    t: parseDate(e.date).getTime(),
+    kg: e.kg,
+    date: parseDate(e.date),
+  }));
+  const n = points.length;
   const minT = points[0].t;
-  const maxT = points[points.length - 1].t;
+  const maxT = points[n - 1].t;
   const span = Math.max(1, maxT - minT);
 
-  const minY = Math.min(range.min - 1, ...points.map((p) => p.kg));
-  const maxY = Math.max(range.max + 1, ...points.map((p) => p.kg));
+  const dataMin = Math.min(...points.map((p) => p.kg));
+  const dataMax = Math.max(...points.map((p) => p.kg));
+  const yPad   = Math.max(0.5, (dataMax - dataMin) * 0.5);
+  const minY   = dataMin - yPad;
+  const maxY   = dataMax + yPad;
 
-  const x = (t)  => padX + ((t - minT) / span) * (W - 2 * padX);
-  const y = (kg) => padTop + (1 - (kg - minY) / (maxY - minY)) * (H - padTop - padBottom);
+  const x = (t)  => padL + ((t - minT) / span) * (W - padL - padR);
+  const y = (kg) => padT + (1 - (kg - minY) / (maxY - minY)) * (H - padT - padB);
 
-  const bandTop    = y(range.max);
-  const bandBottom = y(range.min);
+  const xs = points.map((p) => x(p.t));
+  const ys = points.map((p) => y(p.kg));
 
-  const linePath = points
-    .map((p, i) => `${i === 0 ? 'M' : 'L'} ${x(p.t).toFixed(1)} ${y(p.kg).toFixed(1)}`)
-    .join(' ');
+  // Monotone cubic tangents
+  const m = [];
+  for (let i = 0; i < n - 1; i++) m.push((ys[i+1] - ys[i]) / (xs[i+1] - xs[i]));
+  const d = new Array(n);
+  d[0] = m[0];
+  d[n-1] = m[n-2];
+  for (let i = 1; i < n - 1; i++) {
+    d[i] = m[i-1] * m[i] <= 0 ? 0 : (m[i-1] + m[i]) / 2;
+  }
 
-  const TICKS = 4;
-  const labels = Array.from({ length: TICKS }, (_, i) => {
-    const t = minT + (span * i) / (TICKS - 1);
-    return { t, label: fmtMonthYear(new Date(t)) };
+  let linePath = `M ${xs[0].toFixed(1)} ${ys[0].toFixed(1)}`;
+  for (let i = 0; i < n - 1; i++) {
+    const dx = (xs[i+1] - xs[i]) / 3;
+    linePath += ` C ${(xs[i]+dx).toFixed(1)} ${(ys[i]+d[i]*dx).toFixed(1)}, ${(xs[i+1]-dx).toFixed(1)} ${(ys[i+1]-d[i+1]*dx).toFixed(1)}, ${xs[i+1].toFixed(1)} ${ys[i+1].toFixed(1)}`;
+  }
+  const areaPath = `${linePath} L ${xs[n-1].toFixed(1)} ${H - padB} L ${xs[0].toFixed(1)} ${H - padB} Z`;
+
+  const showMax = range.max >= minY && range.max <= maxY;
+  const showMin = range.min >= minY && range.min <= maxY;
+  const maxAbove = range.max > maxY;
+  const minBelow = range.min < minY;
+
+  const monthTicks = [];
+  let prevM = -1;
+  points.forEach((p) => {
+    const mn = p.date.getMonth();
+    if (mn !== prevM) { monthTicks.push({ t: p.t, label: MONTH[mn] }); prevM = mn; }
   });
 
+  const last = n - 1;
+
   return (
-    <svg className="weight-chart" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none">
-      <rect
-        x={padX} y={bandTop}
-        width={W - 2 * padX} height={Math.max(0, bandBottom - bandTop)}
-        fill="#10b981" opacity="0.08"
-      />
-      <line x1={padX} y1={bandTop}    x2={W - padX} y2={bandTop}
-            stroke="#10b981" strokeOpacity="0.35" strokeDasharray="3 3" />
-      <line x1={padX} y1={bandBottom} x2={W - padX} y2={bandBottom}
-            stroke="#10b981" strokeOpacity="0.35" strokeDasharray="3 3" />
+    <div className="weight-chart-wrap">
+      <svg
+        className="weight-chart"
+        viewBox={`0 0 ${W} ${H}`}
+        preserveAspectRatio="none"
+        onMouseLeave={() => setHoverIdx(null)}
+      >
+        <defs>
+          <linearGradient id="wgrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stopColor="#111418" stopOpacity="0.14" />
+            <stop offset="100%" stopColor="#111418" stopOpacity="0" />
+          </linearGradient>
+        </defs>
 
-      <path d={linePath} fill="none" stroke="#111418" strokeWidth="1.5"
-            strokeLinejoin="round" strokeLinecap="round" />
-      {points.map((p, i) => (
-        <circle key={i} cx={x(p.t)} cy={y(p.kg)} r="3" fill="#111418" />
-      ))}
+        {showMax && (
+          <g>
+            <line x1={padL} y1={y(range.max)} x2={W - padR} y2={y(range.max)}
+                  stroke="#cbd2da" strokeDasharray="2 4" strokeWidth="1" />
+            <text x={W - padR + 6} y={y(range.max) + 3.5} fontSize="10" fill="#9aa0a8">
+              max {range.max}
+            </text>
+          </g>
+        )}
+        {showMin && (
+          <g>
+            <line x1={padL} y1={y(range.min)} x2={W - padR} y2={y(range.min)}
+                  stroke="#cbd2da" strokeDasharray="2 4" strokeWidth="1" />
+            <text x={W - padR + 6} y={y(range.min) + 3.5} fontSize="10" fill="#9aa0a8">
+              min {range.min}
+            </text>
+          </g>
+        )}
+        {maxAbove && (
+          <text x={W - padR + 6} y={padT - 6} fontSize="10" fill="#9aa0a8">↑ max {range.max}</text>
+        )}
+        {minBelow && (
+          <text x={W - padR + 6} y={H - padB + 4} fontSize="10" fill="#9aa0a8">↓ min {range.min}</text>
+        )}
 
-      <text x={W - padX - 2} y={bandTop - 4} textAnchor="end"
-            fontSize="10" fill="#10b981" fillOpacity="0.9">
-        {range.max} kg
-      </text>
-      <text x={W - padX - 2} y={bandBottom + 12} textAnchor="end"
-            fontSize="10" fill="#10b981" fillOpacity="0.9">
-        {range.min} kg
-      </text>
+        <path d={areaPath} fill="url(#wgrad)" />
+        <path d={linePath} fill="none" stroke="#111418" strokeWidth="2"
+              strokeLinejoin="round" strokeLinecap="round" />
 
-      {labels.map((l, i) => (
-        <text key={i} x={x(l.t)} y={H - 6}
-              textAnchor={i === 0 ? 'start' : i === labels.length - 1 ? 'end' : 'middle'}
-              fontSize="10" fill="#9aa0a8">
-          {l.label}
+        {points.map((p, i) => (
+          <circle key={i} cx={xs[i]} cy={ys[i]}
+                  r={i === last ? 4.5 : 2.5}
+                  fill="#111418"
+                  stroke={i === last ? '#fff' : 'none'}
+                  strokeWidth={i === last ? 2 : 0} />
+        ))}
+
+        <text x={xs[last]} y={ys[last] - 12} fontSize="11" fontWeight="700"
+              fill="#111418" textAnchor="middle">
+          {points[last].kg.toFixed(1)}
         </text>
-      ))}
-    </svg>
+
+        {monthTicks.map((tick, i) => (
+          <text key={i} x={x(tick.t)} y={H - 5} fontSize="10" fill="#9aa0a8"
+                textAnchor="middle">
+            {tick.label}
+          </text>
+        ))}
+
+        {points.map((p, i) => {
+          const left  = i === 0     ? 0 : (xs[i-1] + xs[i]) / 2;
+          const right = i === n - 1 ? W : (xs[i] + xs[i+1]) / 2;
+          return (
+            <rect key={i} x={left} y={0} width={right - left} height={H}
+                  fill="transparent" style={{ cursor: 'pointer' }}
+                  onMouseEnter={() => setHoverIdx(i)} />
+          );
+        })}
+
+        {hoverIdx !== null && (
+          <g pointerEvents="none">
+            <line x1={xs[hoverIdx]} y1={padT} x2={xs[hoverIdx]} y2={H - padB}
+                  stroke="#111418" strokeOpacity="0.18" />
+            <circle cx={xs[hoverIdx]} cy={ys[hoverIdx]} r="5.5"
+                    fill="#111418" stroke="#fff" strokeWidth="2.5" />
+          </g>
+        )}
+      </svg>
+
+      {hoverIdx !== null && (
+        <div
+          className="weight-tooltip"
+          style={{ left: `${(xs[hoverIdx] / W) * 100}%` }}
+        >
+          <strong>{points[hoverIdx].kg.toFixed(1)} kg</strong>
+          <span>{fmtTooltip(points[hoverIdx].date)}</span>
+        </div>
+      )}
+    </div>
   );
 }
 
