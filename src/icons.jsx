@@ -49,6 +49,67 @@ export const TrashIcon = (p) => (
   </Svg>
 );
 
+export const Heart = (p) => (
+  <Svg {...p}>
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+  </Svg>
+);
+
+export const Shield = (p) => (
+  <Svg {...p}>
+    <path d="M12 22s8-3 8-10V5l-8-3-8 3v7c0 7 8 10 8 10z" />
+    <path d="M9 12l2 2 4-4" />
+  </Svg>
+);
+
+export const Pill = (p) => (
+  <Svg {...p}>
+    <rect x="2" y="9" width="20" height="6" rx="3" />
+    <line x1="12" y1="9" x2="12" y2="15" />
+  </Svg>
+);
+
+export const Star = (p) => (
+  <Svg stroke={1.6} {...p}>
+    <polygon points="12 2 15 8.5 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 9 8.5 12 2" />
+  </Svg>
+);
+
+export const Bulb = (p) => (
+  <Svg {...p}>
+    <path d="M9 18h6M10 22h4" />
+    <path d="M12 2a7 7 0 0 0-4 12.7c.6.6 1 1.4 1 2.3v1h6v-1c0-.9.4-1.7 1-2.3A7 7 0 0 0 12 2z" />
+  </Svg>
+);
+
+export const CheckCircle = (p) => (
+  <Svg {...p}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M8 12l3 3 5-6" />
+  </Svg>
+);
+
+export const AlertCircle = (p) => (
+  <Svg {...p}>
+    <circle cx="12" cy="12" r="9" />
+    <line x1="12" y1="8" x2="12" y2="13" />
+    <line x1="12" y1="16.5" x2="12" y2="16.5" />
+  </Svg>
+);
+
+export const Activity = (p) => (
+  <Svg {...p}>
+    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+  </Svg>
+);
+
+export const Bowl = (p) => (
+  <Svg {...p}>
+    <path d="M3 11h18a8 8 0 0 1-8 8h-2a8 8 0 0 1-8-8z" />
+    <path d="M7 7c0-1.5 2-3 5-3s5 1.5 5 3" />
+  </Svg>
+);
+
 export function Dots({ size = 16 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">

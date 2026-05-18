@@ -1,10 +1,12 @@
 export const TODAY = new Date(2026, 4, 17);
 
 export const PET_PROFILE = {
+  name: 'Bella',
   breed: 'Golden Retriever',
   ageYears: 4,
   sex: 'Female',
   weightRange: { min: 25, max: 34, unit: 'kg' },
+  photo: 'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=400&h=400&q=80',
 };
 
 export const INITIAL_WEIGHTS = [

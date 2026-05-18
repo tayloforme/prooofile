@@ -146,7 +146,20 @@ ul { list-style: none; }
 .icon-btn:active { transform: translateY(0.5px); }
 .icon-btn-sm { width: 30px; height: 30px; border-radius: 8px; }
 
-/* ---------- Health card ---------- */
+/* ---------- Health: section label ---------- */
+.page-section-label {
+  width: 100%;
+  max-width: 960px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0 4px;
+  margin-bottom: -10px;
+}
+
+/* ---------- Health card (generic, used by Weight/Vaccines/Medications) ---------- */
 .health-card {
   width: 100%;
   max-width: 960px;
@@ -154,41 +167,36 @@ ul { list-style: none; }
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  padding: 22px 28px 24px;
+  padding: 18px 22px 20px;
 }
-.health-head {
-  display: flex;
+
+.card-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
 }
-.health-title {
-  font-size: 20px;
+.card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+}
+.card-icon-green { background: #d1fae5; color: #059669; }
+.card-icon-blue  { background: #dbeafe; color: #2563eb; }
+.card-icon-amber { background: #fef3c7; color: #b45309; }
+
+.card-title {
+  font-size: 17px;
   font-weight: 700;
   letter-spacing: -0.01em;
 }
-.health-section {
-  padding: 18px 0;
-  border-top: 1px solid var(--border);
-}
-.health-section:first-of-type {
-  border-top: 0;
-  padding-top: 14px;
-}
-.health-section-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 14px;
-}
-.health-section-head h3 {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
+.card-action { padding: 8px 14px; font-size: 13px; }
 
-/* Status dots (shared inside Health) */
+/* Status dots (shared) */
 .status-dot {
   width: 8px;
   height: 8px;
@@ -203,63 +211,96 @@ ul { list-style: none; }
 .status-overdue  .status-dot { background: #ef4444; }
 .status-unknown  .status-dot { background: var(--text-soft); }
 
-/* Weight */
-.weight-row {
+/* ---------- Weight: inset panel ---------- */
+.weight-panel {
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px 26px;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 32px;
+  align-items: center;
+}
+
+.weight-stats {
   display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 4px 16px;
-  margin-bottom: 8px;
+  flex-direction: column;
+  gap: 14px;
 }
 .weight-big {
-  font-size: 30px;
+  font-size: 36px;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
   line-height: 1;
 }
 .weight-big small {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   color: var(--text-muted);
   margin-left: 4px;
 }
+
+.weight-delta-block {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
 .weight-delta {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
 }
 .weight-delta.up   { color: #d97706; }
 .weight-delta.down { color: #0891b2; }
 .weight-delta-meta {
-  color: var(--text-soft);
-  font-weight: 400;
+  font-size: 12px;
+  color: var(--text-muted);
 }
 
-.weight-verdict {
+.weight-pill {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  font-size: 13px;
-  color: var(--text-muted);
-  margin-left: auto;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  align-self: flex-start;
+}
+.weight-pill-ok    { background: #d1fae5; color: #047857; }
+.weight-pill-warn  { background: #fef3c7; color: #b45309; }
+.weight-pill-alert { background: #fee2e2; color: #b91c1c; }
+
+.weight-chart-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .weight-chart-wrap {
   position: relative;
-  margin: 12px 0 4px;
 }
 .weight-chart {
   display: block;
   width: 100%;
-  height: 170px;
+  height: 200px;
   overflow: visible;
+}
+.weight-chart-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: var(--text-soft);
+  font-size: 13px;
 }
 
 .weight-tooltip {
   position: absolute;
   bottom: 100%;
   transform: translateX(-50%);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   background: var(--text);
   color: #fff;
   padding: 6px 10px;
@@ -271,18 +312,144 @@ ul { list-style: none; }
   white-space: nowrap;
   pointer-events: none;
   box-shadow: 0 6px 16px rgba(17, 20, 24, 0.18);
+  z-index: 2;
 }
-.weight-tooltip strong {
+.weight-tooltip strong { font-weight: 600; font-size: 13px; }
+.weight-tooltip span   { font-size: 11px; color: rgba(255, 255, 255, 0.65); margin-top: 1px; }
+
+/* Range tabs */
+.range-tabs {
+  display: flex;
+  align-self: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 2px;
+}
+.range-tab {
+  background: none;
+  border: 0;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.range-tab:hover { color: var(--text); }
+.range-tab.is-active {
+  background: #d1fae5;
+  color: #047857;
   font-weight: 600;
-  font-size: 13px;
-}
-.weight-tooltip span {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.65);
-  margin-top: 1px;
 }
 
-/* Vaccines */
+/* ---------- Weight: AI row ---------- */
+.ai-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 14px;
+}
+.ai-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid;
+}
+.ai-card-insight { background: #ecfdf5; border-color: #a7f3d0; }
+.ai-card-rec     { background: #fffbeb; border-color: #fde68a; }
+
+.ai-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: #fff;
+  flex-shrink: 0;
+}
+.ai-badge-green  { background: #10b981; }
+.ai-badge-orange { background: #f59e0b; }
+
+.ai-text { min-width: 0; }
+.ai-label {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #047857;
+  margin-bottom: 4px;
+}
+.ai-label-orange { color: #b45309; }
+.ai-msg {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.ai-pet-wrap {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+}
+.ai-pet {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+}
+.ai-pet-heart {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid #fecaca;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ef4444;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.ai-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.ai-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  background: #fff;
+  color: #b45309;
+  border: 1px solid #fde68a;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.ai-action:hover { background: #fef3c7; }
+.ai-action-filled {
+  background: #f59e0b;
+  color: #fff;
+  border-color: #f59e0b;
+}
+.ai-action-filled:hover { background: #d97706; border-color: #d97706; }
+
+/* ---------- Vaccines ---------- */
 .vax-list,
 .med-rows {
   display: flex;
@@ -301,18 +468,9 @@ ul { list-style: none; }
   border-radius: 10px;
   font-size: 13px;
 }
-.vax-name {
-  font-weight: 600;
-  color: var(--text);
-}
-.vax-dates {
-  color: var(--text-muted);
-  font-size: 12.5px;
-}
-.vax-tag {
-  color: #ef4444;
-  font-weight: 500;
-}
+.vax-name { font-weight: 600; color: var(--text); }
+.vax-dates { color: var(--text-muted); font-size: 12.5px; }
+.vax-tag { color: #ef4444; font-weight: 500; }
 .vax-row.status-soon .vax-tag { color: #d97706; }
 .vax-status {
   display: inline-flex;
@@ -322,12 +480,9 @@ ul { list-style: none; }
   color: var(--text-muted);
   white-space: nowrap;
 }
-.vax-empty {
-  color: var(--text-soft);
-  font-style: italic;
-}
+.vax-empty { color: var(--text-soft); font-style: italic; }
 
-/* Medications */
+/* ---------- Medications ---------- */
 .med-row {
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.6fr) auto auto;
@@ -339,36 +494,17 @@ ul { list-style: none; }
   border-radius: 10px;
   font-size: 13px;
 }
-.med-row .card-menu-trigger {
-  opacity: 0.5;
-  position: static;
-}
-.med-row:hover .card-menu-trigger {
-  opacity: 1;
-}
-.med-name {
-  font-weight: 600;
-  color: var(--text);
-}
-.med-meta {
-  color: var(--text-muted);
-  font-size: 12.5px;
-}
-.med-since {
-  color: var(--text-soft);
-  font-size: 12px;
-  white-space: nowrap;
-}
+.med-row .card-menu-trigger { opacity: 0.5; position: static; }
+.med-row:hover .card-menu-trigger { opacity: 1; }
+.med-name { font-weight: 600; color: var(--text); }
+.med-meta { color: var(--text-muted); font-size: 12.5px; }
+.med-since { color: var(--text-soft); font-size: 12px; white-space: nowrap; }
 .med-row.is-past .med-name { color: var(--text-muted); }
 .med-row.is-past .med-meta,
 .med-row.is-past .med-since { color: var(--text-soft); }
 
-.med-past {
-  margin-top: 10px;
-}
-.med-past .completed-toggle {
-  margin-bottom: 8px;
-}
+.med-past { margin-top: 10px; }
+.med-past .completed-toggle { margin-bottom: 8px; }
 
 /* ---------- Upcoming card ---------- */
 .upcoming-card {
