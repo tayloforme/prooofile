@@ -498,7 +498,7 @@ function WeightChart({ entries, range }) {
 
   return (
     <div className="weight-chart-wrap">
-      <svg className="weight-chart" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none"
+      <svg className="weight-chart" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid meet"
            onMouseLeave={() => setHoverIdx(null)}>
         <defs>
           <linearGradient id="wgrad" x1="0" y1="0" x2="0" y2="1">
