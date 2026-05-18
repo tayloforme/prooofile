@@ -93,7 +93,7 @@ export default function Health() {
         name: `${v.name} vaccine`,
         sub: v.description,
         dateLabel: 'Was due',
-        dateValue: `${fmtFullDate(parseDate(v.nextDate))} (Overdue)`,
+        dateValue: fmtFullDate(parseDate(v.nextDate)),
         valueTone: 'red',
         actionLabel: 'Schedule',
       });
@@ -171,7 +171,7 @@ function NeedsAttentionBlock({ items }) {
   return (
     <div className="health-block health-block-needs">
       <header className="block-head needs-head">
-        <h3 className="block-title">Today / Needs attention</h3>
+        <h3 className="block-title">Needs attention</h3>
         <span className="needs-count">{items.length}</span>
         <button className="block-link-inline" type="button">View all</button>
       </header>
@@ -189,7 +189,7 @@ function NeedsAttentionBlock({ items }) {
               <p className="item-info-label">{item.dateLabel}</p>
               <p className={'item-info-value tone-' + item.valueTone}>{item.dateValue}</p>
             </div>
-            <button className={'item-action item-action-' + item.tone} type="button">
+            <button className={'item-action item-action-filled item-action-' + item.tone} type="button">
               {item.actionLabel}
             </button>
             <button className="item-chev" type="button" aria-label="Details">
