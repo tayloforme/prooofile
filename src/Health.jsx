@@ -117,11 +117,7 @@ export default function Health() {
   return (
     <section className="health-card">
       <header className="health-main-head">
-        <span className="card-icon card-icon-green card-icon-lg"><HeartPulse size={20} /></span>
-        <div className="card-head-text">
-          <h2 className="health-main-title">Health</h2>
-          <p className="card-sub">Everything you need to keep your dog healthy and happy.</p>
-        </div>
+        <h2 className="health-main-title">Health</h2>
         <button className="btn-secondary card-action" type="button">
           <DocIcon size={14} /> Health report
         </button>
