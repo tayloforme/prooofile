@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Hero from './Hero.jsx';
+import Health from './Health.jsx';
 import Upcoming from './Upcoming.jsx';
 import { INITIAL_EVENTS } from './data.js';
 
@@ -20,6 +21,7 @@ export default function App() {
   return (
     <main className="page">
       <Hero />
+      <Health />
       <Upcoming
         events={events}
         onComplete={completeEvent}

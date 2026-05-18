@@ -146,6 +146,235 @@ ul { list-style: none; }
 .icon-btn:active { transform: translateY(0.5px); }
 .icon-btn-sm { width: 30px; height: 30px; border-radius: 8px; }
 
+/* ---------- Health card ---------- */
+.health-card {
+  width: 100%;
+  max-width: 960px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 22px 28px 24px;
+}
+.health-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.health-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.health-section {
+  padding: 18px 0;
+  border-top: 1px solid var(--border);
+}
+.health-section:first-of-type {
+  border-top: 0;
+  padding-top: 14px;
+}
+.health-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.health-section-head h3 {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Status dots (shared inside Health) */
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-soft);
+  flex-shrink: 0;
+}
+.status-ok       .status-dot { background: #10b981; }
+.status-warn     .status-dot { background: #f59e0b; }
+.status-alert    .status-dot { background: #ef4444; }
+.status-soon     .status-dot { background: #f59e0b; }
+.status-overdue  .status-dot { background: #ef4444; }
+.status-unknown  .status-dot { background: var(--text-soft); }
+
+/* Weight */
+.weight-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin-bottom: 14px;
+}
+.weight-now {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.weight-big {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.weight-big small {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-left: 2px;
+}
+.weight-delta {
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+.weight-delta.up   { color: #d97706; }
+.weight-delta.down { color: #0891b2; }
+.weight-delta-meta { color: var(--text-soft); margin-left: 2px; }
+
+.weight-verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text);
+}
+.weight-verdict.status-ok    { color: var(--text); }
+.weight-verdict.status-warn,
+.weight-verdict.status-alert { color: var(--text); }
+
+.weight-chart {
+  display: block;
+  width: 100%;
+  height: 140px;
+  margin: 6px 0 14px;
+}
+
+.weight-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.weight-chip {
+  font-size: 12px;
+  padding: 4px 9px;
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-muted);
+}
+.weight-chip b {
+  color: var(--text);
+  font-weight: 600;
+}
+.link-btn {
+  background: none;
+  border: 0;
+  color: var(--text-muted);
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.link-btn:hover {
+  color: var(--text);
+  background: var(--surface-soft);
+}
+
+/* Vaccines */
+.vax-list,
+.med-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+}
+.vax-row {
+  display: grid;
+  grid-template-columns: 140px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 13px;
+}
+.vax-name {
+  font-weight: 600;
+  color: var(--text);
+}
+.vax-dates {
+  color: var(--text-muted);
+  font-size: 12.5px;
+}
+.vax-tag {
+  color: #ef4444;
+  font-weight: 500;
+}
+.vax-row.status-soon .vax-tag { color: #d97706; }
+.vax-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.vax-empty {
+  color: var(--text-soft);
+  font-style: italic;
+}
+
+/* Medications */
+.med-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.6fr) auto auto;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 13px;
+}
+.med-row .card-menu-trigger {
+  opacity: 0.5;
+  position: static;
+}
+.med-row:hover .card-menu-trigger {
+  opacity: 1;
+}
+.med-name {
+  font-weight: 600;
+  color: var(--text);
+}
+.med-meta {
+  color: var(--text-muted);
+  font-size: 12.5px;
+}
+.med-since {
+  color: var(--text-soft);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.med-row.is-past .med-name { color: var(--text-muted); }
+.med-row.is-past .med-meta,
+.med-row.is-past .med-since { color: var(--text-soft); }
+
+.med-past {
+  margin-top: 10px;
+}
+.med-past .completed-toggle {
+  margin-bottom: 8px;
+}
+
 /* ---------- Upcoming card ---------- */
 .upcoming-card {
   width: 100%;

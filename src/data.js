@@ -1,5 +1,37 @@
 export const TODAY = new Date(2026, 4, 17);
 
+export const PET_PROFILE = {
+  breed: 'Golden Retriever',
+  ageYears: 4,
+  sex: 'Female',
+  weightRange: { min: 25, max: 34, unit: 'kg' },
+};
+
+export const INITIAL_WEIGHTS = [
+  { id: 1, date: '2025-11-20', kg: 26.8, note: '' },
+  { id: 2, date: '2025-12-18', kg: 27.1, note: 'Post-holiday weigh-in' },
+  { id: 3, date: '2026-01-15', kg: 27.3, note: '' },
+  { id: 4, date: '2026-02-14', kg: 27.4, note: '' },
+  { id: 5, date: '2026-03-12', kg: 27.5, note: '' },
+  { id: 6, date: '2026-04-10', kg: 27.7, note: '' },
+  { id: 7, date: '2026-04-26', kg: 27.7, note: '' },
+  { id: 8, date: '2026-05-10', kg: 28.0, note: '' },
+];
+
+export const INITIAL_VACCINES = [
+  { id: 1, name: 'Rabies',     lastDate: '2025-06-15', nextDate: '2026-06-15' },
+  { id: 2, name: 'DHPP',       lastDate: '2025-08-10', nextDate: '2026-08-10' },
+  { id: 3, name: 'Bordetella', lastDate: '2025-03-20', nextDate: '2026-03-20' },
+  { id: 4, name: 'Lyme',       lastDate: null,         nextDate: null },
+];
+
+export const INITIAL_MEDICATIONS = [
+  { id: 1, name: 'NexGard',           type: 'Flea & tick', dose: '1 chew monthly',  startDate: '2025-01-15', endDate: null },
+  { id: 2, name: 'Joint supplement',  type: 'Glucosamine', dose: '1 chew daily',    startDate: '2026-03-01', endDate: null },
+  { id: 3, name: 'Apoquel',           type: 'Allergy',     dose: '16 mg daily',     startDate: '2025-09-10', endDate: '2025-11-20' },
+  { id: 4, name: 'Amoxicillin',       type: 'Antibiotic',  dose: '250 mg · 2× day', startDate: '2025-12-01', endDate: '2025-12-10' },
+];
+
 export const TYPES = {
   health:     { label: 'Health',     color: '#3b82f6' },
   vaccine:    { label: 'Vaccine',    color: '#8b5cf6' },
