@@ -28,10 +28,10 @@ export const INITIAL_VACCINES = [
 ];
 
 export const INITIAL_MEDICATIONS = [
-  { id: 1, name: 'NexGard',           type: 'Flea & tick', dose: '1 chew monthly',  startDate: '2025-01-15', endDate: null },
-  { id: 2, name: 'Joint supplement',  type: 'Glucosamine', dose: '1 chew daily',    startDate: '2026-03-01', endDate: null },
-  { id: 3, name: 'Apoquel',           type: 'Allergy',     dose: '16 mg daily',     startDate: '2025-09-10', endDate: '2025-11-20' },
-  { id: 4, name: 'Amoxicillin',       type: 'Antibiotic',  dose: '250 mg · 2× day', startDate: '2025-12-01', endDate: '2025-12-10' },
+  { id: 1, name: 'NexGard',           type: 'Flea & tick', dose: '1 chew',   frequency: 'Monthly',   startDate: '2025-01-15', nextDose: '2026-05-17', endDate: null },
+  { id: 2, name: 'Joint supplement',  type: 'Glucosamine', dose: '1 chew',   frequency: 'Daily',     startDate: '2026-03-01', nextDose: '2026-05-18', endDate: null },
+  { id: 3, name: 'Apoquel',           type: 'Allergy',     dose: '16 mg',    frequency: 'Daily',     startDate: '2025-09-10', nextDose: null,         endDate: '2025-11-20' },
+  { id: 4, name: 'Amoxicillin',       type: 'Antibiotic',  dose: '250 mg',   frequency: '2× daily',  startDate: '2025-12-01', nextDose: null,         endDate: '2025-12-10' },
 ];
 
 export const TYPES = {

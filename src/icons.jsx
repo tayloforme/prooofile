@@ -110,6 +110,51 @@ export const Bowl = (p) => (
   </Svg>
 );
 
+export const HeartPulse = (p) => (
+  <Svg {...p}>
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+    <polyline points="3.5 12 8 12 10 9 13 15 15 12 20.5 12" />
+  </Svg>
+);
+
+export const DocIcon = (p) => (
+  <Svg {...p}>
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+    <polyline points="14 2 14 8 20 8" />
+    <line x1="9" y1="13" x2="15" y2="13" />
+    <line x1="9" y1="17" x2="15" y2="17" />
+  </Svg>
+);
+
+export const WeightIcon = (p) => (
+  <Svg {...p}>
+    <path d="M5 8h14l-1.5 12a2 2 0 0 1-2 1.8H8.5a2 2 0 0 1-2-1.8L5 8z" />
+    <path d="M8.5 8V6a3.5 3.5 0 0 1 7 0v2" />
+  </Svg>
+);
+
+export const InfoIcon = (p) => (
+  <Svg {...p}>
+    <circle cx="12" cy="12" r="9" />
+    <line x1="12" y1="11" x2="12" y2="16" />
+    <line x1="12" y1="7.5" x2="12" y2="8" />
+  </Svg>
+);
+
+export const Sun = (p) => (
+  <Svg {...p}>
+    <circle cx="12" cy="12" r="4" />
+    <line x1="12" y1="2" x2="12" y2="4" />
+    <line x1="12" y1="20" x2="12" y2="22" />
+    <line x1="4.93" y1="4.93" x2="6.34" y2="6.34" />
+    <line x1="17.66" y1="17.66" x2="19.07" y2="19.07" />
+    <line x1="2" y1="12" x2="4" y2="12" />
+    <line x1="20" y1="12" x2="22" y2="12" />
+    <line x1="4.93" y1="19.07" x2="6.34" y2="17.66" />
+    <line x1="17.66" y1="6.34" x2="19.07" y2="4.93" />
+  </Svg>
+);
+
 export const QuestionMark = (p) => (
   <Svg {...p}>
     <circle cx="12" cy="12" r="9" />

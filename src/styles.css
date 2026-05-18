@@ -146,7 +146,7 @@ ul { list-style: none; }
 .icon-btn:active { transform: translateY(0.5px); }
 .icon-btn-sm { width: 30px; height: 30px; border-radius: 8px; }
 
-/* ---------- Health unified card ---------- */
+/* ---------- Health card ---------- */
 .health-card {
   width: 100%;
   max-width: 960px;
@@ -154,14 +154,15 @@ ul { list-style: none; }
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  padding: 24px 28px 26px;
+  padding: 24px 28px 22px;
 }
-.health-unified .health-main-head {
+
+.health-main-head {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 14px;
-  margin-bottom: 22px;
+  margin-bottom: 18px;
 }
 .health-main-title {
   font-size: 22px;
@@ -170,30 +171,16 @@ ul { list-style: none; }
   line-height: 1.2;
 }
 
-.health-divider {
-  height: 1px;
-  background: var(--border);
-  margin: 28px -28px;
-}
-
-.health-sub-head {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
 .card-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
   flex-shrink: 0;
 }
-.card-icon-lg { width: 38px; height: 38px; border-radius: 10px; }
+.card-icon-lg { width: 42px; height: 42px; border-radius: 11px; }
 .card-icon-green { background: #d1fae5; color: #059669; }
 .card-icon-blue  { background: #dbeafe; color: #2563eb; }
 .card-icon-amber { background: #fef3c7; color: #b45309; }
@@ -203,22 +190,248 @@ ul { list-style: none; }
   display: flex;
   flex-direction: column;
 }
-.card-title {
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  line-height: 1.2;
-}
-.card-title-sm { font-size: 16px; }
 .card-sub {
   font-size: 12.5px;
   color: var(--text-muted);
   margin-top: 3px;
   line-height: 1.4;
 }
-.card-action { padding: 8px 14px; font-size: 13px; }
+.card-action {
+  padding: 8px 14px;
+  font-size: 13px;
+}
 
-/* Status dots (shared) */
+/* ---------- Status summary ---------- */
+.status-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.status-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  transition: filter 0.15s, transform 0.05s;
+}
+.status-card:hover  { filter: brightness(0.985); }
+.status-card:active { transform: translateY(0.5px); }
+.status-card-overdue { background: #fff1f1; border-color: #fecaca; }
+.status-card-soon    { background: #fff5e6; border-color: #fed7aa; }
+.status-card-ok      { background: #ecfdf5; border-color: #a7f3d0; }
+.status-card-unknown { background: #f6f7f8; border-color: #e5e7eb; }
+
+.status-card-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: #fff;
+  flex-shrink: 0;
+}
+.status-card-overdue .status-card-badge { background: #ef4444; }
+.status-card-soon    .status-card-badge { background: #f59e0b; }
+.status-card-ok      .status-card-badge { background: #10b981; }
+.status-card-unknown .status-card-badge { background: #9ca3af; }
+
+.status-card-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+  min-width: 0;
+}
+.status-card-text strong {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+.status-card-label {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+.status-card-overdue .status-card-label { color: #b91c1c; }
+.status-card-soon    .status-card-label { color: #c2410c; }
+.status-card-ok      .status-card-label { color: #047857; }
+.status-card-unknown .status-card-label { color: var(--text-muted); }
+.status-card-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.status-card-chev { color: var(--text-soft); flex-shrink: 0; }
+
+/* ---------- Health block (shared by Needs/Meds/Vax/Weight) ---------- */
+.health-block {
+  border-radius: 16px;
+  padding: 18px 20px;
+  margin-bottom: 14px;
+  border: 1px solid;
+}
+.health-block-needs  { background: #fff5f5; border-color: #fee2e2; }
+.health-block-meds   { background: #fffaef; border-color: #fef3c7; }
+.health-block-vax    { background: #f1fdf6; border-color: #d1fae5; }
+.health-block-weight { background: #fafbfc; border-color: #eceef2; }
+
+.block-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.block-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.block-icon-red    { background: #fecaca; color: #b91c1c; }
+.block-icon-amber  { background: #fde68a; color: #b45309; }
+.block-icon-green  { background: #a7f3d0; color: #047857; }
+.block-title {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Needs attention extras */
+.needs-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: #b91c1c;
+  background: #fecaca;
+  padding: 2px 9px;
+  border-radius: 999px;
+  justify-self: start;
+}
+.block-link-inline {
+  background: none;
+  border: 0;
+  color: #b91c1c;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 6px;
+}
+.block-link-inline:hover { text-decoration: underline; }
+
+/* Needs block-head needs 4 columns: icon, title, count, view-all */
+.health-block-needs .block-head {
+  grid-template-columns: auto auto auto 1fr auto;
+}
+.health-block-needs .block-head .block-title { margin-right: 6px; }
+
+/* ---------- Block list (rows) ---------- */
+.block-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.block-row {
+  display: grid;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 6px;
+  border-top: 1px solid rgba(17, 20, 24, 0.06);
+}
+.block-row:first-child {
+  border-top: 0;
+  padding-top: 8px;
+}
+
+/* Per-block row column templates */
+.health-block-needs .block-row,
+.vax-block-row {
+  grid-template-columns: 40px minmax(140px, 1.5fr) minmax(170px, 1.4fr) auto auto auto;
+}
+.med-block-row {
+  grid-template-columns: 40px minmax(140px, 1.4fr) minmax(120px, auto) minmax(140px, 1.2fr) auto auto;
+}
+
+/* Item icon (round badge) */
+.item-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.item-icon-red    { background: #fee2e2; color: #b91c1c; }
+.item-icon-amber  { background: #fef3c7; color: #b45309; }
+.item-icon-green  { background: #d1fae5; color: #047857; }
+.item-icon-gray   { background: #e5e7eb; color: #6b7280; }
+
+/* Item main (name + sub) */
+.item-main { min-width: 0; }
+.item-name {
+  font-weight: 700;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.25;
+}
+.item-sub {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  line-height: 1.35;
+}
+
+/* Item info (label + value, two-line) */
+.item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.item-info-label {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.item-info-value {
+  font-size: 13px;
+  color: var(--text);
+  font-weight: 500;
+}
+.item-info-value.tone-red    { color: #b91c1c; font-weight: 600; }
+.item-info-value.tone-amber  { color: #c2410c; font-weight: 600; }
+.item-info-value.tone-green  { color: #047857; }
+.item-empty {
+  color: var(--text-soft);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Item status (dot + label) — used in vaccines */
+.item-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.item-status-red   { color: #b91c1c; }
+.item-status-amber { color: #c2410c; }
+.item-status-green { color: #047857; }
+.item-status-gray  { color: var(--text-muted); }
 .status-dot {
   width: 8px;
   height: 8px;
@@ -226,29 +439,116 @@ ul { list-style: none; }
   background: var(--text-soft);
   flex-shrink: 0;
 }
-.status-ok       .status-dot { background: #10b981; }
-.status-warn     .status-dot { background: #f59e0b; }
-.status-alert    .status-dot { background: #ef4444; }
-.status-soon     .status-dot { background: #f59e0b; }
-.status-overdue  .status-dot { background: #ef4444; }
-.status-unknown  .status-dot { background: var(--text-soft); }
+.item-status-red   .status-dot { background: #ef4444; }
+.item-status-amber .status-dot { background: #f59e0b; }
+.item-status-green .status-dot { background: #10b981; }
+.item-status-gray  .status-dot { background: #9ca3af; }
+.status-dot.tone-red    { background: #ef4444; }
+.status-dot.tone-amber  { background: #f59e0b; }
+.status-dot.tone-green  { background: #10b981; }
 
-/* ---------- Weight: inset panel ---------- */
-.weight-panel {
-  background: var(--surface-soft);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 22px 26px;
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 32px;
+/* Item action button */
+.item-action {
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  background: #fff;
+  border: 1px solid;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.item-action-red   { color: #b91c1c; border-color: #fecaca; }
+.item-action-red:hover   { background: #fef2f2; }
+.item-action-amber { color: #b45309; border-color: #fde68a; }
+.item-action-amber:hover { background: #fff7e6; }
+.item-action-green { color: #047857; border-color: #a7f3d0; }
+.item-action-green:hover { background: #ecfdf5; }
+.item-action-gray  { color: var(--text); border-color: var(--border-strong); }
+.item-action-gray:hover { background: var(--surface-soft); }
+
+/* Chevron / dots row button */
+.item-chev, .item-dots {
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: none;
+  border: 0;
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.item-chev:hover, .item-dots:hover {
+  color: var(--text);
+  background: rgba(17, 20, 24, 0.05);
 }
 
+/* ---------- Medications schedule chip ---------- */
+.med-schedule {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(180, 83, 9, 0.18);
+  border-radius: 10px;
+}
+.med-schedule-icon {
+  color: #b45309;
+  display: inline-flex;
+}
+.med-schedule-dose {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.1;
+}
+.med-schedule-freq {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+/* ---------- Block bottom link ---------- */
+.block-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(17, 20, 24, 0.05);
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.block-link span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.block-link:hover { background: #fff; }
+.block-link-amber { color: #b45309; }
+.block-link-green { color: #047857; }
+
+/* ---------- Weight ---------- */
+.weight-content {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 28px;
+  align-items: center;
+}
 .weight-stats {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 .weight-big {
   font-size: 36px;
@@ -262,14 +562,13 @@ ul { list-style: none; }
   color: var(--text-muted);
   margin-left: 4px;
 }
-
 .weight-delta-block {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
 }
 .weight-delta {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
   color: var(--text);
 }
@@ -279,45 +578,43 @@ ul { list-style: none; }
   font-size: 12px;
   color: var(--text-muted);
 }
-
-.weight-pill {
+.weight-range-info {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 12.5px;
-  font-weight: 600;
-  align-self: flex-start;
+  font-size: 13px;
 }
-.weight-pill-ok    { background: #d1fae5; color: #047857; }
-.weight-pill-warn  { background: #fef3c7; color: #b45309; }
-.weight-pill-alert { background: #fee2e2; color: #b91c1c; }
+.weight-range-info strong {
+  font-weight: 600;
+  color: var(--text);
+}
+.weight-range-meta {
+  color: var(--text-muted);
+  margin-left: 2px;
+}
 
 .weight-chart-col {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
-
 .weight-chart-wrap {
   position: relative;
 }
 .weight-chart {
   display: block;
   width: 100%;
-  height: 200px;
+  height: 180px;
   overflow: visible;
 }
 .weight-chart-empty {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 200px;
+  height: 180px;
   color: var(--text-soft);
   font-size: 13px;
 }
-
 .weight-tooltip {
   position: absolute;
   bottom: 100%;
@@ -339,11 +636,10 @@ ul { list-style: none; }
 .weight-tooltip strong { font-weight: 600; font-size: 13px; }
 .weight-tooltip span   { font-size: 11px; color: rgba(255, 255, 255, 0.65); margin-top: 1px; }
 
-/* Range tabs */
 .range-tabs {
   display: flex;
   align-self: center;
-  background: var(--surface);
+  background: #fff;
   border: 1px solid var(--border);
   border-radius: 999px;
   padding: 3px;
@@ -352,7 +648,7 @@ ul { list-style: none; }
 .range-tab {
   background: none;
   border: 0;
-  padding: 5px 12px;
+  padding: 5px 14px;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 500;
@@ -367,425 +663,18 @@ ul { list-style: none; }
   font-weight: 600;
 }
 
-/* ---------- Weight: AI row ---------- */
-.ai-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-top: 14px;
-}
-.ai-card {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 14px;
-  align-items: flex-start;
-  padding: 16px 18px;
-  border-radius: 14px;
-  border: 1px solid;
-}
-.ai-card-insight { background: #ecfdf5; border-color: #a7f3d0; }
-.ai-card-rec     { background: #fffbeb; border-color: #fde68a; }
-
-.ai-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  color: #fff;
-  flex-shrink: 0;
-}
-.ai-badge-green  { background: #10b981; }
-.ai-badge-orange { background: #f59e0b; }
-
-.ai-text { min-width: 0; }
-.ai-label {
-  font-size: 13.5px;
-  font-weight: 700;
-  color: #047857;
-  margin-bottom: 4px;
-}
-.ai-label-orange { color: #b45309; }
-.ai-msg {
-  font-size: 13px;
-  color: var(--text);
-  line-height: 1.5;
-}
-
-.ai-pet-wrap {
-  position: relative;
-  width: 56px;
-  height: 56px;
-  flex-shrink: 0;
-}
-.ai-pet {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #fff;
-}
-.ai-pet-heart {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: #fff;
-  border: 1px solid #fecaca;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #ef4444;
-  font-size: 12px;
-  line-height: 1;
-}
-
-.ai-actions {
+/* ---------- Disclaimer ---------- */
+.health-disclaimer {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
-}
-.ai-action {
-  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  padding: 7px 12px;
-  background: #fff;
-  color: #b45309;
-  border: 1px solid #fde68a;
-  border-radius: 999px;
   font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.15s;
-}
-.ai-action:hover { background: #fef3c7; }
-.ai-action-filled {
-  background: #f59e0b;
-  color: #fff;
-  border-color: #f59e0b;
-}
-.ai-action-filled:hover { background: #d97706; border-color: #d97706; }
-
-/* ---------- Vaccines: summary cards ---------- */
-.vax-summary {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-bottom: 16px;
-}
-.vax-sum {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  border-radius: 12px;
-  border: 1px solid;
-  cursor: pointer;
-  text-align: left;
-  font: inherit;
-  transition: filter 0.15s, transform 0.05s;
-}
-.vax-sum:hover  { filter: brightness(0.985); }
-.vax-sum:active { transform: translateY(0.5px); }
-.vax-sum-overdue { background: #fef2f2; border-color: #fecaca; }
-.vax-sum-soon    { background: #fff7ed; border-color: #fed7aa; }
-.vax-sum-ok      { background: #ecfdf5; border-color: #a7f3d0; }
-.vax-sum-unknown { background: #f9fafb; border-color: #e5e7eb; }
-
-.vax-sum-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  color: #fff;
-  flex-shrink: 0;
-}
-.vax-sum-overdue .vax-sum-badge { background: #ef4444; }
-.vax-sum-soon    .vax-sum-badge { background: #f59e0b; }
-.vax-sum-ok      .vax-sum-badge { background: #10b981; }
-.vax-sum-unknown .vax-sum-badge { background: #9ca3af; }
-
-.vax-sum-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-  min-width: 0;
-}
-.vax-sum-text strong {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text);
-}
-.vax-sum-text span {
-  font-size: 12px;
-  margin-top: 3px;
-  font-weight: 500;
-}
-.vax-sum-overdue .vax-sum-text span { color: #b91c1c; }
-.vax-sum-soon    .vax-sum-text span { color: #c2410c; }
-.vax-sum-ok      .vax-sum-text span { color: #047857; }
-.vax-sum-unknown .vax-sum-text span { color: var(--text-muted); }
-
-.vax-sum-chev { color: var(--text-soft); flex-shrink: 0; }
-
-/* ---------- Vaccines: table ---------- */
-.vax-table-head,
-.vax-row {
-  display: grid;
-  grid-template-columns: 40px minmax(160px, 1.5fr) minmax(200px, 1.5fr) minmax(100px, auto) auto auto;
-  gap: 14px;
-  align-items: center;
-}
-.vax-table-head {
-  padding: 0 16px 6px;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text-soft);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 6px;
-}
-
-.vax-list {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin: 0;
-}
-.vax-row {
-  padding: 12px 16px;
-  background: #fff;
-  border: 1px solid transparent;
-  border-radius: 10px;
-  font-size: 13px;
-  transition: background 0.15s, border-color 0.15s;
-}
-.vax-row.status-overdue { background: #fef9f9; }
-.vax-row.status-overdue:hover { border-color: #fecaca; }
-.vax-row.status-soon    { background: #fffbf5; }
-.vax-row.status-soon:hover    { border-color: #fed7aa; }
-.vax-row.status-ok:hover      { background: var(--surface-soft); }
-.vax-row.status-unknown:hover { background: var(--surface-soft); }
-
-.vax-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.vax-icon-overdue { background: #fee2e2; color: #b91c1c; }
-.vax-icon-soon    { background: #ffedd5; color: #c2410c; }
-.vax-icon-ok      { background: #d1fae5; color: #047857; }
-.vax-icon-unknown { background: #e5e7eb; color: #6b7280; }
-
-.vax-main { min-width: 0; }
-.vax-name {
-  font-weight: 700;
-  color: var(--text);
-  font-size: 14px;
-}
-.vax-desc {
-  font-size: 12.5px;
   color: var(--text-muted);
-  margin-top: 1px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
 }
-
-.vax-dates {
-  display: flex;
-  flex-direction: column;
-  font-size: 12.5px;
-  color: var(--text-muted);
-  gap: 2px;
-}
-.vax-due {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.vax-due.is-overdue {
-  color: #b91c1c;
-  font-weight: 500;
-}
-
-.vax-tag {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 8px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 600;
-}
-.vax-tag-overdue { background: #fee2e2; color: #b91c1c; }
-.vax-tag-soon    { background: #ffedd5; color: #c2410c; }
-
-.vax-status-cell {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 13px;
-  color: var(--text-muted);
-  white-space: nowrap;
-  font-weight: 500;
-}
-.vax-row.status-overdue .vax-status-cell { color: #b91c1c; }
-.vax-row.status-soon    .vax-status-cell { color: #c2410c; }
-.vax-row.status-ok      .vax-status-cell { color: #047857; }
-.vax-row.status-unknown .vax-status-cell { color: var(--text-soft); }
-
-.vax-action {
-  padding: 7px 14px;
-  border-radius: 8px;
-  font-size: 12.5px;
-  font-weight: 600;
-  background: #fff;
-  border: 1px solid;
-  cursor: pointer;
-  transition: background 0.15s;
-  white-space: nowrap;
-}
-.vax-action-overdue { color: #b91c1c; border-color: #fecaca; }
-.vax-action-overdue:hover { background: #fef2f2; }
-.vax-action-soon    { color: #c2410c; border-color: #fed7aa; }
-.vax-action-soon:hover { background: #fff7ed; }
-.vax-action-ok      { color: #047857; border-color: #a7f3d0; }
-.vax-action-ok:hover { background: #ecfdf5; }
-.vax-action-unknown { color: var(--text); border-color: var(--border-strong); }
-.vax-action-unknown:hover { background: var(--surface-soft); }
-
-.vax-row-chev {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 7px;
-  background: none;
-  border: 0;
-  color: var(--text-soft);
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s;
-}
-.vax-row-chev:hover {
-  color: var(--text);
-  background: var(--surface-soft);
-}
-
-.vax-empty {
-  font-style: italic;
-  color: var(--text-soft);
-}
-
-/* ---------- Medications: table ---------- */
-.med-table-head,
-.med-row {
-  display: grid;
-  grid-template-columns: 40px minmax(160px, 1.5fr) minmax(140px, 1fr) minmax(80px, auto) auto auto;
-  gap: 14px;
-  align-items: center;
-}
-.med-table-head {
-  padding: 0 16px 6px;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text-soft);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 6px;
-}
-
-.med-list {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin: 0;
-}
-.med-row {
-  padding: 12px 16px;
-  background: #fff;
-  border: 1px solid transparent;
-  border-radius: 10px;
-  font-size: 13px;
-  transition: background 0.15s, border-color 0.15s;
-}
-.med-row:hover { background: var(--surface-soft); }
-.med-row.is-past { background: var(--surface-soft); }
-.med-row.is-past:hover { border-color: var(--border); }
-
-.med-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.med-icon-active { background: #fef3c7; color: #b45309; }
-.med-icon-past   { background: #e5e7eb; color: #6b7280; }
-
-.med-main { min-width: 0; }
-.med-name {
-  font-weight: 700;
-  color: var(--text);
-  font-size: 14px;
-}
-.med-meta {
-  font-size: 12.5px;
-  color: var(--text-muted);
-  margin-top: 1px;
-}
-
-.med-dose {
-  font-size: 12.5px;
-  color: var(--text);
-  font-weight: 500;
-}
-.med-since {
-  font-size: 12.5px;
-  color: var(--text-muted);
-  white-space: nowrap;
-}
-
-.med-row.is-past .med-name  { color: var(--text-muted); }
-.med-row.is-past .med-meta,
-.med-row.is-past .med-dose,
-.med-row.is-past .med-since { color: var(--text-soft); }
-
-.med-action {
-  padding: 7px 14px;
-  border-radius: 8px;
-  font-size: 12.5px;
-  font-weight: 600;
-  background: #fff;
-  border: 1px solid;
-  cursor: pointer;
-  transition: background 0.15s;
-  white-space: nowrap;
-}
-.med-action-active { color: #b45309; border-color: #fde68a; }
-.med-action-active:hover { background: #fef3c7; }
-.med-action-past { color: var(--text); border-color: var(--border-strong); }
-.med-action-past:hover { background: var(--surface-soft); }
-
-.med-past { margin-top: 12px; }
-.med-past .completed-toggle { margin-bottom: 8px; }
 
 /* ---------- Upcoming card ---------- */
 .upcoming-card {
