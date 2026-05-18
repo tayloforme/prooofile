@@ -437,8 +437,8 @@ function computeYAxis(dataMin, dataMax, range) {
 function WeightChart({ entries, range }) {
   const [hoverIdx, setHoverIdx] = useState(null);
 
-  const W = 500, H = 140;
-  const padL = 26, padR = 30, padT = 12, padB = 22;
+  const W = 500, H = 150;
+  const padL = 30, padR = 40, padT = 14, padB = 26;
 
   const n = entries.length;
   if (n === 0) {
@@ -522,7 +522,7 @@ function WeightChart({ entries, range }) {
 
         {yTicks.map((v) => (
           <text key={v} x={padL - 6} y={y(v) + 4}
-                fontSize="11" fill="#9aa0a8" textAnchor="end">{v}</text>
+                fontSize="13" fill="#6b7280" textAnchor="end">{v}</text>
         ))}
 
         {n > 1 && <path d={areaPath} fill="url(#wgrad)" />}
@@ -537,13 +537,13 @@ function WeightChart({ entries, range }) {
                   strokeWidth={i === last ? 2 : 0} />
         ))}
 
-        <text x={xs[last] + 7} y={ys[last] + 4} fontSize="12" fontWeight="700"
+        <text x={xs[last] + 7} y={ys[last] + 5} fontSize="14" fontWeight="700"
               fill="#111418" textAnchor="start">
           {points[last].kg.toFixed(1)}
         </text>
 
         {monthTicks.map((tick, i) => (
-          <text key={i} x={x(tick.t)} y={H - 5} fontSize="11" fill="#9aa0a8"
+          <text key={i} x={x(tick.t)} y={H - 4} fontSize="13" fill="#6b7280"
                 textAnchor={i === 0 ? 'start' : i === monthTicks.length - 1 ? 'end' : 'middle'}>
             {tick.label}
           </text>
