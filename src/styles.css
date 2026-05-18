@@ -45,47 +45,44 @@ ul { list-style: none; }
 
 /* ---------- Hero ---------- */
 .hero {
-  position: relative;
   width: 100%;
   max-width: 960px;
-  padding: 8px 28px 12px;
+  padding: 4px 28px 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 14px;
+  gap: 10px;
 }
 .hero-avatar {
-  width: 112px;
-  height: 112px;
+  width: 104px;
+  height: 104px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
 }
 .hero-name {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
   letter-spacing: -0.015em;
   color: var(--text);
+  margin-top: 2px;
 }
 .hero-meta {
-  margin-top: 2px;
-  font-size: 14px;
+  font-size: 13.5px;
   color: var(--text-muted);
 }
 
 .edit-btn {
-  position: absolute;
-  top: 18px;
-  right: 22px;
+  margin-top: 4px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 14px;
+  padding: 7px 14px;
   background: var(--surface);
   border: 1px solid var(--border-strong);
-  border-radius: 10px;
-  font-size: 13px;
+  border-radius: 999px;
+  font-size: 12.5px;
   font-weight: 600;
   color: var(--text);
   transition: border-color 0.15s, background 0.15s, transform 0.05s;
@@ -1430,8 +1427,7 @@ ul { list-style: none; }
 @media (max-width: 720px) {
   .page { padding: 32px 18px; gap: 18px; }
 
-  .hero { padding: 4px 22px 8px; gap: 12px; }
-  .edit-btn { top: 4px; right: 16px; padding: 7px 12px; font-size: 12.5px; }
+  .hero { padding: 0 22px 4px; gap: 10px; }
 
   .health-card { padding: 20px 18px 16px; }
   .health-main-title { font-size: 20px; }
@@ -1448,11 +1444,11 @@ ul { list-style: none; }
 @media (max-width: 480px) {
   .page { padding: 22px 14px; gap: 16px; }
 
-  .hero { padding: 0 16px 6px; gap: 10px; }
+  .hero { padding: 0 16px 4px; gap: 8px; }
   .hero-avatar { width: 88px; height: 88px; }
   .hero-name { font-size: 20px; }
   .hero-meta { font-size: 13px; }
-  .edit-btn { top: 0; right: 12px; padding: 6px 10px; font-size: 12px; }
+  .edit-btn { padding: 6px 12px; font-size: 12px; }
 
   .health-card { padding: 18px 14px 14px; border-radius: 16px; }
   .health-main-head { gap: 10px; margin-bottom: 12px; }
