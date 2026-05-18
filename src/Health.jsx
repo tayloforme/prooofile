@@ -5,22 +5,37 @@ import {
   parseDate, daysBetween,
 } from './data.js';
 import {
-  Plus, ChevronDown, Dots,
+  Plus, ChevronDown, ChevronRight, Dots, ClockIcon,
   Heart, Shield, Pill,
-  Star, Bulb, CheckCircle, AlertCircle, Activity, Bowl,
+  Star, Bulb, CheckCircle, AlertCircle, QuestionMark, Activity, Bowl,
 } from './icons.jsx';
 import { assessWeight, assessTrend, combineStatus } from './health.js';
 
 const MONTH = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const fmtMonthYear = (d) => `${MONTH[d.getMonth()]} ${String(d.getFullYear()).slice(2)}`;
+const fmtFullDate  = (d) => `${MONTH[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
 const fmtTooltip   = (d) => `${MONTH[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
 
 const STATUS_LABEL = {
   ok:       'Up to date',
   soon:     'Due soon',
   overdue:  'Overdue',
-  unknown:  'Not given',
+  unknown:  'No record',
 };
+
+const VAX_ACTION = {
+  overdue: 'Schedule',
+  soon:    'Remind me',
+  ok:      'View record',
+  unknown: 'Add record',
+};
+
+const VAX_SUMMARY = [
+  { key: 'overdue', label: 'Overdue' },
+  { key: 'soon',    label: 'Due soon' },
+  { key: 'ok',      label: 'Up to date' },
+  { key: 'unknown', label: 'Missing' },
+];
 
 const TAB_DAYS = { '1W': 7, '1M': 30, '3M': 90, '6M': 180, '1Y': 365, All: null };
 const TABS = Object.keys(TAB_DAYS);
@@ -99,7 +114,10 @@ function WeightCard() {
     <section className="health-card weight-card">
       <header className="card-head">
         <span className="card-icon card-icon-green"><Heart size={16} /></span>
-        <h2 className="card-title">Weight</h2>
+        <div className="card-head-text">
+          <h2 className="card-title">Weight</h2>
+          <p className="card-sub">Track your dog's weight and see how it compares to the breed range.</p>
+        </div>
         <button className="btn-secondary card-action" type="button">
           <Plus size={13} /> Add weight
         </button>
@@ -378,50 +396,103 @@ function WeightChart({ entries, range }) {
 
 /* ---------- Vaccines ---------- */
 
+function vaxIcon(status, size = 14) {
+  if (status === 'overdue') return <AlertCircle size={size} />;
+  if (status === 'soon')    return <ClockIcon size={size} />;
+  if (status === 'ok')      return <CheckCircle size={size} />;
+  return <QuestionMark size={size} />;
+}
+
 function VaccinesCard() {
-  const enriched = INITIAL_VACCINES.map((v) => {
-    if (!v.lastDate) return { ...v, status: 'unknown', diff: null };
-    const diff = daysBetween(TODAY, parseDate(v.nextDate));
-    let status;
-    if (diff < 0)        status = 'overdue';
-    else if (diff <= 30) status = 'soon';
-    else                 status = 'ok';
-    return { ...v, status, diff };
-  });
-  const order = { overdue: 0, soon: 1, ok: 2, unknown: 3 };
-  enriched.sort((a, b) => order[a.status] - order[b.status]);
+  const enriched = useMemo(() => {
+    const list = INITIAL_VACCINES.map((v) => {
+      if (!v.lastDate) return { ...v, status: 'unknown', diff: null };
+      const diff = daysBetween(TODAY, parseDate(v.nextDate));
+      let status;
+      if (diff < 0)        status = 'overdue';
+      else if (diff <= 30) status = 'soon';
+      else                 status = 'ok';
+      return { ...v, status, diff };
+    });
+    const order = { overdue: 0, soon: 1, ok: 2, unknown: 3 };
+    list.sort((a, b) => order[a.status] - order[b.status]);
+    return list;
+  }, []);
+
+  const counts = enriched.reduce((acc, v) => {
+    acc[v.status] = (acc[v.status] || 0) + 1;
+    return acc;
+  }, {});
 
   return (
     <section className="health-card">
       <header className="card-head">
         <span className="card-icon card-icon-blue"><Shield size={16} /></span>
-        <h2 className="card-title">Vaccines</h2>
+        <div className="card-head-text">
+          <h2 className="card-title">Vaccines</h2>
+          <p className="card-sub">Keep your pet protected and up to date.</p>
+        </div>
         <button className="btn-secondary card-action" type="button">
           <Plus size={13} /> Add vaccine
         </button>
       </header>
 
+      <div className="vax-summary">
+        {VAX_SUMMARY.map(({ key, label }) => (
+          <button key={key} className={'vax-sum vax-sum-' + key} type="button">
+            <span className="vax-sum-badge">{vaxIcon(key)}</span>
+            <div className="vax-sum-text">
+              <strong>{counts[key] || 0}</strong>
+              <span>{label}</span>
+            </div>
+            <ChevronRight size={14} className="vax-sum-chev" />
+          </button>
+        ))}
+      </div>
+
+      <div className="vax-table-head">
+        <span></span>
+        <span>Vaccine</span>
+        <span>Last / Next</span>
+        <span>Status</span>
+        <span></span>
+        <span></span>
+      </div>
+
       <ul className="vax-list">
         {enriched.map((v) => (
           <li key={v.id} className={'vax-row status-' + v.status}>
-            <span className="vax-name">{v.name}</span>
-            <span className="vax-dates">
+            <span className={'vax-icon vax-icon-' + v.status}>
+              {vaxIcon(v.status)}
+            </span>
+            <div className="vax-main">
+              <p className="vax-name">{v.name}</p>
+              <p className="vax-desc">{v.description}</p>
+            </div>
+            <div className="vax-dates">
               {v.lastDate ? (
                 <>
-                  Last: {fmtMonthYear(parseDate(v.lastDate))}
-                  <span className="dot-sep" />
-                  Next: {fmtMonthYear(parseDate(v.nextDate))}
-                  {v.status === 'overdue' && <span className="vax-tag"> · overdue</span>}
-                  {v.status === 'soon' && <span className="vax-tag"> · in {v.diff}d</span>}
+                  <span>Last: {fmtFullDate(parseDate(v.lastDate))}</span>
+                  <span className={'vax-due' + (v.status === 'overdue' ? ' is-overdue' : '')}>
+                    Due: {fmtFullDate(parseDate(v.nextDate))}
+                    {v.status === 'overdue' && <span className="vax-tag vax-tag-overdue">Overdue</span>}
+                    {v.status === 'soon'    && <span className="vax-tag vax-tag-soon">in {v.diff}d</span>}
+                  </span>
                 </>
               ) : (
                 <span className="vax-empty">Not given</span>
               )}
-            </span>
-            <span className="vax-status">
+            </div>
+            <span className="vax-status-cell">
               <span className="status-dot" />
               {STATUS_LABEL[v.status]}
             </span>
+            <button className={'vax-action vax-action-' + v.status} type="button">
+              {VAX_ACTION[v.status]}
+            </button>
+            <button className="vax-row-chev" type="button" aria-label="Details">
+              <ChevronRight size={14} />
+            </button>
           </li>
         ))}
       </ul>
@@ -440,7 +511,10 @@ function MedicationsCard() {
     <section className="health-card">
       <header className="card-head">
         <span className="card-icon card-icon-amber"><Pill size={16} /></span>
-        <h2 className="card-title">Medications</h2>
+        <div className="card-head-text">
+          <h2 className="card-title">Medications</h2>
+          <p className="card-sub">Active treatments and past prescriptions.</p>
+        </div>
         <button className="btn-secondary card-action" type="button">
           <Plus size={13} /> Add medication
         </button>

@@ -110,6 +110,14 @@ export const Bowl = (p) => (
   </Svg>
 );
 
+export const QuestionMark = (p) => (
+  <Svg {...p}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M9.5 9.5a2.5 2.5 0 1 1 4.5 1.5c-.7 1-2 1.5-2 2.5" />
+    <line x1="12" y1="17" x2="12" y2="17.5" />
+  </Svg>
+);
+
 export function Dots({ size = 16 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">

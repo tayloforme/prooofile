@@ -21,10 +21,10 @@ export const INITIAL_WEIGHTS = [
 ];
 
 export const INITIAL_VACCINES = [
-  { id: 1, name: 'Rabies',     lastDate: '2025-06-15', nextDate: '2026-06-15' },
-  { id: 2, name: 'DHPP',       lastDate: '2025-08-10', nextDate: '2026-08-10' },
-  { id: 3, name: 'Bordetella', lastDate: '2025-03-20', nextDate: '2026-03-20' },
-  { id: 4, name: 'Lyme',       lastDate: null,         nextDate: null },
+  { id: 1, name: 'Rabies',     description: 'Rabies Virus',                                       lastDate: '2025-06-15', nextDate: '2026-06-15' },
+  { id: 2, name: 'DHPP',       description: 'Distemper, Hepatitis, Parainfluenza, Parvovirus',    lastDate: '2025-08-10', nextDate: '2026-08-10' },
+  { id: 3, name: 'Bordetella', description: 'Kennel Cough',                                       lastDate: '2025-03-20', nextDate: '2026-03-20' },
+  { id: 4, name: 'Lyme',       description: 'Lyme Disease',                                       lastDate: null,         nextDate: null },
 ];
 
 export const INITIAL_MEDICATIONS = [

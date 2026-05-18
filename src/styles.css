@@ -189,10 +189,22 @@ ul { list-style: none; }
 .card-icon-blue  { background: #dbeafe; color: #2563eb; }
 .card-icon-amber { background: #fef3c7; color: #b45309; }
 
+.card-head-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
 .card-title {
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 700;
   letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.card-sub {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-top: 3px;
+  line-height: 1.4;
 }
 .card-action { padding: 8px 14px; font-size: 13px; }
 
@@ -449,38 +461,225 @@ ul { list-style: none; }
 }
 .ai-action-filled:hover { background: #d97706; border-color: #d97706; }
 
-/* ---------- Vaccines ---------- */
-.vax-list,
-.med-rows {
+/* ---------- Vaccines: summary cards ---------- */
+.vax-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.vax-sum {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  transition: filter 0.15s, transform 0.05s;
+}
+.vax-sum:hover  { filter: brightness(0.985); }
+.vax-sum:active { transform: translateY(0.5px); }
+.vax-sum-overdue { background: #fef2f2; border-color: #fecaca; }
+.vax-sum-soon    { background: #fff7ed; border-color: #fed7aa; }
+.vax-sum-ok      { background: #ecfdf5; border-color: #a7f3d0; }
+.vax-sum-unknown { background: #f9fafb; border-color: #e5e7eb; }
+
+.vax-sum-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: #fff;
+  flex-shrink: 0;
+}
+.vax-sum-overdue .vax-sum-badge { background: #ef4444; }
+.vax-sum-soon    .vax-sum-badge { background: #f59e0b; }
+.vax-sum-ok      .vax-sum-badge { background: #10b981; }
+.vax-sum-unknown .vax-sum-badge { background: #9ca3af; }
+
+.vax-sum-text {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  line-height: 1.1;
+  min-width: 0;
+}
+.vax-sum-text strong {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+.vax-sum-text span {
+  font-size: 12px;
+  margin-top: 3px;
+  font-weight: 500;
+}
+.vax-sum-overdue .vax-sum-text span { color: #b91c1c; }
+.vax-sum-soon    .vax-sum-text span { color: #c2410c; }
+.vax-sum-ok      .vax-sum-text span { color: #047857; }
+.vax-sum-unknown .vax-sum-text span { color: var(--text-muted); }
+
+.vax-sum-chev { color: var(--text-soft); flex-shrink: 0; }
+
+/* ---------- Vaccines: table ---------- */
+.vax-table-head,
+.vax-row {
+  display: grid;
+  grid-template-columns: 40px minmax(160px, 1.5fr) minmax(200px, 1.5fr) minmax(100px, auto) auto auto;
+  gap: 14px;
+  align-items: center;
+}
+.vax-table-head {
+  padding: 0 16px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 6px;
+}
+
+.vax-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   margin: 0;
 }
 .vax-row {
-  display: grid;
-  grid-template-columns: 140px 1fr auto;
-  align-items: center;
-  gap: 14px;
-  padding: 10px 14px;
-  background: var(--surface-soft);
-  border: 1px solid var(--border);
+  padding: 12px 16px;
+  background: #fff;
+  border: 1px solid transparent;
   border-radius: 10px;
   font-size: 13px;
+  transition: background 0.15s, border-color 0.15s;
 }
-.vax-name { font-weight: 600; color: var(--text); }
-.vax-dates { color: var(--text-muted); font-size: 12.5px; }
-.vax-tag { color: #ef4444; font-weight: 500; }
-.vax-row.status-soon .vax-tag { color: #d97706; }
-.vax-status {
+.vax-row.status-overdue { background: #fef9f9; }
+.vax-row.status-overdue:hover { border-color: #fecaca; }
+.vax-row.status-soon    { background: #fffbf5; }
+.vax-row.status-soon:hover    { border-color: #fed7aa; }
+.vax-row.status-ok:hover      { background: var(--surface-soft); }
+.vax-row.status-unknown:hover { background: var(--surface-soft); }
+
+.vax-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.vax-icon-overdue { background: #fee2e2; color: #b91c1c; }
+.vax-icon-soon    { background: #ffedd5; color: #c2410c; }
+.vax-icon-ok      { background: #d1fae5; color: #047857; }
+.vax-icon-unknown { background: #e5e7eb; color: #6b7280; }
+
+.vax-main { min-width: 0; }
+.vax-name {
+  font-weight: 700;
+  color: var(--text);
+  font-size: 14px;
+}
+.vax-desc {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-top: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vax-dates {
+  display: flex;
+  flex-direction: column;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  gap: 2px;
+}
+.vax-due {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.vax-due.is-overdue {
+  color: #b91c1c;
+  font-weight: 500;
+}
+
+.vax-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.vax-tag-overdue { background: #fee2e2; color: #b91c1c; }
+.vax-tag-soon    { background: #ffedd5; color: #c2410c; }
+
+.vax-status-cell {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--text-muted);
   white-space: nowrap;
+  font-weight: 500;
 }
-.vax-empty { color: var(--text-soft); font-style: italic; }
+.vax-row.status-overdue .vax-status-cell { color: #b91c1c; }
+.vax-row.status-soon    .vax-status-cell { color: #c2410c; }
+.vax-row.status-ok      .vax-status-cell { color: #047857; }
+.vax-row.status-unknown .vax-status-cell { color: var(--text-soft); }
+
+.vax-action {
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  background: #fff;
+  border: 1px solid;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.vax-action-overdue { color: #b91c1c; border-color: #fecaca; }
+.vax-action-overdue:hover { background: #fef2f2; }
+.vax-action-soon    { color: #c2410c; border-color: #fed7aa; }
+.vax-action-soon:hover { background: #fff7ed; }
+.vax-action-ok      { color: #047857; border-color: #a7f3d0; }
+.vax-action-ok:hover { background: #ecfdf5; }
+.vax-action-unknown { color: var(--text); border-color: var(--border-strong); }
+.vax-action-unknown:hover { background: var(--surface-soft); }
+
+.vax-row-chev {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: none;
+  border: 0;
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.vax-row-chev:hover {
+  color: var(--text);
+  background: var(--surface-soft);
+}
+
+.vax-empty {
+  font-style: italic;
+  color: var(--text-soft);
+}
 
 /* ---------- Medications ---------- */
 .med-row {
