@@ -381,9 +381,9 @@ ul { list-style: none; }
   gap: 12px;
 }
 
-/* Vax row: icon | main | status-info | action */
+/* Vax row: icon | main | status-info | action | chev */
 .vax-row {
-  grid-template-columns: 36px minmax(0, 1.3fr) minmax(0, auto) auto;
+  grid-template-columns: 36px minmax(0, 1.3fr) minmax(0, auto) auto auto;
   gap: 10px;
 }
 
