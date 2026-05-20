@@ -6,7 +6,7 @@ import {
 } from './data.js';
 import {
   Plus, ChevronRight, ClockIcon, CalendarIcon,
-  HeartPulse, DocIcon, Shield, Pill, Bowl, InfoIcon, Sun,
+  HeartPulse, DocIcon, Shield, Pill, Bowl, Sun,
   Sparkle, Scale, Shoe,
   CheckCircle, AlertCircle, QuestionMark,
 } from './icons.jsx';
@@ -680,17 +680,8 @@ function InsightsBlock({ vaccines, meds }) {
 
 function Disclaimer() {
   return (
-    <>
-      <div className="health-disclaimer-block">
-        <span className="disclaimer-info"><InfoIcon size={14} /></span>
-        <p className="disclaimer-main">
-          Regular check-ups, vaccinations, proper nutrition, and exercise are key to a long, healthy life.
-        </p>
-        <span className="disclaimer-emoji" aria-hidden="true">🐶 🐱</span>
-      </div>
-      <p className="health-disclaimer-fine">
-        This information is for reference only. Always consult your veterinarian.
-      </p>
-    </>
+    <p className="health-disclaimer-fine">
+      This information is for reference only. Always consult your veterinarian.
+    </p>
   );
 }

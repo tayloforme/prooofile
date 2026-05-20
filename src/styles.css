@@ -768,38 +768,6 @@ ul { list-style: none; }
 }
 
 /* ---------- Disclaimer ---------- */
-.health-disclaimer-block {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 14px;
-  padding: 14px 18px;
-  background: #f9fafb;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  margin-top: 14px;
-}
-.disclaimer-info {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #dbeafe;
-  color: #2563eb;
-  flex-shrink: 0;
-}
-.disclaimer-main {
-  font-size: 13px;
-  color: var(--text);
-  line-height: 1.4;
-}
-.disclaimer-emoji {
-  font-size: 26px;
-  letter-spacing: 2px;
-  flex-shrink: 0;
-}
 
 .health-disclaimer-fine {
   text-align: center;
@@ -1513,12 +1481,6 @@ ul { list-style: none; }
     gap: 12px 18px;
   }
   .range-tabs { flex-wrap: wrap; justify-content: center; }
-
-  /* Health disclaimer: hide emoji to free space */
-  .health-disclaimer-block { padding: 12px 14px; gap: 10px; grid-template-columns: auto 1fr; }
-  .disclaimer-info { width: 28px; height: 28px; }
-  .disclaimer-main { font-size: 12.5px; }
-  .disclaimer-emoji { display: none; }
 
   /* Upcoming card */
   .upcoming-card { padding: 18px 14px; gap: 12px; }
