@@ -563,8 +563,9 @@ ul { list-style: none; }
   gap: 8px;
 }
 .block-link:hover { background: rgba(0,0,0,0.02); }
-.block-link-amber { color: #b45309; }
-.block-link-green { color: #047857; }
+.block-link-amber  { color: #b45309; }
+.block-link-green  { color: #047857; }
+.block-link-indigo { color: #4338ca; }
 
 /* ---------- Nutrition ---------- */
 .nutrition-grid {
@@ -716,37 +717,54 @@ ul { list-style: none; }
 }
 
 /* ---------- Insights ---------- */
-.insights-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  padding: 4px 4px;
-}
-.insights-item {
+.insights-list {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
+  flex-direction: column;
+  gap: 2px;
 }
-.insights-icon {
+.insights-row {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 4px;
+}
+.insights-row + .insights-row {
+  border-top: 1px solid rgba(17, 20, 24, 0.05);
+}
+.insights-row .status-dot {
+  width: 8px;
+  height: 8px;
+}
+.insights-row-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
+  background: #fff;
+  color: var(--text-muted);
   flex-shrink: 0;
 }
-.insights-icon-slate { background: #e2e8f0; color: #475569; }
-.insights-icon-mint  { background: #d1fae5; color: #047857; }
-.insights-item-title {
-  font-size: 12.5px;
-  color: var(--text-muted);
+.insights-row-text {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
 }
-.insights-item-status {
-  font-size: 14px;
-  font-weight: 700;
+.insights-row-title {
+  font-size: 13px;
+  font-weight: 600;
   color: var(--text);
-  margin-top: 2px;
+  flex-shrink: 0;
+}
+.insights-row-body {
+  font-size: 13px;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* ---------- Disclaimer ---------- */
@@ -1410,7 +1428,9 @@ ul { list-style: none; }
   .health-main-title { font-size: 20px; }
   .status-summary { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .health-row { grid-template-columns: 1fr; gap: 12px; }
-  .insights-grid { grid-template-columns: 1fr; gap: 14px; }
+  .insights-row { grid-template-columns: auto auto 1fr; gap: 10px; }
+  .insights-row-text { flex-wrap: wrap; gap: 4px 8px; }
+  .insights-row-body { white-space: normal; }
 
   .upcoming-card { padding: 20px; }
   .cal-modal { padding: 18px; max-height: calc(100vh - 32px); }

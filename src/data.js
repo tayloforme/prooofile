@@ -15,11 +15,6 @@ export const PET_NUTRITION = {
   treats: '~ 2 per day',
 };
 
-export const PET_INSIGHTS = {
-  weight:   { status: 'Slight increase' },
-  activity: { status: 'On track' },
-};
-
 export const INITIAL_WEIGHTS = [
   { id: 1, date: '2025-11-20', kg: 26.8, note: '' },
   { id: 2, date: '2025-12-18', kg: 27.1, note: 'Post-holiday weigh-in' },

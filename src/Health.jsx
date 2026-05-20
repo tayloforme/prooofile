@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import {
-  TODAY, PET_PROFILE, PET_NUTRITION, PET_INSIGHTS,
-  INITIAL_WEIGHTS, INITIAL_VACCINES, INITIAL_MEDICATIONS,
+  TODAY, PET_PROFILE, PET_NUTRITION,
+  INITIAL_WEIGHTS, INITIAL_VACCINES, INITIAL_MEDICATIONS, INITIAL_EVENTS,
   parseDate, daysBetween,
 } from './data.js';
 import {
@@ -142,7 +142,7 @@ export default function Health() {
         <WeightBlock />
       </div>
 
-      <InsightsBlock />
+      <InsightsBlock vaccines={vaccines} meds={activeMeds} />
 
       <Disclaimer />
     </section>
@@ -581,29 +581,97 @@ function WeightChart({ entries, range }) {
 
 /* ---------- Insights ---------- */
 
-function InsightsBlock() {
+function fmtIsoDate(d) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function buildInsights({ vaccines, meds }) {
+  const out = [];
+
+  const sorted = [...INITIAL_WEIGHTS].sort((a, b) => a.date.localeCompare(b.date));
+  const latest = sorted[sorted.length - 1];
+  const cutoff = TODAY.getTime() - 28 * 86_400_000;
+  const baseline =
+    [...sorted].reverse().find((w) => parseDate(w.date).getTime() <= cutoff) || sorted[0];
+  const delta = latest.kg - baseline.kg;
+  const withinRange =
+    latest.kg >= PET_PROFILE.weightRange.min && latest.kg <= PET_PROFILE.weightRange.max;
+  const deltaTxt =
+    Math.abs(delta) < 0.05
+      ? 'stable this month'
+      : `${delta > 0 ? '+' : '−'}${Math.abs(delta).toFixed(1)} kg this month`;
+  out.push({
+    key: 'weight',
+    tone: withinRange && Math.abs(delta) < 1.0 ? 'green' : 'amber',
+    icon: <Scale size={14} />,
+    title: 'Weight',
+    body: `${latest.kg.toFixed(1)} kg · ${deltaTxt}`,
+  });
+
+  const todayActivity = INITIAL_EVENTS.find(
+    (e) => e.date === fmtIsoDate(TODAY) && e.type === 'activity',
+  );
+  const kmMatch = todayActivity?.note.match(/([\d.]+)\s*km/);
+  out.push({
+    key: 'activity',
+    tone: kmMatch ? 'green' : 'amber',
+    icon: <Shoe size={14} />,
+    title: 'Activity',
+    body: kmMatch ? `${kmMatch[1]} km walked today` : 'No walks logged today',
+  });
+
+  const overdueVax = vaccines.filter((v) => v.status === 'overdue').length;
+  const overdueMed = meds.filter(
+    (m) => m.nextDose && daysBetween(TODAY, parseDate(m.nextDose)) <= 0,
+  ).length;
+  const overdue = overdueVax + overdueMed;
+  const soon = vaccines.filter((v) => v.status === 'soon').length;
+  let careTone, careBody;
+  if (overdue > 0) {
+    careTone = 'red';
+    careBody = `${overdue} overdue${soon ? ` · ${soon} due soon` : ''}`;
+  } else if (soon > 0) {
+    careTone = 'amber';
+    careBody = `${soon} due in the next 30 days`;
+  } else {
+    careTone = 'green';
+    careBody = 'All up to date';
+  }
+  out.push({
+    key: 'care',
+    tone: careTone,
+    icon: <HeartPulse size={14} />,
+    title: 'Care',
+    body: careBody,
+  });
+
+  return out;
+}
+
+function InsightsBlock({ vaccines, meds }) {
+  const insights = useMemo(() => buildInsights({ vaccines, meds }), [vaccines, meds]);
   return (
     <div className="health-block health-block-insights">
       <header className="block-head">
         <span className="block-icon block-icon-indigo"><Sparkle size={14} /></span>
         <h3 className="block-title">Insights</h3>
       </header>
-      <div className="insights-grid">
-        <div className="insights-item">
-          <span className="insights-icon insights-icon-slate"><Scale size={16} /></span>
-          <div>
-            <p className="insights-item-title">Weight trend</p>
-            <p className="insights-item-status">{PET_INSIGHTS.weight.status}</p>
-          </div>
-        </div>
-        <div className="insights-item">
-          <span className="insights-icon insights-icon-mint"><Shoe size={16} /></span>
-          <div>
-            <p className="insights-item-title">Activity</p>
-            <p className="insights-item-status">{PET_INSIGHTS.activity.status}</p>
-          </div>
-        </div>
-      </div>
+      <ul className="insights-list">
+        {insights.map((i) => (
+          <li key={i.key} className="insights-row">
+            <span className={'status-dot tone-' + i.tone} />
+            <span className="insights-row-icon">{i.icon}</span>
+            <div className="insights-row-text">
+              <p className="insights-row-title">{i.title}</p>
+              <p className="insights-row-body">{i.body}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <button className="block-link block-link-indigo" type="button">
+        <span><Sparkle size={13} /> Get recommendations</span>
+        <ChevronRight size={14} />
+      </button>
     </div>
   );
 }
