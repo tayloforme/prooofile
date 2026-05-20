@@ -588,17 +588,12 @@ function InsightsBlock() {
         <span className="block-icon block-icon-indigo"><Sparkle size={14} /></span>
         <h3 className="block-title">Insights</h3>
       </header>
-      <div className="insights-summary">
-        <span className="insights-summary-icon"><Sparkle size={14} /></span>
-        <p>{PET_INSIGHTS.summary}</p>
-      </div>
       <div className="insights-grid">
         <div className="insights-item">
           <span className="insights-icon insights-icon-slate"><Scale size={16} /></span>
           <div>
             <p className="insights-item-title">Weight trend</p>
             <p className="insights-item-status">{PET_INSIGHTS.weight.status}</p>
-            <p className="insights-item-sub">{PET_INSIGHTS.weight.sub}</p>
           </div>
         </div>
         <div className="insights-item">
@@ -606,7 +601,6 @@ function InsightsBlock() {
           <div>
             <p className="insights-item-title">Activity</p>
             <p className="insights-item-status">{PET_INSIGHTS.activity.status}</p>
-            <p className="insights-item-sub">{PET_INSIGHTS.activity.sub}</p>
           </div>
         </div>
       </div>

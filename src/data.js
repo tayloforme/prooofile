@@ -16,9 +16,8 @@ export const PET_NUTRITION = {
 };
 
 export const PET_INSIGHTS = {
-  summary: "Great job! Your dog's weight is within the healthy range and activity looks good.",
-  weight:   { status: 'Slight increase', sub: 'Keep monitoring' },
-  activity: { status: 'On track',        sub: 'Great consistency!' },
+  weight:   { status: 'Slight increase' },
+  activity: { status: 'On track' },
 };
 
 export const INITIAL_WEIGHTS = [

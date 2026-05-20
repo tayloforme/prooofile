@@ -716,32 +716,6 @@ ul { list-style: none; }
 }
 
 /* ---------- Insights ---------- */
-.insights-summary {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 10px 12px;
-  background: #fff;
-  border: 1px solid #e0e7ff;
-  border-radius: 10px;
-  margin-bottom: 12px;
-}
-.insights-summary-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #c7d2fe;
-  color: #4338ca;
-  flex-shrink: 0;
-}
-.insights-summary p {
-  font-size: 13px;
-  color: var(--text);
-  line-height: 1.4;
-}
 .insights-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -772,11 +746,6 @@ ul { list-style: none; }
   font-size: 14px;
   font-weight: 700;
   color: var(--text);
-  margin-top: 2px;
-}
-.insights-item-sub {
-  font-size: 12px;
-  color: var(--text-muted);
   margin-top: 2px;
 }
 
@@ -1524,9 +1493,6 @@ ul { list-style: none; }
     gap: 12px 18px;
   }
   .range-tabs { flex-wrap: wrap; justify-content: center; }
-
-  .insights-summary { padding: 10px; }
-  .insights-summary p { font-size: 12.5px; }
 
   /* Health disclaimer: hide emoji to free space */
   .health-disclaimer-block { padding: 12px 14px; gap: 10px; grid-template-columns: auto 1fr; }
