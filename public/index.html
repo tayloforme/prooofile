@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>YouTube Shorts Downloader</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #181b22;
+      --border: #2a2f3a;
+      --text: #e6e8ec;
+      --muted: #8b93a3;
+      --accent: #ff3b3b;
+      --accent-hover: #e22e2e;
+      --ok: #2ecc71;
+      --err: #ff5a5a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 48px 16px;
+    }
+    .card {
+      width: 100%;
+      max-width: 560px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+    }
+    h1 { margin: 0 0 6px; font-size: 22px; font-weight: 600; }
+    p.sub { margin: 0 0 22px; color: var(--muted); font-size: 14px; }
+    .row { display: flex; gap: 8px; margin-bottom: 10px; align-items: center; }
+    input[type=url] {
+      flex: 1;
+      padding: 11px 13px;
+      background: #0f1115;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+    }
+    input[type=url]:focus { border-color: var(--accent); }
+    .status {
+      min-width: 90px;
+      font-size: 12px;
+      color: var(--muted);
+      text-align: right;
+    }
+    .status.ok  { color: var(--ok); }
+    .status.err { color: var(--err); }
+    .actions { display: flex; gap: 10px; margin-top: 18px; }
+    button {
+      padding: 11px 18px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover { background: var(--accent-hover); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    button.secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    button.secondary:hover { background: #20242d; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>YouTube Shorts Downloader</h1>
+    <p class="sub">Вставь до 4 ссылок и нажми «Скачать». Каждое видео скачается отдельным файлом.</p>
+
+    <div id="rows"></div>
+
+    <div class="actions">
+      <button id="download">Скачать</button>
+      <button id="clear" class="secondary" type="button">Очистить</button>
+    </div>
+  </div>
+
+  <script>
+    const MAX = 4;
+    const rowsEl = document.getElementById('rows');
+
+    function makeRow(i) {
+      const wrap = document.createElement('div');
+      wrap.className = 'row';
+      wrap.innerHTML = `
+        <input type="url" placeholder="https://youtube.com/shorts/..." data-i="${i}" />
+        <span class="status" data-i="${i}"></span>
+      `;
+      rowsEl.appendChild(wrap);
+    }
+    for (let i = 0; i < MAX; i++) makeRow(i);
+
+    const setStatus = (i, text, cls = '') => {
+      const el = rowsEl.querySelector(`.status[data-i="${i}"]`);
+      el.textContent = text;
+      el.className = 'status' + (cls ? ' ' + cls : '');
+    };
+
+    async function downloadOne(i, url) {
+      setStatus(i, 'загрузка…');
+      try {
+        const resp = await fetch('/download?url=' + encodeURIComponent(url));
+        if (!resp.ok) {
+          const t = await resp.text();
+          setStatus(i, 'ошибка', 'err');
+          console.error(t);
+          return;
+        }
+        const blob = await resp.blob();
+        if (blob.size === 0) {
+          setStatus(i, 'пусто', 'err');
+          return;
+        }
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `short-${i + 1}.mp4`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 10_000);
+        setStatus(i, 'готово', 'ok');
+      } catch (e) {
+        console.error(e);
+        setStatus(i, 'ошибка', 'err');
+      }
+    }
+
+    document.getElementById('download').addEventListener('click', async (e) => {
+      const btn = e.currentTarget;
+      btn.disabled = true;
+      const inputs = [...rowsEl.querySelectorAll('input[type=url]')];
+      const jobs = inputs
+        .map((inp, i) => ({ i, url: inp.value.trim() }))
+        .filter((j) => j.url);
+      if (jobs.length === 0) {
+        btn.disabled = false;
+        return;
+      }
+      for (const j of jobs) {
+        await downloadOne(j.i, j.url);
+      }
+      btn.disabled = false;
+    });
+
+    document.getElementById('clear').addEventListener('click', () => {
+      rowsEl.querySelectorAll('input[type=url]').forEach((i) => (i.value = ''));
+      rowsEl.querySelectorAll('.status').forEach((s) => { s.textContent = ''; s.className = 'status'; });
+    });
+  </script>
+</body>
+</html>
